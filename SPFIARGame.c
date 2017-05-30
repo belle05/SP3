@@ -13,7 +13,9 @@
 SPFiarGame* spFiarGameCreate(int historySize){
 	char board[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
 	int tops[SP_FIAR_GAME_N_COLUMNS];
-	sp_fiar_game_t *SPFiarGame = (sp_fiar_game_t *)malloc(sizeof(sp_fiar_game_t));
+
+	SPFiarGame *game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	sp_
 
 	if ((historySize<=0) || (SPFiarGame == NULL)) {
 		return NULL;
@@ -67,6 +69,9 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
  * @param src - the source game
  */
 void spFiarGameDestroy(SPFiarGame* src){
+	if (src != NULL) {
+		free(src);
+	}
 }
 
 /**
@@ -80,6 +85,14 @@ void spFiarGameDestroy(SPFiarGame* src){
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
+	if ((src == NULL) or (col < 0) or (col >= SP_FIAR_GAME_N_COLUMNS)) {
+		return SP_FIAR_GAME_INVALID_ARGUMENT;
+	}
+	int sizeOfCol = src -> tops[col];
+	if (sizeOfCol == SP_FIAR_GAME_N_COLUMNS-1) {
+		return SP_FIAR_GAME_INVALID_MOVE;
+	}
+	 src -> tops[col] = sizeOfCol + 1;
 }
 
 /**
