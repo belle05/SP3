@@ -33,6 +33,7 @@ typedef struct sp_fiar_game_t {
 	char gameBoard[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
 	int tops[SP_FIAR_GAME_N_COLUMNS];
 	char currentPlayer;
+	int historySize;
 	//You May add any fields you like
 } SPFiarGame;
 
@@ -156,5 +157,54 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src);
 * null character - otherwise
 */
 char spFiarCheckWinner(SPFiarGame* src);
+
+/**
+* Checks if player has won the game.
+* @param src - the source game
+* @return
+* true - if the specified player has won.
+* false - otherwise.
+*/
+bool spFiarIsWinner(SPFiarGame* src, char player);
+
+/**
+* Checks if the game board is full.
+* @param src - the source game.
+* @param player - the player's simbole as char.
+* @return
+* true - if the specified game board is full.
+* false - otherwise.
+*/
+bool spFiarIsTableFull(SPFiarGame* src);
+
+/**
+* Checks if player has got a winning col.
+* @param src - the source game
+* @param player - the player's simbole as char.
+* @return
+* true - if the specified player has won.
+* false - otherwise.
+*/
+bool spFiarIsCol(SPFiarGame* src, char player)
+
+/**
+* Checks if player has got a winning row.
+* @param src - the source game
+* @param player - the player's simbole as char.
+* @return
+* true - if the specified player has won.
+* false - otherwise.
+*/
+bool spFiarIsRow(SPFiarGame* src, char player){
+
+/**
+* Checks if player has got a winning diagonal.
+* @param src - the source game
+* @param player - the player's simbole as char.
+* @return
+* true - if the specified player has won.
+* false - otherwise.
+*/
+bool spFiarIsDiag(SPFiarGame* src, char player);
 
 #endif

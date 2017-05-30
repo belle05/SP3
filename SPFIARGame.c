@@ -11,6 +11,8 @@
  * Otherwise, a new game instant is returned.
  */
 SPFiarGame* spFiarGameCreate(int historySize){
+//TODO - add history var
+
 	char board[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
 	int tops[SP_FIAR_GAME_N_COLUMNS];
 
@@ -50,6 +52,8 @@ SPFiarGame* spFiarGameCreate(int historySize){
  *
  */
 SPFiarGame* spFiarGameCopy(SPFiarGame* src){
+//TODO - add history var
+
 	if (src == NULL) {
 		return NULL;
 	}
@@ -85,14 +89,15 @@ void spFiarGameDestroy(SPFiarGame* src){
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
+//TODO - update history
+
 	if ((src == NULL) or (col < 0) or (col >= SP_FIAR_GAME_N_COLUMNS)) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
-	int sizeOfCol = src -> tops[col];
-	if (sizeOfCol == SP_FIAR_GAME_N_COLUMNS-1) {
+	if (spFiarGameIsValidMove(src, col)) {
 		return SP_FIAR_GAME_INVALID_MOVE;
 	}
-	 src -> tops[col] = sizeOfCol + 1;
+	src -> tops[col] = sizeOfCol + 1;
 }
 
 /**
@@ -105,6 +110,11 @@ SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
  * false - otherwise.
  */
 bool spFiarGameIsValidMove(SPFiarGame* src, int col){
+	int sizeOfCol = src -> tops[col];
+	if (sizeOfCol == SP_FIAR_GAME_N_COLUMNS-1) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -121,6 +131,10 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col){
  *                                 board is removed and the current player is changed
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
+//TODO
+	if (src == NULL) {
+		return SP_FIAR_GAME_INVALID_ARGUMENT;
+	}
 }
 
 /**
@@ -135,6 +149,21 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
  *
  */
 SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
+	if (src == NULL) {
+		return SP_FIAR_GAME_INVALID_ARGUMENT;
+	}
+	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+		printf('|');
+		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+			printf(" %c", src -> gameBoard[r][c]);
+		}
+		printf(" |\n");
+	}
+	printf("-----------------\n ")
+	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+		printf(" %d", c);
+	}
+	return SP_FIAR_GAME_SUCCESS;
 }
 
 /**
@@ -146,6 +175,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
  * SP_FIAR_GAME_EMPTY_ENTRY     - otherwise
  */
 char spFiarGameGetCurrentPlayer(SPFiarGame* src){
+	return src -> currentPlayer;
 }
 /**
 * Checks if there's a winner in the specified game status. The function returns either
@@ -161,5 +191,71 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 * null character - otherwise
 */
 char spFiarCheckWinner(SPFiarGame* src){
+}
+
+/**
+* Checks if player has won the game.
+* @param src - the source game, the player's simbole as char.
+* @return
+* true - if the specified player has won.
+* false - otherwise.
+*/
+bool spFiarIsWinner(SPFiarGame* src, char player){
+}
+
+/**
+* Checks if the game board is full.
+* @param src - the source game.
+* @return
+* true - if the specified game board is full.
+* false - otherwise.
+*/
+bool spFiarIsTableFull(SPFiarGame* src){
+	int fullTableSize = SP_FIAR_GAME_N_COLUMNS * SP_FIAR_GAME_N_ROWS;
+	int takenSpots = SP_FIAR_GAME_N_COLUMNS * SP_FIAR_GAME_N_ROWS;
+	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+			if (src -> gameBoard[r][c] == '\0') {
+				takenSpots = takenSpots - 1;
+			}
+		}
+	}
+	if (takenSpots == 0) {
+		return true;
+	}
+	return false;
+}
+
+bool spFiarIsCol(SPFiarGame* src, char player){
+	int counter=0;
+	for (unsigned int r = 0; r<SP_FIAR_GAME_N_COLUMNS; r++) {
+		for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+			if (src -> gameBoard[r][c] == player){
+				counter += 1;
+				if (counter == 4){
+					return true;
+				}
+			}
+		}
+		counter = 0;
+	}
+}
+
+bool spFiarIsRow(SPFiarGame* src, char player){
+	int counter=0;
+	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+		for (unsigned int r = 0; r<SP_FIAR_GAME_N_COLUMNS; r++) {
+			if (src -> gameBoard[r][c] == player){
+				counter += 1;
+				if (counter == 4){
+					return true;
+				}
+			}
+		}
+		counter = 0;
+	}
+}
+
+bool spFiarIsDiag(SPFiarGame* src, char player){
 }
 
