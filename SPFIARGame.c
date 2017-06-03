@@ -191,7 +191,22 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 * null character - otherwise
 */
 char spFiarCheckWinner(SPFiarGame* src){
+	bool playerOneWon = spFiarIsWinner(src,SP_FIAR_GAME_PLAYER_1_SYMBOL);
+	bool playerTwoWon = spFiarIsWinner(src,SP_FIAR_GAME_PLAYER_2_SYMBOL);
+	if ( (playerOneWon == true) && (playerTwoWon == false) ) {
+		return SP_FIAR_GAME_PLAYER_1_SYMBOL;
+	}
+	else if ( (playerOneWon == false) && (playerTwoWon == true) ) {
+		return SP_FIAR_GAME_PLAYER_2_SYMBOL;
+	}
+	else if ((spFiarIsTableFull(src)) && (playerOneWon == false) && (playerTwoWon == false) ) {
+		return SP_FIAR_GAME_TIE_SYMBOL;
+	}
+	else {
+		return NULL;
+	}
 }
+		 
 
 /**
 * Checks if player has won the game.
@@ -201,6 +216,10 @@ char spFiarCheckWinner(SPFiarGame* src){
 * false - otherwise.
 */
 bool spFiarIsWinner(SPFiarGame* src, char player){
+	if (spFiarIsCol(src,player) || spFiarIsRow(src,player) || spFiarIsDiag(src,player)) {
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -228,7 +247,7 @@ bool spFiarIsTableFull(SPFiarGame* src){
 
 bool spFiarIsCol(SPFiarGame* src, char player){
 	int counter=0;
-	for (unsigned int r = 0; r<SP_FIAR_GAME_N_COLUMNS; r++) {
+	for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
 		for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
 			if (src -> gameBoard[r][c] == player){
 				counter += 1;
@@ -239,12 +258,13 @@ bool spFiarIsCol(SPFiarGame* src, char player){
 		}
 		counter = 0;
 	}
+	return false;
 }
 
 bool spFiarIsRow(SPFiarGame* src, char player){
 	int counter=0;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
-		for (unsigned int r = 0; r<SP_FIAR_GAME_N_COLUMNS; r++) {
+		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
 			if (src -> gameBoard[r][c] == player){
 				counter += 1;
 				if (counter == 4){
@@ -254,8 +274,65 @@ bool spFiarIsRow(SPFiarGame* src, char player){
 		}
 		counter = 0;
 	}
+	return false;
 }
 
 bool spFiarIsDiag(SPFiarGame* src, char player){
+	int counter = 0;
+	for (unsigned int s = 0; s<SP_FIAR_GAME_N_COLUMNS+SP_FIAR_GAME_N_ROWS-1; s++) {
+		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
+			for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+				if (c+r == s) {
+					if (src -> gameBoard[r][c] == player){
+						counter+=1;
+						if (counter == 4) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		counter = 0;
+	}
+	counter = 0;
+	int max = 0;
+	if (SP_FIAR_GAME_N_COLUMNS >= SP_FIAR_GAME_N_ROWS) {
+		max = SP_FIAR_GAME_N_COLUMNS;
+	}
+	else {
+		max = SP_FIAR_GAME_N_ROWS;
+	}
+	for (unsigned int s = 0; s<max; s++) {
+                for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
+                        for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+                                if (c-r == s) {
+                                        if (src -> gameBoard[r][c] == player){
+                                                counter+=1;
+                                                if (counter == 4) {
+                                                        return true;
+                                                }
+                                        }
+                                }
+                        }
+                }
+                counter = 0;
+        }
+	for (unsigned int s = 0; s<max; s++) {
+                for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
+                        for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+                                if (r-c == s) {
+                                        if (src -> gameBoard[r][c] == player){
+                                                counter+=1;
+                                                if (counter == 4) {
+                                                        return true;
+                                                }
+                                        }
+                                }
+                        }
+                }
+                counter = 0;
+        }
+
+
 }
 
