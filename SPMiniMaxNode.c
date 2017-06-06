@@ -47,6 +47,16 @@ int singleScore(int score){
 
 }
 
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by lines.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the lines score of the given board.
+ */
 int calcBoadRows(SPFiarGame* src, char player1, char player2){
 	int row_score=0;
 	int total_score;
@@ -65,6 +75,16 @@ int calcBoadRows(SPFiarGame* src, char player1, char player2){
 	return total_score;
 }
 
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by columns.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the columns score of the given board.
+ */
 int calcBoadCols(SPFiarGame* src){
 	int col_score=0;
 	int total_score=0;
