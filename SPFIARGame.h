@@ -91,6 +91,7 @@ void spFiarGameDestroy(SPFiarGame* src);
  * @return
  * SP_FIAR_GAME_INVALID_ARGUMENT - if src is NULL or col is out-of-range
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
+ * SP_FIAR_GAME_SUCCESS - otherwise
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col);
 
