@@ -1,21 +1,36 @@
 #ifndef SPMINIMAXNODE_H_
 #define SPMINIMAXNODE_H_
 
-
-int calcBoardScore(SPFiarGame* src){
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the total score of the given board.
+ */
+int calcBoardScore(SPFiarGame* src,  char player1, char player2){
 	return calcBoadRows(src) +\
 		calcBoadCols(src) +\
 		calcBoadDiagonals(src)
 }
 
+/**
+ * Given a score, this function returns the actual
+ * value to add according to a weight vector: {−5, −2, −1,1,2,5}
+ *
+ * @param score - the calculated score of a foursome.
+ * @return
+ * The matching value according to the weigh vector.
+ */
 int singleScore(int score){
 	//If score is 0 return 0
 	if (score == 0) {
 		return 0;
 	}
 
-	//if score is not 0, return by the following
-	//logic: {-3:−5,-2:−2,-1:−1,1:1,2:2,3:5}
 	int pos;
 	int sign = 1;
 	if (score > 0) {
