@@ -70,6 +70,7 @@ int calcBoadRows(SPFiarGame* src, char player1, char player2){
 				}
 			}
 			total_score += singleScore(row_score);
+			row_score = 0;
 		}
 	}
 	return total_score;
@@ -85,7 +86,7 @@ int calcBoadRows(SPFiarGame* src, char player1, char player2){
  * @return
  * The function returns the columns score of the given board.
  */
-int calcBoadCols(SPFiarGame* src){
+int calcBoadCols(SPFiarGame* src, char player1, char player2){
 	int col_score=0;
 	int total_score=0;
 	for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
@@ -98,13 +99,40 @@ int calcBoadCols(SPFiarGame* src){
 				}
 			}
 			total_score += singleScore(col_score);
+			col_score = 0;
 		}
 	}
 	return total_score;
 
 }
 
-int calcBoadDiagonals(SPFiarGame* src){
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by diagonals.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the columns score of the given board.
+ */
+int calcBoadDiagonals(SPFiarGame* src, char player1, char player2){
+	int diag_score=0;
+	int total_score;
+	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS-4; r++) {
+		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS-4; c++) {
+			for (unsigned int f = 0; f<4; f++) {
+				if (src -> gameBoard[r+f][c+f] == player2) {
+					diag_score += 1;
+				} else if (src -> gameBoard[r][c+f] == player1) {
+					diag_score -= 1;
+				}
+			}
+			total_score += singleScore(diag_score);
+			diag_score = 0;
+		}
+	}
+	return total_score;
 
 }
 
