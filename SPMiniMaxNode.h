@@ -5,10 +5,10 @@ int calcBoardScore(SPFiarGame* src,  char player1, char player2);
 
 int singleScore(int score);
 
-int calcBoadRows(SPFiarGame* src, char player1, char player2);
+int calcBoardRows(SPFiarGame* src, char player1, char player2);
 
-int calcBoadCols(SPFiarGame* src);
+int calcBoardCols(SPFiarGame* src);
 
-int calcBoadDiagonals(SPFiarGame* src);
+int calcBoardDiagonals(SPFiarGame* src);
 
 #endif

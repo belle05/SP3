@@ -1,6 +1,8 @@
 #ifndef SPMINIMAXNODE_H_
 #define SPMINIMAXNODE_H_
 
+static const int scores[] = {-5,-2,-1,0,1,2,5};
+
 /**
  * Given a game state, this function gives a score tag according to the
  * disks of each player.
@@ -12,9 +14,9 @@
  * The function returns the total score of the given board.
  */
 int calcBoardScore(SPFiarGame* src,  char player1, char player2){
-	return calcBoadRows(src) +\
-		calcBoadCols(src) +\
-		calcBoadDiagonals(src)
+	return calcBoardRows(src) +\
+		calcBoardCols(src) +\
+		calcBoardDiagonals(src)
 }
 
 /**
@@ -26,6 +28,8 @@ int calcBoardScore(SPFiarGame* src,  char player1, char player2){
  * The matching value according to the weigh vector.
  */
 int singleScore(int score){
+	return scores[score+3];
+/** If the static cont won't work:
 	//If score is 0 return 0
 	if (score == 0) {
 		return 0;
@@ -44,7 +48,7 @@ int singleScore(int score){
 		return sign*pos;
 	} else {
 		return sign*5;
-
+**/
 }
 
 /**
@@ -57,7 +61,7 @@ int singleScore(int score){
  * @return
  * The function returns the lines score of the given board.
  */
-int calcBoadRows(SPFiarGame* src, char player1, char player2){
+int calcBoardRows(SPFiarGame* src, char player1, char player2){
 	int row_score=0;
 	int total_score;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
@@ -86,7 +90,7 @@ int calcBoadRows(SPFiarGame* src, char player1, char player2){
  * @return
  * The function returns the columns score of the given board.
  */
-int calcBoadCols(SPFiarGame* src, char player1, char player2){
+int calcBoardCols(SPFiarGame* src, char player1, char player2){
 	int col_score=0;
 	int total_score=0;
 	for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
@@ -116,7 +120,7 @@ int calcBoadCols(SPFiarGame* src, char player1, char player2){
  * @return
  * The function returns the columns score of the given board.
  */
-int calcBoadDiagonals(SPFiarGame* src, char player1, char player2){
+int calcBoardDiagonals(SPFiarGame* src, char player1, char player2){
 	int diag_score=0;
 	int total_score;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS-4; r++) {
