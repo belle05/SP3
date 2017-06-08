@@ -13,20 +13,33 @@
  */
 
 bool spParserIsInt(const char* str){
-	long num=0;
-	for(unsigned int i=0; i<sizeof(str); i++){
-		if(isdigit(str[i])){
-			num+=10*num+(long)str[i];
-			if (num>=4294967295) {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	return true;
+	 long num=0;
+	        bool firstNumberAfter0 = false;
+	        bool negative = false;
+	        for(unsigned int i=0; i<sizeof(str); i++){
+	                if (i == 0 && str[0] == '-') {
+	                        negative = true;
+	                }
+	                else if(isdigit(str[i])){
+	                        if (((long)str[i] == 0) && firstNumberAfter0 == false) {
+	                                continue;
+	                        }
+	                        else if (((long)str[i] != 0) && firstNumberAfter0 == false) {
+	                                firstNumberAfter0 = true;
+	                                num+=10*num+(long)str[i];
+	                        }
+	                        else {
+	                                num+=10*num+(long)str[i];
+	                        }
+	                        if (num>=2147483647) {
+	                                return false;
+	                        }
+	                } else {
+	                        return false;
+	                }
+	        }
+	        return true;
 }
-
 /**
  * Parses a specified line. If the line is a command which has an integer
  * argument then the argument is parsed and is saved in the field arg and the
@@ -58,7 +71,11 @@ SPCommand spParserPraseLine(const char* str) {
 	arg = strtok (NULL," \t\v\f\r");
 	if (!(command) || !( arg)) myCommand -> cmd = SP_INVALID_LINE;
 	arg = strtok (NULL," \t\v\f\r");
-	if (arg) myCommand -> cmd = SP_INVALID_LINE;
+	if (arg == '\n') {
+		arg = strtok (NULL," \t\v\f\r");
+		if (arg) myCommand -> cmd = SP_INVALID_LINE;
+	}
+	else if (arg != '\n' && arg != NULL)  myCommand -> cmd = SP_INVALID_LINE;
 	if (myCommand -> cmd == SP_INVALID_LINE) {
                 myCommand -> validArg = false;
                 myCommand -> arg = 0;
@@ -97,7 +114,33 @@ SP_COMMAND checkForCommand(const char* command) {
 }
 
 int getInt(char* argument) {
-/*write get int from char that is int*/		
+	 int num=0;
+	 bool firstNumberAfter0 = false;
+	 bool negative = false;
+	 for(unsigned int i=0; i<sizeof(argument); i++){
+	     if (i == 0 && argument[0] == '-') {
+	    	 negative = true;
+	     }
+	     else {
+	         if (((int)argument[i] == 0) && firstNumberAfter0 == false) {
+	        	 continue;
+	         }
+	         else if (((int)argument[i] != 0) && firstNumberAfter0 == false) {
+	             firstNumberAfter0 = true;
+	             num+=10*num+(int)argument[i];
+	         }
+	         else {
+	             num+=10*num+(int)argument[i];
+	         }
+	     }
+	 }
+	 if (negative) {
+		 return num*-1;
+	 }
+	 else {
+		 return num;
+	 }
+
 }
 
 bool checkIfNotOnlyWhiteSpaces(const char* str) {
