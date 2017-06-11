@@ -4,14 +4,6 @@
 #include <ctype.h>
 #include <string.h>
 
-/**
- * Checks if a specified string represents a valid integer. It is recommended
- * to use this function prior to calling the standard library function atoi.
- *
- * @return
- * true if the string represents a valid integer, and false otherwise.
- */
-
 bool spParserIsInt(const char* str){
 	 long num=0;
 	        bool firstNumberAfter0 = false;
@@ -40,20 +32,6 @@ bool spParserIsInt(const char* str){
 	        }
 	        return true;
 }
-/**
- * Parses a specified line. If the line is a command which has an integer
- * argument then the argument is parsed and is saved in the field arg and the
- * field validArg is set to true. In any other case then 'validArg' is set to
- * false and the value 'arg' is undefined
- *
- * @return
- * A parsed line such that:
- *   cmd - contains the command type, if the line is invalid then this field is
- *         set to INVALID_LINE
- *   validArg - is set to true if the command is add_disc and the integer argument
- *              is valid
- *   arg      - the integer argument in case validArg is set to true
- */
 
 SPCommand spParserPraseLine(const char* str) {
 	SPCommand *myCommand;
@@ -95,6 +73,9 @@ SPCommand spParserPraseLine(const char* str) {
 	return myCommand;	
 }
 SP_COMMAND checkForCommand(const char* command) {
+	if (command == NULL) {
+		return SP_INVALID_LINE;
+	}
 	char undo[9];
 	char add_disk[8];
 	char sp_suggest[12];

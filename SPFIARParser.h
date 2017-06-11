@@ -47,4 +47,27 @@ bool spParserIsInt(const char* str);
  */
 SPCommand spParserPraseLine(const char* str);
 
+/**Parses the command.
+*
+*@return
+* if the command is one of the enum above, returns the command as an enum type.
+* else, returns SP_INVALID_LINS as an enum
+**/
+SP_COMMAND checkForCommand(const char* command);
+
+/** Parses the int of the command if exist (as an char*). 
+* this function does not checks if its an int, she assume it.
+* return
+* the int of the number, if it is negative returns the negative number that it is
+**/
+
+int getInt(char* argument);
+
+/** This function gets an str and checks if all of the str its white spauces.
+* @return
+* true if its not only white spaces, flase if it does contains only white spaces.
+**/
+
+bool checkIfNotOnlyWhiteSpaces(const char* str);
+
 #endif
