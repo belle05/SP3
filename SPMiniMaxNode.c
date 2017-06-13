@@ -14,7 +14,7 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 		myNode -> childs[i] = NULL;
 	}
 	/* TODO- update score*/
-	myNode -> score = calcBoardScore;
+	myNode -> score = calcBoardScore(game);
 	myNode -> minChildIndex = -2;
 	myNode -> maxChildIndex = -2;
 	myNode -> minChildScore = myNode -> score;
