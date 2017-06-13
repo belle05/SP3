@@ -103,11 +103,11 @@ void addLevel(MiniMaxNode *myNode);
 
 bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level);
 
-int calcBoardScore(SPFiarGame* src,  char player1, char player2);
+int calcBoardScore(SPFiarGame* src);
 
 int singleScore(int score);
 
-int calcBoardRows(SPFiarGame* src, char player1, char player2);
+int calcBoardRows(SPFiarGame* src);
 
 int calcBoardCols(SPFiarGame* src);
 

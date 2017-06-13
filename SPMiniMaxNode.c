@@ -14,7 +14,7 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 		myNode -> childs[i] = NULL;
 	}
 	/* TODO- update score*/
-	myNode -> score = 65984328792;
+	myNode -> score = calcBoardScore;
 	myNode -> minChildIndex = -2;
 	myNode -> maxChildIndex = -2;
 	myNode -> minChildScore = myNode -> score;
@@ -166,7 +166,7 @@ void addLevel(MiniMaxNode *myNode) {
 }
 bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
 	if (level <0) {
-			return false;
+		return false;
 	}
 	else if (level == 0) {
 		return true;
@@ -189,7 +189,7 @@ bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
  * @return
  * The function returns the total score of the given board.
  */
-int calcBoardScore(SPFiarGame* src,  char player1, char player2){
+int calcBoardScore(SPFiarGame* src){
 	return calcBoardRows(src) +\
 		calcBoardCols(src) +\
 		calcBoardDiagonals(src)
@@ -237,15 +237,15 @@ int singleScore(int score){
  * @return
  * The function returns the lines score of the given board.
  */
-int calcBoardRows(SPFiarGame* src, char player1, char player2){
+int calcBoardRows(SPFiarGame* src){
 	int row_score=0;
 	int total_score;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
 		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS-4; c++) {
 			for (unsigned int f = 0; f<4; f++) {
-				if (src -> gameBoard[r][c+f] == player2) {
+				if (src -> gameBoard[r][c+f] == SP_FIAR_GAME_PLAYER_2_SYMBOL) {
 					row_score += 1;
-				} else if (src -> gameBoard[r][c+f] == player1) {
+				} else if (src -> gameBoard[r][c+f] == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 					row_score -= 1;
 				}
 			}
@@ -266,15 +266,15 @@ int calcBoardRows(SPFiarGame* src, char player1, char player2){
  * @return
  * The function returns the columns score of the given board.
  */
-int calcBoardCols(SPFiarGame* src, char player1, char player2){
+int calcBoardCols(SPFiarGame* src){
 	int col_score=0;
 	int total_score=0;
 	for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
 		for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS-4; r++) {
 			for (unsigned int f = 0; f<4; f++) {
-				if (src -> gameBoard[r+f][c] == player2) {
+				if (src -> gameBoard[r+f][c] == SP_FIAR_GAME_PLAYER_2_SYMBOL) {
 					col_score += 1;
-				} else if (src -> gameBoard[r+f][c] == player1) {
+				} else if (src -> gameBoard[r+f][c] == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 					col_score -= 1;
 				}
 			}
@@ -296,15 +296,15 @@ int calcBoardCols(SPFiarGame* src, char player1, char player2){
  * @return
  * The function returns the columns score of the given board.
  */
-int calcBoardDiagonals(SPFiarGame* src, char player1, char player2){
+int calcBoardDiagonals(SPFiarGame* src){
 	int diag_score=0;
 	int total_score;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS-4; r++) {
 		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS-4; c++) {
 			for (unsigned int f = 0; f<4; f++) {
-				if (src -> gameBoard[r+f][c+f] == player2) {
+				if (src -> gameBoard[r+f][c+f] == SP_FIAR_GAME_PLAYER_2_SYMBOL) {
 					diag_score += 1;
-				} else if (src -> gameBoard[r][c+f] == player1) {
+				} else if (src -> gameBoard[r][c+f] == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 					diag_score -= 1;
 				}
 			}
