@@ -35,6 +35,7 @@ typedef struct sp_fiar_game_t {
 	char currentPlayer;
 	int level;
 	int historySize;
+	SPArrayList history;
 	//You May add any fields you like
 } SPFiarGame;
 
@@ -122,6 +123,8 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col);
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
 
+
+bool spFiarGameRemoveDisc(SPFiarGame* src, int col);
 /**
  * On success, the function prints the board game. If an error occurs, then the
  * function does nothing. The characters 'X' and 'O' are used to represent
