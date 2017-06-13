@@ -40,7 +40,7 @@ SPArrayList* spArrayListCopy(SPArrayList* src) {
 	for (unsigned int i=0; i<maxSize2; i++){
                 elements[i] = src -> elements[i];
         }
-	 my_array_list = (SPArrayList*)malloc(sizeof(my_array_list));
+	my_array_list = (SPArrayList*)malloc(sizeof(my_array_list));
         if (my_array_list == NULL) {
                 return NULL;
         }
@@ -226,13 +226,12 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src) {
  * Otherwise, the element at the specified index is returned.
  */
 int spArrayListGetAt(SPArrayList* src, int index) {
-/* what is undefined?*/
-	int undefined = 0;
+/* TODO: what is undefined?*/
 	if (src == NULL) {
-		return undefined;
+		return SP_ARRAY_LIST_INVALID_ARGUMENT;
 	}
 	if (index >= src -> actualSize) {
-		return undefined;
+		return SP_ARRAY_LIST_INVALID_ARGUMENT;
 	}
 	return src -> elements[index];
 }

@@ -13,7 +13,6 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
 		myNode -> childs[i] = NULL;
 	}
-	/* TODO- update score*/
 	myNode -> score = calcBoardScore(game);
 	myNode -> minChildIndex = -2;
 	myNode -> maxChildIndex = -2;

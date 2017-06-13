@@ -35,6 +35,7 @@ typedef struct sp_fiar_game_t {
 	char currentPlayer;
 	int level;
 	int historySize;
+	SPArrayList history;
 	//You May add any fields you like
 } SPFiarGame;
 

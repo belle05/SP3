@@ -11,20 +11,18 @@
  * Otherwise, a new game instant is returned.
  */
 SPFiarGame* spFiarGameCreate(int historySize){
-//TODO - add history var
-
 	char board[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
 	int tops[SP_FIAR_GAME_N_COLUMNS];
 
 	SPFiarGame *game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
-	sp_
-
 	if ((historySize<=0) || (SPFiarGame == NULL)) {
 		return NULL;
 	}
 
-	SPFiarGame -> historySize = historySize;
-	SPFiarGame -> currentPlayer =  SP_FIAR_GAME_PLAYER_1_SYMBOL;
+	game -> history = spArrayListCreate(historySize);
+	if ((historySize<=0) || (SPFiarGame == NULL)) {
+	game -> historySize = historySize;
+	game -> currentPlayer =  SP_FIAR_GAME_PLAYER_1_SYMBOL;
 
 	//Setting all GameBoard values to NULL
 	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
@@ -32,13 +30,13 @@ SPFiarGame* spFiarGameCreate(int historySize){
 			board[r][c] = '\0';
 		}
 	}
-	SPFiarGame -> gameBoard = board;
+	game -> gameBoard = board;
 	//Setting all collumns' sizes to 0
 	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
 		tops[c] = 0;
 	}
-	SPFiarGame -> tops = tops;
-	return SPFiarGame;
+	game -> tops = tops;
+	return game;
 }
 
 /**
@@ -52,17 +50,16 @@ SPFiarGame* spFiarGameCreate(int historySize){
  *
  */
 SPFiarGame* spFiarGameCopy(SPFiarGame* src){
-//TODO - add history var
-
 	if (src == NULL) {
 		return NULL;
 	}
-	sp_fiar_game_t *SPFiarGame = (sp_fiar_game_t *)malloc(sizeof(sp_fiar_game_t));
+	SPFiarGame *game = (sp_fiar_game_t *)malloc(sizeof(sp_fiar_game_t));
 	//Set game status to be like src
-	SPFiarGame -> gameBoard = src -> gameBoard;
-	SPFiarGame -> tops = src -> tops;
-	SPFiarGame -> currentPlayer = src -> currentPlayer;
-	SPFiarGame -> historySize = src -> historySize;
+	game -> gameBoard = src -> gameBoard;
+	game -> tops = src -> tops;
+	game -> currentPlayer = src -> currentPlayer;
+	game -> historySize = src -> historySize;
+	game -> history = spArrayListCopy(src);
 	return SPFiarGame;
 }
 
@@ -89,8 +86,6 @@ void spFiarGameDestroy(SPFiarGame* src){
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
-//TODO - update history
-
 	if ((src == NULL) or (col < 0) or (col >= SP_FIAR_GAME_N_COLUMNS)) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
@@ -98,6 +93,7 @@ SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
 		return SP_FIAR_GAME_INVALID_MOVE;
 	}
 	src -> tops[col] = sizeOfCol + 1;
+	spArrayListAddFirst(src -> history, col);
 }
 
 /**
@@ -131,10 +127,25 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col){
  *                                 board is removed and the current player is changed
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
-//TODO
+	bool success = False;
 	if (src == NULL) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
+	} else if (src -> history -> actualSize == 0) {
+		return SP_FIAR_GAME_NO_HISTORY;
 	}
+	success = spFiarGameRemoveDisc(src, spArrayListGetAt(src -> history, 0));
+	if (success) {
+		spArrayListRemoveAt(src -> history, 0);
+	}
+	return SP_FIAR_GAME_SUCCESS;
+}
+
+bool spFiarGameRemoveDisc(SPFiarGame* src, int col){
+	if (src -> board[col] < 1) {
+		return false;
+	}
+	src -> board[col] = src -> board[col] -1;
+	return true;
 }
 
 /**
