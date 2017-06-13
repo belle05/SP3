@@ -40,12 +40,17 @@ SPCommand spParserPraseLine(const char* str) {
 		myCommand -> validArg = false;
 		myCommand -> cmd = SP_INVALID_LINE;
 	}
-	if (checkIfNotOnlylWhiteSpaces == false) {
+	if (checkIfNotOnlylWhiteSpaces(str) == false) {
 		myCommand -> cmd = SP_INVALID_LINE;
 	}
+	char* newstr[1024];
+	for (unsigned int i=0; i<sizeof(newstr); i++) {
+		newstr[i] = '\0';
+	}
+	strcpy(newstr, str);
 	char * command;
 	char * argument;
- 	command = strtok (str," \t\v\f\r");
+ 	command = strtok (newstr," \t\v\f\r");
 	arg = strtok (NULL," \t\v\f\r");
 	if (!(command) || !( arg)) myCommand -> cmd = SP_INVALID_LINE;
 	arg = strtok (NULL," \t\v\f\r");
