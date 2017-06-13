@@ -1,5 +1,4 @@
-#ifndef SPFIARPARSER_H_
-#define SPFIARPARSER_H_
+#include "SPFIARParser.h"
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>

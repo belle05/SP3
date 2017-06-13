@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include "SPFIARGame.h"
+#include <stdbool.h>
+
 /**
  * Creates a new game with a specified history size. The history size is a
  * parameter which specifies the number of previous moves to store. If the number

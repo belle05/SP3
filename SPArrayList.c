@@ -1,5 +1,4 @@
-#ifndef SPARRAYLIST_H_
-#define SPARRAYLIST_H_
+#include "SPArrayList.h"
 #include <stdbool.h>
 
 SPArrayList* spArrayListCreate(int maxSize){

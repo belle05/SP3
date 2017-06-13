@@ -1,5 +1,4 @@
-#ifndef SPMINIMAXNODE_H_
-#define SPMINIMAXNODE_H_
+#include "SPMiniMaxNode.h"
 
 static const int scores[] = {-5,-2,-1,0,1,2,5};
 
