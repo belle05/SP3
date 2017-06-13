@@ -101,6 +101,8 @@ bool updateMiniMaxNode(MiniMaxNode *myNode) {
 }
 
 bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
+	bool success = False;
+
 	if (level <0) {
 		return false;
 	}
@@ -108,12 +110,14 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 		return true;
 	}
 	else if (isLeaf(myNode)) {
-		createNodesForChilds(myNode);
+		success = createNodesForChilds(myNode);
 		for (unsigned i = 0; i<=level; i++) {
-			createNewTreeFromNode(myNode -> childs[i], level-1);
+			if (success) {
+				success = createNewTreeFromNode(myNode -> childs[i], level-1);
+			}
 		}
 		updateMiniMaxNode(myNode);
-		return true;
+		return success;
 	}
 }
 

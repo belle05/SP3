@@ -69,6 +69,8 @@ bool updateMiniMaxNode(MiniMaxNode *myNode);
 
 bool createNodesForChilds(MiniMaxNode *myNode);
 
+bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
+
 /** creates new children for the node with the same game of the node.
 *@return
 *false, if the node == NULL or if its not a leaf.
