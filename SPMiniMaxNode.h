@@ -68,7 +68,11 @@ bool updateMiniMaxNode(MiniMaxNode *myNode);
 **/
 
 bool createNodesForChilds(MiniMaxNode *myNode);
-
+/** creates new tree (in the level depth) for a node, and update it's parameters as well
+*@return:
+*true, is succeeded
+*false if node == NULL or if level<0
+**/
 bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
 
 /** creates new children for the node with the same game of the node.
@@ -89,20 +93,21 @@ bool createNodesForChilds(MiniMaxNode *myNode);
 
 MiniMaxNode* moveForward(MiniMaxNode *myNode, int index);
 
-/**This function adds level at the buttom of a tree
-*if the node is NULL does nothing.
-**/
+/**This function take the chosen node and returning the newNode with a new tree.
+*@return:
+*if the node is NULL returns NULL, if index out of range returns NULL, if the chosen child is NULL returns NULL.
+**
 
 void addLevel(MiniMaxNode *myNode);
 
-/** This function recursivly updates all nodes in the tree according to the level of the tree.
+** This function recursivly updates all nodes in the tree according to the level of the tree.
 *@return
 *false, if the level <0
 *true, otherwise.
+**
+
+*bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level);
 **/
-
-bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level);
-
 int calcBoardScore(SPFiarGame* src);
 
 int singleScore(int score);

@@ -108,6 +108,7 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 	else if (level == 0) {
 		return true;
 	}
+	if (myNode == NULL) return false;
 	else if (isLeaf(myNode)) {
 		success = createNodesForChilds(myNode);
 		for (unsigned i = 0; i<=level; i++) {
@@ -137,47 +138,36 @@ bool createNodesForChilds(MiniMaxNode *myNode) {
 	}
 }
 MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
-	MiniMaxNode *copiedNode;
+	MiniMaxNode *newNode
 	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
 		return NULL;
 	}
-	copiedNode = copyNode(*(myNode -> childs[i]));
-	miniMaxDelete(*myNode);
-	addLevel(*copiedNode);
-	updateMiniMaxRecursivelly(*copiedNode, copiedNode -> myGame -> level)
-	return copyNode;
+	if (myNode == NULL) return NULL;
+	newNode =  myNode -> childs[index];
+	if (newNode == NULL) return NULL;
+	myNode -> childs[index] = NULL;
+	createNewTreeFromNode(newNode,newNode -> myGame -> level);
+	miniMaxDelete(myNode);
+	return newNode;
 }
+/**
+*bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
+*	if (level <0) {
+*		return false;
+*	}
+*	else if (level == 0) {
+*		return true;
+*	}
+*	else if (isLeaf(myNode)) {
+*		for (unsigned i = 0; i<=level; i++) {
+*			updateMiniMaxRecursivlly(myNode -> childs[i], level-1);
+*		}
+*		updateMiniMaxNode(myNode);
+*		return true;
+*		}
+*}
+*/
 
-void addLevel(MiniMaxNode *myNode) {
-	if (!myNode) {
-		return;
-	}
-	else if (isLeaf(myNode)) {
-		createNodesForChilds(myNode);
-		return;
-	}
-	else {
-		for (unsigned i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
-			addLevel(*myNode);
-		}
-		return;
-	}
-}
-bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
-	if (level <0) {
-		return false;
-	}
-	else if (level == 0) {
-		return true;
-	}
-	else if (isLeaf(myNode)) {
-		for (unsigned i = 0; i<=level; i++) {
-			updateMiniMaxRecursivlly(myNode -> childs[i], level-1);
-		}
-		updateMiniMaxNode(myNode);
-		return true;
-		}
-}
 /**
  * Given a game state, this function gives a score tag according to the
  * disks of each player.
