@@ -51,3 +51,28 @@ void printRestart() {
 	printf("Game restarted!\n");
 }
 
+void invalidLevel() {
+	printf("Error: invalid level (should be between 1 to 7)\n");
+}
+
+void invalidCommand() {
+	printf("Error: invalid command\n");
+}
+
+void addDiscInvalid() {
+	printf("Error: column number must be in range 1-7\n");
+}
+
+void addDiscFull(int col) {
+	printf("Error: column %d is full\n",col+1);
+}
+
+void errorUndo() {
+	printf("Error: cannot undo previous move!\n");
+}
+
+void errorGameOver() {
+	printf("Error: the game is over\n");
+}
+
+
