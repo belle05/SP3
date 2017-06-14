@@ -1,8 +1,35 @@
 #include "SPMainAux.h"
 
+char *
+
 void printDifficulty() {
+	int difficulty;
 	printf("Please enter the difficulty level between [1-7]:\n");
+	scanf("%d", difficulty);
+	return difficulty;
 }
+
+bool checkNumRange7(int num){
+	for (i=1; i < 8; i++) {
+		if (i==num) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int getGameDifficulty() {
+	int gameLevel = NULL;
+	while (gameLevel == NULL) {
+		gameLevel = printDifficulty();
+		if (!checkNumRange7(gameLevel)){
+			invalidLevel();
+			gameLevel = NULL;
+		}
+	}
+	return gameLevel;
+}
+
 
 void printNextMove() {
 	printf("Please make the next move:\n");
@@ -57,6 +84,7 @@ void invalidLevel() {
 
 void invalidCommand() {
 	printf("Error: invalid command\n");
+	return 0;
 }
 
 void addDiscInvalid() {
@@ -75,4 +103,43 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 
-
+bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth){
+	bool user_wins = false;
+	if (!command.validArg) {
+		invalidCommand();
+	        return 0;
+	}
+	else if (command.cmd == SP_QUIT) {
+		quitGame(currentGame);
+		return 1;
+	}
+    	else if (command.cmd == SP_RESTART){
+        	restartGame(currentGame);
+	        return 1;
+   	}
+	else if (command.cmd == SP_SUGGEST_MOVE){
+	        suggestMove(currentGame, maxDepth);
+        	return 0;
+   	}
+    	else if(command.cmd == SP_UNDO_MOVE){
+        	if(undoMove(currentGame))
+      			return 1;
+		return 0;
+	}
+	else if (command.cmd==SP_ADD_DISC){
+		if (!checkNumRange7) {
+			addDiscInvalid();
+           		return 0;
+        	}
+		if (!spFiarGameIsValidMove(currentGame,command.arg-1)) {
+			addDiscFull(command.arg);
+		        return 0;
+		}
+		spFiarGameSetMove(currentGame,command.arg-1);
+		//TODO: decide how to manage winner scenario
+		if (spFiarCheckWinner(curr_game) == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
+			user_wins = true;
+		return 1;
+	}
+	return 0;
+}
