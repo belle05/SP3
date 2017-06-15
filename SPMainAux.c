@@ -201,11 +201,6 @@ int  handleWinner(char simbol) {
 	return move;
 }
 
-
-		
-	
-}
-
 int proccesComandWin(SPCommand command){
         if (command ->cmd == SP_QUIT) {
                 return 8;
@@ -223,4 +218,15 @@ int proccesComandWin(SPCommand command){
 }
 
 
- 
+MiniMaxNode* undoMove(MiniMaxNode *node) {
+	bool success = false;
+	MiniMaxNode *miniMaxNode = NULL;
+	SP_FIAR_GAME_MESSAGE undoResult;
+
+	SPFiarGame* newGame = spFiarGameCopy(*(node -> myGame));
+	undoResult = spFiarGameUndoPrevMove(newGame);
+	miniMaxNode = nodeCreate(newGame);
+	success = createNewTreeFromNode(miniMaxNode, gameLevel);
+	return miniMaxNode;
+}
+

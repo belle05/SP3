@@ -10,6 +10,7 @@ int suggestMove(MiniMaxNode *node);
 bool freeMem(MiniMaxNode *node);
 int proccesComandWin(SPCommand command);
 int  handleWinner(char simbol);
+MiniMaxNode* undoMove(MiniMaxNode *node);
 
 //General Prints
 int printDifficulty();
