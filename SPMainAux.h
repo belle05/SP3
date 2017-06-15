@@ -5,12 +5,12 @@
 bool checkNumRange7(int num);
 int getGameDifficulty();
 int proccesComand(SPFiarGame* currentGame, SPCommand command, int gameLevel);
-bool userTurn(MiniMaxNode *node, int gameLevel);
+int userTurn(MiniMaxNode *node, int gameLevel);
 int suggestMove(MiniMaxNode *node);
 bool freeMem(MiniMaxNode *node);
 
 //General Prints
-void printDifficulty();
+int printDifficulty();
 void printNextMove();
 void printGameOverWin();
 void printGameOverLose();

@@ -2,11 +2,20 @@
 
 char *
 
-void printDifficulty() {
+int  printDifficulty() {
 	int difficulty;
+	char* charDifficulty;
 	printf("Please enter the difficulty level between [1-7]:\n");
-	scanf("%d", difficulty);
-	return difficulty;
+	scanf("%s", charDifficulty);
+	if (spParserIsInt(charDifficulty)) {
+		return difficulty;
+	}
+	else if (spParserPraseLine(charDifficulty) == SP_QUIT) {
+		return NULL;
+	}
+	else {
+		return -2;
+	}
 }
 
 bool checkNumRange7(int num){
@@ -22,6 +31,9 @@ int getGameDifficulty() {
 	int gameLevel = NULL;
 	while (gameLevel == NULL) {
 		gameLevel = printDifficulty();
+		if (gameLevel == NULL) {
+			return -1;
+		}
 		if (!checkNumRange7(gameLevel)){
 			invalidLevel();
 			gameLevel = NULL;
@@ -143,7 +155,7 @@ int proccesComand(MiniMaxNode *node, SPCommand command, int gameLevel){
 	return 0;
 }
 
-bool userTurn(MiniMaxNode *node, int gameLevel) {
+int userTurn(MiniMaxNode *node, int gameLevel) {
 	SP_FIAR_GAME_MESSAGE success;
 	int move = 0;
 	success = spFiarGamePrintBoard(node);

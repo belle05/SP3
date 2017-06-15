@@ -14,21 +14,26 @@ int main() {
 	int gameLevel = NULL;
 	int player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 	int chosenPath = 0;
+	char* input[1024];
+	for (unsigned int i=0; i<1024; i++) input[i] ='\0';
 	SPFiarGame *game = NULL;
 	MiniMaxNode *miniMaxNode = NULL;
 	SPCommand command;
 	SP_FIAR_GAME_MESSAGE message;
 	
-	while(true){
+	while(true){	
 		if (newGame) {
 			gameLevel = getGameDifficulty();
+			if (gameLevel == -1) {
+				break;
+			}
 			game = spFiarGameCreate(SP_ARRAY_MAX_HISTORY);
 			miniMaxNode = nodeCreate(game);
 			success = createNewTreeFromNode(miniMaxNode, gameLevel);
 			newGame = false;
 		}
 		if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-			result = userTurn(game, gameLevel);
+			move = userTurn(game, gameLevel);
 			if (move == 8) {
 				freeMem(miniMaxNode);
 				break;
