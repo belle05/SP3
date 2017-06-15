@@ -1,5 +1,6 @@
 #ifndef SPMAINAUX_H_
 #define SPMAINAUX_H_
+#include <stddef.h>
 
 //Validity and command proccessing
 bool checkNumRange7(int num);

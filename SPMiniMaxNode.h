@@ -1,5 +1,6 @@
 #ifndef SPMINIMAXNODE_H_
 #define SPMINIMAXNODE_H_
+#include <stddef.h>
 
 /* struct that defines a MINIMAXNODE */
 typedef struct MiniMaxNode {

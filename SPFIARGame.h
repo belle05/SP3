@@ -2,6 +2,7 @@
 #define SPFIARGAME_H_
 #include <stdbool.h>
 #include "SPArrayList.h"
+#include <stddef.h>
 
 /**
  * SPFIARGame Summary:
