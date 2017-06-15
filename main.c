@@ -7,7 +7,7 @@
 
 int main() {
 	bool newGame = true;
-	char isWon = false;
+	char isWon = 'B';
 	bool success = false;
 	int move = 0;
 	int round = 0;
@@ -35,7 +35,9 @@ int main() {
 			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
 		if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-			move = userTurn(game, gameLevel);
+			if (isWon == 'B') {
+				move = userTurn(game, gameLevel);
+			}
 			if (move == 8) {
 				freeMem(miniMaxNode);
 				break;
@@ -44,7 +46,8 @@ int main() {
 				newGame = true;
 			} else if (move == 10) {
 				miniMaxNode = undoMove(miniMaxNode);
-			} else {
+				round -= 2;
+			} else if (isWon != 'B') {
 				message = spFiarGameSetMove(game, move);
 				miniMaxNode = moveForward(MiniMaxNode *myNode, move);
 				player = SP_FIAR_GAME_PLAYER_2_SYMBOL;
@@ -55,7 +58,10 @@ int main() {
 			miniMaxNode = moveForward(MiniMaxNode *myNode, move);
 			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
-		 = spFiarCheckWinner(game);
+		isWon = spFiarCheckWinner(game);
+		if (isWon != 'B') {
+			move = handleWinner(isWon);
+		}
 		round += 1;
 	}
 	return 0;
