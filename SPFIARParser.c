@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 bool spParserIsInt(const char* str){
 	 long num=0;

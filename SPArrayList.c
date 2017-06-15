@@ -1,5 +1,7 @@
 #include "SPArrayList.h"
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 SPArrayList* spArrayListCreate(int maxSize){
 	SPArrayList *my_array_list;

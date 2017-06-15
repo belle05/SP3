@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "SPMiniMaxNode.h"
 #include "SPFIARGame.h"
 
@@ -26,8 +27,8 @@ MiniMaxNode* copyNode(MiniMaxNode *myNode) {
 	if (newNode == NULL) {
 		return NULL;
 	}
-	SPFIARGame *copyGame;
-	copyGame = spFiarGameCopy(*(myNode -> myGame));
+	SPFiarGame *copyGame;
+	copyGame = spFiarGameCopy((myNode -> myGame));
 	newNode -> myGame = copyGame;
 	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
 		newNode -> childs[i] = myNode -> childs[i];
@@ -44,7 +45,7 @@ void MiniMaxDelete(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
 		return;
 	}
-	if (isLeaf(myNode)) {
+	if (ifLeaf(myNode)) {
 		spFiarGameDestroy(myNode -> myGame);
 		free(myNode);
 		return;
@@ -80,7 +81,7 @@ bool updateMiniMaxNode(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
 		return false;
 	}
-	for (unsigned i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
+	for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
 		if (myNode -> childs[i] == NULL){
 			continue;
 		}
@@ -103,7 +104,7 @@ bool updateMiniMaxNode(MiniMaxNode *myNode) {
 }
 
 bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
-	bool success = False;
+	bool success = false;
 
 	if (level <0) {
 		return false;
@@ -114,9 +115,9 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 	if (myNode == NULL) {
 		 return false;
 	}
-	else if (isLeaf(myNode)) {
+	else if (ifLeaf(myNode)) {
 		success = createNodesForChilds(myNode);
-		for (unsigned i = 0; i<=level; i++) {
+		for (int i = 0; i<=level; i++) {
 			if (success) {
 				success = createNewTreeFromNode(myNode -> childs[i], level-1);
 			}
@@ -124,15 +125,16 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 		updateMiniMaxNode(myNode);
 		return success;
 	}
+	return 1;
 }
 
 bool createNodesForChilds(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
 		return false;
 	}
-	else if (isLeaf(myNode)){
-		for (unsigned i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
-				SPFIARGame *copyGame;
+	else if (ifLeaf(myNode)){
+		for (unsigned int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
+				SPFiarGame *copyGame;
 				copyGame = spFiarGameCopy(myNode -> myGame);
 				myNode -> childs[i] = nodeCreate(copyGame);
 		}
@@ -143,7 +145,7 @@ bool createNodesForChilds(MiniMaxNode *myNode) {
 	}
 }
 MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
-	MiniMaxNode *newNode
+	MiniMaxNode *newNode;
 	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
 		return NULL;
 	}
@@ -156,7 +158,7 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
 	}
 	myNode -> childs[index] = NULL;
 	createNewTreeFromNode(newNode,newNode -> myGame -> level);
-	miniMaxDelete(myNode);
+	MiniMaxDelete(myNode);
 	return newNode;
 }
 
@@ -313,5 +315,3 @@ int calcBoardDiagonals(SPFiarGame* src){
 
 }
 
-
-#endif

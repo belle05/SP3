@@ -14,9 +14,3 @@
  * On success the function returns a number between [0,SP_FIAR_GAME_N_COLUMNS -1]
  * which is the best move for the current player.
  */
-int spMinimaxSuggestMove(SPFiarGame* currentGame,
-		unsigned int maxDepth){
-
-}
-
-#endif

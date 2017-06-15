@@ -38,7 +38,7 @@ typedef struct sp_fiar_game_t {
 	char currentPlayer;
 	int level;
 	int historySize;
-	SPArrayList history;
+	SPArrayList *history;
 	//You May add any fields you like
 } SPFiarGame;
 
@@ -207,7 +207,7 @@ bool spFiarIsTableFull(SPFiarGame* src);
 * true - if the specified player has won.
 * false - otherwise.
 */
-bool spFiarIsCol(SPFiarGame* src, char player)
+bool spFiarIsCol(SPFiarGame* src, char player);
 
 /**
 * Checks if player has got a winning row.

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "SPFIARGame.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * Creates a new game with a specified history size. The history size is a
@@ -15,31 +16,26 @@
  * Otherwise, a new game instant is returned.
  */
 SPFiarGame* spFiarGameCreate(int historySize){
-	char board[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
-	int tops[SP_FIAR_GAME_N_COLUMNS];
-
-	SPFiarGame *game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
-	if ((historySize<=0) || (SPFiarGame == NULL)) {
+	SPFiarGame *game;
+	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	if ((historySize <= 0) || (game == NULL)) {
 		return NULL;
 	}
 
 	game -> history = spArrayListCreate(historySize);
-	if ((historySize<=0) || (SPFiarGame == NULL)) {
 	game -> historySize = historySize;
 	game -> currentPlayer =  SP_FIAR_GAME_PLAYER_1_SYMBOL;
 
 	//Setting all GameBoard values to NULL
 	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
 		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
-			board[r][c] = '\0';
+			game -> gameBoard[r][c] = '\0';
 		}
 	}
-	game -> gameBoard = board;
 	//Setting all collumns' sizes to 0
 	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
-		tops[c] = 0;
+		game -> tops[c] = 0;
 	}
-	game -> tops = tops;
 	return game;
 }
 
@@ -57,10 +53,16 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 	if (src == NULL) {
 		return NULL;
 	}
-	SPFiarGame *game = (sp_fiar_game_t *)malloc(sizeof(sp_fiar_game_t));
+	SPFiarGame *game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
 	//Set game status to be like src
-	game -> gameBoard = src -> gameBoard;
-	game -> tops = src -> tops;
+	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
+		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+			game -> gameBoard[r][c] = src -> gameBoard[r][c];
+		}
+	}
+	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+		game -> tops[c] = src -> tops[c];
+	}
 	game -> currentPlayer = src -> currentPlayer;
 	game -> historySize = src -> historySize;
 	game -> history = spArrayListCopy(src);
