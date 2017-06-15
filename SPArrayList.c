@@ -4,24 +4,22 @@
 #include <stdlib.h>
 
 SPArrayList* spArrayListCreate(int maxSize){
-	SPArrayList *my_array_list;
-	if(maxSize<=0){
+	SPArrayList *newArray;
+	if(maxSize <= 0){
 		return NULL;
 	}
 
-	int elements[maxSize];
-	int actualSize=0;
-	for (unsigned int i=0; i<maxSize; i++){
-		elements[i] = '\0';
-	}
-	my_array_list = (SPArrayList*)malloc(sizeof(my_array_list));
-	if (my_array_list == NULL) {
+	newArray = (SPArrayList*)malloc(sizeof(SPArrayList));
+	if (newArray == NULL) {
 		return NULL;
 	}
-	my_array_list -> elements = elements;
-	my_array_list -> actualSize = actualSize;
-	my_array_list -> maxSize = maxSize;
-	return my_array_list;
+	for (int i=0; i < maxSize; i++){
+                newArray -> elements[i] = '\0';
+        }
+
+	newArray -> actualSize = 0;
+	newArray -> maxSize = maxSize;
+	return newArray;
 }
 
 
@@ -34,21 +32,17 @@ SPArrayList* spArrayListCreate(int maxSize){
  *      A new copy of the source array list, otherwise.
  */
 SPArrayList* spArrayListCopy(SPArrayList* src) {
-	SPArrayList *my_array_list;
-	int elements2[src -> maxSize];
-	int actualSize2 = src -> actualSize;
-	int maxSize2 = src -> maxSize;
-	for (unsigned int i=0; i<maxSize2; i++){
-                elements[i] = src -> elements[i];
-        }
-	my_array_list = (SPArrayList*)malloc(sizeof(my_array_list));
-        if (my_array_list == NULL) {
+	SPArrayList *newArray;
+	newArray = (SPArrayList*)malloc(sizeof(SPArrayList));
+        if (newArray == NULL) {
                 return NULL;
         }
-	my_array_list -> elements = elements2;
-        my_array_list -> actualSize = actualSize2;
-        my_array_list -> maxSize = maxSize2;
-        return my_array_list;
+        newArray -> actualSize = src -> actualSize;
+        newArray -> maxSize = src -> maxSize;
+	for (int i=0; i < src -> actualSize; i++){
+                newArray -> elements[i] = src -> elements[i];
+        }
+        return newArray;
 }
  
 
@@ -75,7 +69,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src) {
 	if (src == NULL) {
 		return SP_ARRAY_LIST_INVALID_ARGUMENT;
 	}
-	for (unsigned int i=0; i < src -> maxSize; i++){
+	for (int i=0; i < src -> maxSize; i++){
                 src -> elements[i] = '\0';
         }
 	src -> actualSize = 0;
@@ -97,14 +91,14 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src) {
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, int elem, int index);
+SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, int elem, int index){
 	if (src == NULL) {
 		return SP_ARRAY_LIST_INVALID_ARGUMENT;
 	}
 	if (src -> actualSize == src -> maxSize) {
 		return SP_ARRAY_LIST_FULL;
 	}
-	for (unsigned int i=src -> actualSize; i = index-1; i--){
+	for (int i=src -> actualSize; i < index-1; i--){
 		if (i==index) {
 			src -> elements[i] = elem;
 		}
@@ -113,10 +107,8 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, int elem, int index);
 		}
 	}
 	return SP_ARRAY_LIST_SUCCESS;
-		
+}
            
-	
-
 /**
  * Inserts element at a the beginning of the source element. The elements
  * will be shifted to make place for the new element. If the
@@ -129,8 +121,15 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, int elem, int index);
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
- SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int elem) {
-	 spArrayListAddAt(src,elem,0);
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, int elem) {
+	if (src == NULL) {
+		//TODO: add check to index is out of bound
+		return SP_ARRAY_LIST_INVALID_ARGUMENT;
+	} else if (src -> actualSize == src -> maxSize) {
+		return SP_ARRAY_LIST_FULL;
+	}
+	spArrayListAddAt(src, elem, 0);
+	return SP_ARRAY_LIST_SUCCESS;
 }
 /**
  * Inserts element at a the end of the source element. If the array list
@@ -175,7 +174,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveAt(SPArrayList* src, int index) {
         if (src -> actualSize == 0) {
                 return SP_ARRAY_LIST_EMPTY;
         }
-	for (unsigned i = index; i<src -> actualSize; i++) {
+	for (int i = index; i<src -> actualSize; i++) {
 		if (i == (src -> actualSize)-1) {
 			src -> elements[i] = '\0';
 		}
@@ -199,7 +198,13 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveAt(SPArrayList* src, int index) {
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
 SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src) {
-	 spArrayListRemoveAt(src, 0);
+	if (src == NULL) {
+		return SP_ARRAY_LIST_INVALID_ARGUMENT;
+	} else if (src -> actualSize == 0) {
+		return SP_ARRAY_LIST_EMPTY;
+	}
+	spArrayListRemoveAt(src, 0);
+	return SP_ARRAY_LIST_SUCCESS;
 }
 /**
  * Removes an element from a the end of the list.
@@ -214,7 +219,13 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src) {
  * SP_ARRAY_LIST_SUCCESS - otherwise.
  */
 SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src) {
-	 spArrayListRemoveAt(src, src -> actualSize-1);
+	if (src == NULL) {
+		return SP_ARRAY_LIST_INVALID_ARGUMENT;
+	} else if (src -> actualSize == 0) {
+		return SP_ARRAY_LIST_EMPTY;
+	}
+	spArrayListRemoveAt(src, src -> actualSize-1);
+	return SP_ARRAY_LIST_SUCCESS;
 }
 /**
  * Returns the element at the specified index. The function is called
@@ -247,7 +258,11 @@ int spArrayListGetAt(SPArrayList* src, int index) {
  * Otherwise, the element at the beginning of the list is returned.
  */
 int spArrayListGetFirst(SPArrayList* src) {
-	spArrayListGetAt(src, 0);
+/* TODO: what is undefined?*/
+	if (src == NULL) {
+		return '\0';
+	}
+	return spArrayListGetAt(src, 0);
 }
 
 /**
@@ -260,7 +275,11 @@ int spArrayListGetFirst(SPArrayList* src) {
  * Otherwise, the element at the end of the list is returned.
  */
 int spArrayListGetLast(SPArrayList* src) {
-	spArrayListGetAt(src, (src -> actualSize)-1);
+/* TODO: what is undefined?*/
+	if ((src == NULL) || (src -> actualSize == 0)) {
+		return '\0';
+	}
+	return spArrayListGetAt(src, (src -> actualSize)-1);
 }
 
 /**

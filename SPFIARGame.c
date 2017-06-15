@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include "SPFIARGame.h"
 #include <stdbool.h>
 #include <stdlib.h>
+#include "SPArrayList.h"
+#include "SPFIARGame.h"
 
 /**
  * Creates a new game with a specified history size. The history size is a
@@ -65,8 +66,8 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 	}
 	game -> currentPlayer = src -> currentPlayer;
 	game -> historySize = src -> historySize;
-	game -> history = spArrayListCopy(src);
-	return SPFiarGame;
+	game -> history = spArrayListCopy(src -> history);
+	return game;
 }
 
 /**
@@ -92,13 +93,14 @@ void spFiarGameDestroy(SPFiarGame* src){
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
-	if ((src == NULL) or (col < 0) or (col >= SP_FIAR_GAME_N_COLUMNS)) {
+	if ((src == NULL) || (col < 0) || (col >= SP_FIAR_GAME_N_COLUMNS)) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
 	if (!spFiarGameIsValidMove(src, col)) {
 		return SP_FIAR_GAME_INVALID_MOVE;
 	}
-	src -> tops[col] = sizeOfCol + 1;
+	src -> tops[col] = src -> tops[col] + 1;
+	src -> gameBoard[src -> tops[col]][col] = src -> currentPlayer;
 	spArrayListAddFirst(src -> history, col);
 	return SP_FIAR_GAME_SUCCESS;
 }
@@ -134,7 +136,7 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col){
  *                                 board is removed and the current player is changed
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
-	bool success = False;
+	bool success = false;
 	if (src == NULL) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	} else if (src -> history -> actualSize == 0) {
@@ -148,10 +150,11 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 }
 
 bool spFiarGameRemoveDisc(SPFiarGame* src, int col){
-	if (src -> board[col] < 1) {
+	if (src -> gameBoard[col] == 0) {
 		return false;
 	}
-	src -> board[col] = src -> board[col] -1;
+	src -> gameBoard[src -> tops[col]][col] = '\0';
+	src -> tops[col] = src -> tops[col] - 1;
 	return true;
 }
 
@@ -171,13 +174,13 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
-		printf('|');
+		printf("|");
 		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
 			printf(" %c", src -> gameBoard[r][c]);
 		}
 		printf(" |\n");
 	}
-	printf("-----------------\n ")
+	printf("-----------------\n ");
 	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
 		printf(" %d", c);
 	}
@@ -221,7 +224,7 @@ char spFiarCheckWinner(SPFiarGame* src){
 		return SP_FIAR_GAME_TIE_SYMBOL;
 	}
 	else {
-		return NULL;
+		return '\0';
 	}
 }
 		 
@@ -248,7 +251,6 @@ bool spFiarIsWinner(SPFiarGame* src, char player){
 * false - otherwise.
 */
 bool spFiarIsTableFull(SPFiarGame* src){
-	int fullTableSize = SP_FIAR_GAME_N_COLUMNS * SP_FIAR_GAME_N_ROWS;
 	int takenSpots = SP_FIAR_GAME_N_COLUMNS * SP_FIAR_GAME_N_ROWS;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
 		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
@@ -320,9 +322,9 @@ bool spFiarIsDiag(SPFiarGame* src, char player){
 	else {
 		max = SP_FIAR_GAME_N_ROWS;
 	}
-	for (unsigned int s = 0; s<max; s++) {
-                for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
-                        for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+	for (int s = 0; s<max; s++) {
+                for (int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
+                        for (int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
                                 if (c-r == s) {
                                         if (src -> gameBoard[r][c] == player){
                                                 counter+=1;
@@ -335,9 +337,9 @@ bool spFiarIsDiag(SPFiarGame* src, char player){
                 }
                 counter = 0;
         }
-	for (unsigned int s = 0; s<max; s++) {
-                for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
-                        for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+	for (int s = 0; s<max; s++) {
+                for (int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
+                        for (int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
                                 if (r-c == s) {
                                         if (src -> gameBoard[r][c] == player){
                                                 counter+=1;
@@ -350,7 +352,6 @@ bool spFiarIsDiag(SPFiarGame* src, char player){
                 }
                 counter = 0;
         }
-
-
+	return false;
 }
 

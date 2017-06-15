@@ -62,13 +62,13 @@ SP_COMMAND checkForCommand(const char* command);
 * the int of the number, if it is negative returns the negative number that it is
 **/
 
-int getInt(char* argument);
+bool spParserIsInt(const char* str);
 
 /** This function gets an str and checks if all of the str its white spauces.
 * @return
 * true if its not only white spaces, flase if it does contains only white spaces.
 **/
 
-bool checkIfNotOnlyWhiteSpaces(const char* str);
+bool checkIfOnlylWhiteSpaces(const char* str);
 
 #endif

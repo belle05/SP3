@@ -42,7 +42,7 @@
 #define SP_ARRAY_MAX_HISTORY 20
 
 typedef struct sp_array_list_t {
-	int* elements;
+	int elements[SP_ARRAY_MAX_HISTORY];
 	int actualSize;
 	int maxSize;
 } SPArrayList;

@@ -12,7 +12,6 @@ int main() {
 	int move = 0;
 	int round = 0;
 	int gameLevel = NULL;
-	int player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 	int chosenPath = 0;
 	char* input[1024];
 	for (unsigned int i=0; i<1024; i++) input[i] ='\0';
@@ -32,9 +31,9 @@ int main() {
 			success = createNewTreeFromNode(miniMaxNode, gameLevel);
 			newGame = false;
 			round = 0;
-			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
-		if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
+		if (game -> currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 			if (isWon == 'B') {
 				move = userTurn(game, gameLevel);
 			}
@@ -50,13 +49,13 @@ int main() {
 			} else if (isWon != 'B') {
 				message = spFiarGameSetMove(game, move);
 				miniMaxNode = moveForward(MiniMaxNode *myNode, move);
-				player = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+				game -> currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
 			}
 		} else {
 			move = miniMaxNode -> minChildIndex; 
 			message = spFiarGameSetMove(game, move);
 			miniMaxNode = moveForward(MiniMaxNode *myNode, move);
-			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
 		isWon = spFiarCheckWinner(game);
 		if (isWon != 'B') {

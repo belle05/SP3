@@ -5,33 +5,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool spParserIsInt(const char* str){
-	 long num=0;
-	        bool firstNumberAfter0 = false;
-	        bool negative = false;
-	        for(unsigned int i=0; i<sizeof(str); i++){
-	                if (i == 0 && str[0] == '-') {
-	                        negative = true;
-	                }
-	                else if(isdigit(str[i])){
-	                        if (((long)str[i] == 0) && firstNumberAfter0 == false) {
-	                                continue;
-	                        }
-	                        else if (((long)str[i] != 0) && firstNumberAfter0 == false) {
-	                                firstNumberAfter0 = true;
-	                                num+=10*num+(long)str[i];
-	                        }
-	                        else {
-	                                num+=10*num+(long)str[i];
-	                        }
-	                        if (num>=2147483647) {
-	                                return false;
-	                        }
-	                } else {
-	                        return false;
-	                }
-	        }
-	        return true;
+bool spParserIsInt(const char* str) {
+	int chr = 0;
+	if (str[chr] == '-')
+		chr = 1;
+	while (str[chr]) {
+		if (!('0' <= str[chr] && str[chr] <= '9'))
+			return false;
+		chr++;
+	}
+	return true;
+}
+
+bool checkIfOnlylWhiteSpaces(const char* str) {
+	int chr = 0;
+	if (str[chr] == ' ')
+		chr = 1;
+	while (str[chr]) {
+		if (!(str[chr] == ' '))
+			return false;
+		chr++;
+	}
+	return true;
 }
 
 SPCommand spParserPraseLine(const char* str) {
@@ -41,37 +36,39 @@ SPCommand spParserPraseLine(const char* str) {
 		myCommand -> validArg = false;
 		myCommand -> cmd = SP_INVALID_LINE;
 	}
-	if (checkIfNotOnlylWhiteSpaces(str) == false) {
+	if (checkIfOnlylWhiteSpaces(str) == true) {
 		myCommand -> cmd = SP_INVALID_LINE;
 	}
-	char* newstr[1024];
+	char newstr[1024];
 	for (unsigned int i=0; i<sizeof(newstr); i++) {
 		newstr[i] = '\0';
 	}
 	strcpy(newstr, str);
-	char * command;
-	char * argument;
+	char *command;
+	char *argument;
  	command = strtok (newstr," \t\v\f\r");
-	arg = strtok (NULL," \t\v\f\r");
-	if (!(command) || !( arg)) myCommand -> cmd = SP_INVALID_LINE;
-	arg = strtok (NULL," \t\v\f\r");
-	if (arg == '\n') {
-		arg = strtok (NULL," \t\v\f\r");
-		if (arg) myCommand -> cmd = SP_INVALID_LINE;
+	argument = strtok (NULL," \t\v\f\r");
+	if (!(command) || !( argument)) myCommand -> cmd = SP_INVALID_LINE;
+	argument = strtok (NULL," \t\v\f\r");
+	if (strcmp( argument, "\n") == 0) {
+		argument = strtok (NULL," \t\v\f\r");
+		if (argument) myCommand -> cmd = SP_INVALID_LINE;
 	}
-	else if (arg != '\n' && arg != NULL)  myCommand -> cmd = SP_INVALID_LINE;
+	else if (strcmp( argument, "\n") != 0 && argument != NULL) {
+		myCommand -> cmd = SP_INVALID_LINE;
+	}
 	if (myCommand -> cmd == SP_INVALID_LINE) {
                 myCommand -> validArg = false;
                 myCommand -> arg = 0;
-                return myCommand;
+                return *myCommand;
         }
-	if ((checkForCommand(command) == SP_ADD_DISC) && SPParserIsInt(arg) ) {
+	if ((checkForCommand(command) == SP_ADD_DISC) && spParserIsInt(argument) ) {
 		myCommand -> cmd = SP_ADD_DISC;
 		myCommand -> validArg = true;
 		myCommand -> arg = getInt(argument);
 	}
 	else {
-		if ((checkForCommand(command) == SP_ADD_DISC) && SPParserIsInt(arg) == false) myCommand -> cmd = SP_INVALID_LINE;
+		if ((checkForCommand(command) == SP_ADD_DISC) && SPParserIsInt(argument) == false) myCommand -> cmd = SP_INVALID_LINE;
 		else myCommand -> cmd = checkForCommand(command);
 		myCommand -> validArg = false;
 		myCommand -> arg = 0;
