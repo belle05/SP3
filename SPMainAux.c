@@ -166,4 +166,6 @@ int suggestMove(MiniMaxNode *node) {
 }
 
 
-
+bool freeMem(MiniMaxNode *node) {
+	MiniMaxDelete(node);
+}

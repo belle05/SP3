@@ -7,6 +7,7 @@ int getGameDifficulty();
 int proccesComand(SPFiarGame* currentGame, SPCommand command, int gameLevel);
 bool userTurn(MiniMaxNode *node, int gameLevel);
 int suggestMove(MiniMaxNode *node);
+bool freeMem(MiniMaxNode *node);
 
 //General Prints
 void printDifficulty();

@@ -30,15 +30,17 @@ int main() {
 		if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 			result = userTurn(game, gameLevel);
 			if (move == 8) {
+				freeMem(miniMaxNode);
 				break;
 			} else if (move == 9) {
+				freeMem(miniMaxNode);
 				newGame = true;
 			} else {
 				printf("\nERROR ERROR ERROR\n");
 				break;
 			}
 		} else {
-			move = miniMaxNode.minChildIndex; 
+			move = miniMaxNode -> minChildIndex; 
 			message = spFiarGameSetMove(game, move);
 		}
 		miniMaxNode = moveForward(MiniMaxNode *myNode, move);
