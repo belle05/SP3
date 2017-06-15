@@ -117,31 +117,26 @@ void errorGameOver() {
 
 int proccesComand(MiniMaxNode *node, SPCommand command, int gameLevel){
 	bool user_wins = false;
-	if (!command.validArg) {
+	if (!(command ->validArg)) {
 		invalidCommand();
 	        return 0;
 	}
-	else if (command.cmd == SP_QUIT) {
-		//TODO: create func
-		quitGame(currentGame);
+	else if (command ->cmd == SP_QUIT) {
 		return 8;
 	}
-    	else if (command.cmd == SP_RESTART){
+    	else if (command ->cmd == SP_RESTART){
 		printRestart();
-        	//restartGame(currentGame);
 	        return 9;
    	}
-	else if (command.cmd == SP_SUGGEST_MOVE){
+	else if (command ->cmd == SP_SUGGEST_MOVE){
 	        suggestMove(currentGame, gameLevel);
         	return 0;
    	}
-    	else if(command.cmd == SP_UNDO_MOVE){
-        	if(undoMove(currentGame))
-			undoMove(currentGame);
-			return 0;
+    	else if(command ->cmd == SP_UNDO_MOVE){
+			return 10;
 	}
-	else if (command.cmd==SP_ADD_DISC){
-		if (!checkNumRange7) {
+	else if (command ->cmd==SP_ADD_DISC){
+		if (!checkNumRange7(command -> arg)) {
 			addDiscInvalid();
            		return 0;
         	}
@@ -156,6 +151,7 @@ int proccesComand(MiniMaxNode *node, SPCommand command, int gameLevel){
 }
 
 int userTurn(MiniMaxNode *node, int gameLevel) {
+	SPCommand command;
 	SP_FIAR_GAME_MESSAGE success;
 	int move = 0;
 	success = spFiarGamePrintBoard(node);
@@ -181,3 +177,50 @@ int suggestMove(MiniMaxNode *node) {
 bool freeMem(MiniMaxNode *node) {
 	MiniMaxDelete(node);
 }
+
+int  handleWinner(char simbol) {
+	SPCommand command;
+	int move = 0;
+	if (simbol == 'X') {
+		printGameOverWin();
+	}
+	else if (simbol == 'O') {
+		printGameOverLose();
+	}
+	else if (simbol == '-') {
+		printGameOverTie();
+	}			
+	while (move !=8 || move!=9 || move !=10 ) {
+		printCont();
+                fflush(stdin);
+                fgets(str, 1024, stdin);
+                scanf("%[^\n]s", str);
+		command = spParserPraseLine(str);
+		move = proccesComandWin(command);
+	}
+	return move;
+}
+
+
+		
+	
+}
+
+int proccesComandWin(SPCommand command){
+        if (command ->cmd == SP_QUIT) {
+                return 8;
+        }
+        else if (command ->cmd == SP_RESTART){
+                printRestart();
+                return 9;
+        }
+        else if(command ->cmd == SP_UNDO_MOVE){
+                        return 10;
+        }
+        else {
+		return 0;
+        }
+}
+
+
+ 

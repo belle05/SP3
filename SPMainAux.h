@@ -8,6 +8,8 @@ int proccesComand(SPFiarGame* currentGame, SPCommand command, int gameLevel);
 int userTurn(MiniMaxNode *node, int gameLevel);
 int suggestMove(MiniMaxNode *node);
 bool freeMem(MiniMaxNode *node);
+int proccesComandWin(SPCommand command);
+int  handleWinner(char simbol);
 
 //General Prints
 int printDifficulty();
