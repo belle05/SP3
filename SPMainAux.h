@@ -4,7 +4,9 @@
 //Validity and command proccessing
 bool checkNumRange7(int num);
 int getGameDifficulty();
-bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth);
+int proccesComand(SPFiarGame* currentGame, SPCommand command, int gameLevel);
+bool userTurn(MiniMaxNode *node, int gameLevel);
+int suggestMove(MiniMaxNode *node);
 
 //General Prints
 void printDifficulty();
@@ -15,6 +17,11 @@ void printGameOverTie();
 void printCont();
 void printQuit();
 void printRestart();
+void printSuggestMove(int col);
+void printUndoComp(int col);
+void printUndoUser(int col);
+void printCompNewDisc(int col);
+
 
 //Error prints
 void invalidLevel();

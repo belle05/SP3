@@ -36,6 +36,10 @@
  * spArrayListIsFull       - Returns if the array list reached its max capacity.
  * spArrayListIsEmpty      - Returns true if the array list contains no elements.
  */
+
+//Definitions
+#define SP_ARRAY_MAX_HISTORY 20
+
 typedef struct sp_array_list_t {
 	int* elements;
 	int actualSize;

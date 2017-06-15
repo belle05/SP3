@@ -54,16 +54,16 @@ void printCont() {
 	printf("Please enter 'quit' to exit or 'restart' to start a new game!\n");
 }
 
-void pringSuggestMove(int col) {
+void printSuggestMove(int col) {
 	printf("Suggested move: drop a disc to column %d\n",col+1);
 }
 
-void printUndoComp(int col1) {
-	printf("Remove disc: remove computer's disc at column %d\n",col1+1);
+void printUndoComp(int col) {
+	printf("Remove disc: remove computer's disc at column %d\n",col+1);
 }
 
-void printUndoUser(int col2) {
-	printf("Remove disc: remove user's disc at column %d\n",col2+1);
+void printUndoUser(int col) {
+	printf("Remove disc: remove user's disc at column %d\n",col+1);
 }
 
 void printCompNewDisc(int col) {
@@ -103,28 +103,30 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 
-bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth){
+int proccesComand(MiniMaxNode *node, SPCommand command, int gameLevel){
 	bool user_wins = false;
 	if (!command.validArg) {
 		invalidCommand();
 	        return 0;
 	}
 	else if (command.cmd == SP_QUIT) {
+		//TODO: create func
 		quitGame(currentGame);
-		return 1;
+		return 8;
 	}
     	else if (command.cmd == SP_RESTART){
-        	restartGame(currentGame);
-	        return 1;
+		printRestart();
+        	//restartGame(currentGame);
+	        return 9;
    	}
 	else if (command.cmd == SP_SUGGEST_MOVE){
-	        suggestMove(currentGame, maxDepth);
+	        suggestMove(currentGame, gameLevel);
         	return 0;
    	}
     	else if(command.cmd == SP_UNDO_MOVE){
         	if(undoMove(currentGame))
-      			return 1;
-		return 0;
+			undoMove(currentGame);
+			return 0;
 	}
 	else if (command.cmd==SP_ADD_DISC){
 		if (!checkNumRange7) {
@@ -136,10 +138,32 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
 		        return 0;
 		}
 		spFiarGameSetMove(currentGame,command.arg-1);
-		//TODO: decide how to manage winner scenario
-		if (spFiarCheckWinner(curr_game) == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-			user_wins = true;
-		return 1;
+		return command.arg;
 	}
 	return 0;
 }
+
+bool userTurn(MiniMaxNode *node, int gameLevel) {
+	SP_FIAR_GAME_MESSAGE success;
+	int move = 0;
+	success = spFiarGamePrintBoard(node);
+	if (!success) {
+		return 0;
+	}
+	while (move == 0){
+		printNextMove();
+		fflush(stdin);
+	        fgets(str, 1024, stdin);
+        	scanf("%[^\n]s", str);
+	        command = spParserPraseLine(str);
+		move = proccesComand(node -> myGame, command, gameLevel);
+	}
+	return move;
+}
+
+int suggestMove(MiniMaxNode *node) {
+	return node -> maxChildIndex;
+}
+
+
+

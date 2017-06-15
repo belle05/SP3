@@ -93,11 +93,12 @@ SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
 	if ((src == NULL) or (col < 0) or (col >= SP_FIAR_GAME_N_COLUMNS)) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
-	if (spFiarGameIsValidMove(src, col)) {
+	if (!spFiarGameIsValidMove(src, col)) {
 		return SP_FIAR_GAME_INVALID_MOVE;
 	}
 	src -> tops[col] = sizeOfCol + 1;
 	spArrayListAddFirst(src -> history, col);
+	return SP_FIAR_GAME_SUCCESS;
 }
 
 /**

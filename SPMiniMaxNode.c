@@ -149,6 +149,7 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
 	miniMaxDelete(myNode);
 	return newNode;
 }
+
 /**
 *bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
 *	if (level <0) {
