@@ -1,18 +1,22 @@
 #ifndef SPMINIMAXNODE_H_
 #define SPMINIMAXNODE_H_
 #include <stddef.h>
+#include "SPFIARGame.h"
 
 /* struct that defines a MINIMAXNODE */
-typedef struct MiniMaxNode {
+/*
+typedef struct MiniMaxNode MiniMaxNode;
+
+struct MiniMaxNode {
 	SPFiarGame *myGame;
-	MiniMaxNode childs[SP_FIAR_GAME_N_COLUMNS];
 	int score;
 	int minChildIndex;
 	int maxChildIndex;
 	int minChildScore;
 	int maxChildScore;
-}MiniMaxNode;
-
+	MiniMaxNode *childs[SP_FIAR_GAME_N_COLUMNS];
+};
+*/
 /** creates an empty node.
 * sets the game to be the user argument, the indexes if min/maxChild to be -2,
 * sets the score to be the ##########, and sets the min/max child score to be the score of the new node.
@@ -22,7 +26,7 @@ typedef struct MiniMaxNode {
 *if the allocation is not succedd returns NULL
 **/
 
-MiniMaxNode* nodeCreate(SPFiarGame *game);
+//MiniMaxNode* nodeCreate(SPFiarGame *game);
 
 /** created a new node with the same parameters as the argument node.
 *@return
@@ -30,14 +34,14 @@ MiniMaxNode* nodeCreate(SPFiarGame *game);
 *NULL, if the allocation did not succeed.
 **/
 
-MiniMaxNode* copyNode(MiniMaxNode *myNode);
+//MiniMaxNode* copyNode(MiniMaxNode *myNode);
 
 /** This function delets all node recursivelly from the node down the tree.
 *It also free all the node and the nodes under it memory.
 *If the node is NULL does nothing.
 **/
 
-MiniMaxMassage MiniMaxDelete(MiniMaxNode *myNode);
+//MiniMaxMassage MiniMaxDelete(MiniMaxNode *myNode);
 
 /** Checks if the node is a leaf.
 *@return 
@@ -46,7 +50,7 @@ MiniMaxMassage MiniMaxDelete(MiniMaxNode *myNode);
 *otherwize returns false.
 **/
 
-bool ifLeaf(MiniMaxNode *myNode);
+//bool ifLeaf(MiniMaxNode *myNode);
 
 /** This function updates the node parameters.
 *It updates the max child score by the highest score of its children,
@@ -58,7 +62,7 @@ bool ifLeaf(MiniMaxNode *myNode);
 *true otherwize.
 **/
 
-bool updateMiniMaxNode(MiniMaxNode *myNode);
+//bool updateMiniMaxNode(MiniMaxNode *myNode);
 
 /** Creates new tree from the node and the level of the game.
 * Recursivly creates new nodes under the node it recivied in the depth of the level.
@@ -68,13 +72,13 @@ bool updateMiniMaxNode(MiniMaxNode *myNode);
 *flase if the level <0
 **/
 
-bool createNodesForChilds(MiniMaxNode *myNode);
+//bool createNodesForChilds(MiniMaxNode *myNode);
 /** creates new tree (in the level depth) for a node, and update it's parameters as well
 *@return:
 *true, is succeeded
 *false if node == NULL or if level<0
 **/
-bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
+//bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
 
 /** creates new children for the node with the same game of the node.
 *@return
@@ -82,7 +86,7 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
 *true, otherwise.
 **/
 
-bool createNodesForChilds(MiniMaxNode *myNode);
+//bool createNodesForChilds(MiniMaxNode *myNode);
 
 /** This function moving you to a selected child of the node.
 *It delets the node and it's tree except from the selected child sub tree.
@@ -92,7 +96,7 @@ bool createNodesForChilds(MiniMaxNode *myNode);
 *NULL if the index is out of range.
 **/
 
-MiniMaxNode* moveForward(MiniMaxNode *myNode, int index);
+//MiniMaxNode* moveForward(MiniMaxNode *myNode, int index);
 
 /**This function take the chosen node and returning the newNode with a new tree.
 *@return:
@@ -109,14 +113,14 @@ void addLevel(MiniMaxNode *myNode);
 
 *bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level);
 **/
-int calcBoardScore(SPFiarGame* src);
+//int calcBoardScore(SPFiarGame* src);
 
-int singleScore(int score);
+//int singleScore(int score);
 
-int calcBoardRows(SPFiarGame* src);
+//int calcBoardRows(SPFiarGame* src);
 
-int calcBoardCols(SPFiarGame* src);
+//int calcBoardCols(SPFiarGame* src);
 
-int calcBoardDiagonals(SPFiarGame* src);
+//int calcBoardDiagonals(SPFiarGame* src);
 
 #endif

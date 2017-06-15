@@ -1,11 +1,11 @@
+#include <stdio.h>
 #include "SPMiniMaxNode.h"
-
-static const int scores[] = {-5,-2,-1,0,1,2,5};
+#include "SPFIARGame.h"
 
 MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	MiniMaxNode *myNode;
 	myNode = (MiniMaxNode*)malloc(sizeof(myNode));
-		if (myNode == NULL) {
+	if (myNode == NULL) {
 			return NULL;
 		}
 	myNode -> myGame = game;
@@ -66,15 +66,19 @@ bool ifLeaf(MiniMaxNode *myNode) {
 			allNULL = false;
 		}
 	}
-	if (allNULL == true) return true;
-	else return false;
+	if (allNULL == true) {
+		 return true;
+	}
+	else {
+		return false;
+	}
 }
 
 
 
 bool updateMiniMaxNode(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
-			return false;
+		return false;
 	}
 	for (unsigned i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
 		if (myNode -> childs[i] == NULL){
@@ -107,7 +111,9 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 	else if (level == 0) {
 		return true;
 	}
-	if (myNode == NULL) return false;
+	if (myNode == NULL) {
+		 return false;
+	}
 	else if (isLeaf(myNode)) {
 		success = createNodesForChilds(myNode);
 		for (unsigned i = 0; i<=level; i++) {
@@ -141,9 +147,13 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
 	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
 		return NULL;
 	}
-	if (myNode == NULL) return NULL;
+	if (myNode == NULL) {
+		 return NULL;
+	}
 	newNode =  myNode -> childs[index];
-	if (newNode == NULL) return NULL;
+	if (newNode == NULL) {
+		 return NULL;
+	}
 	myNode -> childs[index] = NULL;
 	createNewTreeFromNode(newNode,newNode -> myGame -> level);
 	miniMaxDelete(myNode);
@@ -179,9 +189,7 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
  * The function returns the total score of the given board.
  */
 int calcBoardScore(SPFiarGame* src){
-	return calcBoardRows(src) +\
-		calcBoardCols(src) +\
-		calcBoardDiagonals(src)
+	return calcBoardRows(src) + calcBoardCols(src) + calcBoardDiagonals(src);
 }
 
 /**
