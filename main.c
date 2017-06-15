@@ -7,7 +7,7 @@
 
 int main() {
 	bool newGame = true;
-	bool isWon = false;
+	char isWon = false;
 	bool success = false;
 	int move = 0;
 	int round = 0;
@@ -31,6 +31,8 @@ int main() {
 			miniMaxNode = nodeCreate(game);
 			success = createNewTreeFromNode(miniMaxNode, gameLevel);
 			newGame = false;
+			round = 0;
+			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
 		if (player == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
 			move = userTurn(game, gameLevel);
@@ -40,16 +42,21 @@ int main() {
 			} else if (move == 9) {
 				freeMem(miniMaxNode);
 				newGame = true;
+			} else if (move == 10) {
+				miniMaxNode = undoMove(miniMaxNode);
 			} else {
-				printf("\nERROR ERROR ERROR\n");
-				break;
+				message = spFiarGameSetMove(game, move);
+				miniMaxNode = moveForward(MiniMaxNode *myNode, move);
+				player = SP_FIAR_GAME_PLAYER_2_SYMBOL;
 			}
 		} else {
 			move = miniMaxNode -> minChildIndex; 
 			message = spFiarGameSetMove(game, move);
+			miniMaxNode = moveForward(MiniMaxNode *myNode, move);
+			player = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
-		miniMaxNode = moveForward(MiniMaxNode *myNode, move);
-		message = spFiarCheckWinner(game);
+		 = spFiarCheckWinner(game);
+		round += 1;
 	}
 	return 0;
 }
