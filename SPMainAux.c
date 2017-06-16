@@ -27,7 +27,7 @@ int  printDifficulty() {
 bool checkNumRange7(int num){
 	for (int i=1; i < 8; i++) {
 		if (i==num) {
-			printf("intIs %d",i);
+//			printf("intIs %d",i);
 			return true;
 		}
 	}

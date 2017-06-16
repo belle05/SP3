@@ -6,18 +6,48 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+
 bool spParserIsInt(char* str) {
-	int chr = 0;
-	if (str[chr] == '-')
-		chr = 1;
-	while (str[chr]) {
-		if (!('0' <= str[chr] && str[chr] <= '9'))
+	long num = 0;
+	int size =0;
+	bool isNull = false;
+	int argument = 0;
+	bool firstNumberAfter0 = false;
+
+	while(!isNull) {
+		if (str[size] != '\0') {
+			size +=1 ;
+		} else {
+			isNull = true;
+		}
+	}
+	for(int i=0; i < size; i++){
+		if (i == 0 && str[0] == '-') {
+			continue;
+	        }
+	        else if(isdigit(str[i])){
+			argument = str[i] - '0';
+			if ((argument == 0) && firstNumberAfter0 == false) {
+				continue;
+	                }
+	                else if ((argument != 0) && firstNumberAfter0 == false) {
+				firstNumberAfter0 = true;
+				num = (10*num)+argument;
+                        }
+                        else {
+				num=(10*num)+argument;
+	                }
+			if (num >= 2147483647) {
+				return false;
+			}
+		}
+	        else {
 			return false;
-		chr++;
+	        }
 	}
 	return true;
 }
-
 bool checkIfOnlylWhiteSpaces(const char* str) {
 	int chr = 0;
 	if (str[chr] == ' ')

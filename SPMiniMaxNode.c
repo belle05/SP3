@@ -137,11 +137,7 @@ bool createNodesForChilds(MiniMaxNode *myNode) {
 				if (myNode -> myGame == NULL) {
 					printf("game is null");
 				}
-				SPFiarGame *copyGame;
-				printf("before copy game");
-				copyGame = spFiarGameCopy(myNode -> myGame);
-				printf("after copt game");
-				myNode -> childs[i] = nodeCreate(copyGame);
+				myNode -> childs[i] = nodeCreate(myNode -> myGame);
 		}
 		return true;
 	}

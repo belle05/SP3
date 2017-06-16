@@ -18,9 +18,9 @@
  */
 SPFiarGame* spFiarGameCreate(int historySize){
 	SPFiarGame *game;
-	printf("before malloc");
+//	printf("before malloc");
 	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
-	printf("after malloc");
+//	printf("after malloc");
 	if ((historySize <= 0) || (game == NULL)) {
 		return NULL;
 	}
