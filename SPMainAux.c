@@ -1,17 +1,16 @@
 #include "SPMainAux.h"
 
-char *
-
 int  printDifficulty() {
 	int difficulty;
-	char* charDifficulty;
+	char *charDifficulty[SP_MAX_LINE_LENGTH];
 	printf("Please enter the difficulty level between [1-7]:\n");
-	scanf("%s", charDifficulty);
-	if (spParserIsInt(charDifficulty)) {
+	scanf("%s", *charDifficulty);
+	if (spParserIsInt(*charDifficulty)) {
+		difficulty = getInt(*charDifficulty);
 		return difficulty;
 	}
-	else if (spParserPraseLine(charDifficulty) == SP_QUIT) {
-		return NULL;
+	else if (spParserPraseLine(*charDifficulty).cmd == SP_QUIT) {
+		return '\0';
 	}
 	else {
 		return -2;
@@ -19,7 +18,7 @@ int  printDifficulty() {
 }
 
 bool checkNumRange7(int num){
-	for (i=1; i < 8; i++) {
+	for (int i=1; i < 8; i++) {
 		if (i==num) {
 			return true;
 		}
@@ -28,15 +27,15 @@ bool checkNumRange7(int num){
 }
 
 int getGameDifficulty() {
-	int gameLevel = NULL;
-	while (gameLevel == NULL) {
+	int gameLevel = '\0';
+	while (gameLevel == '\0') {
 		gameLevel = printDifficulty();
-		if (gameLevel == NULL) {
+		if (gameLevel == '\0') {
 			return -1;
 		}
 		if (!checkNumRange7(gameLevel)){
 			invalidLevel();
-			gameLevel = NULL;
+			gameLevel = '\0';
 		}
 	}
 	return gameLevel;
@@ -96,7 +95,6 @@ void invalidLevel() {
 
 void invalidCommand() {
 	printf("Error: invalid command\n");
-	return 0;
 }
 
 void addDiscInvalid() {
@@ -115,56 +113,53 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 
-int proccesComand(MiniMaxNode *node, SPCommand command, int gameLevel){
-	bool user_wins = false;
-	if (!(command ->validArg)) {
+int proccesCommand(MiniMaxNode *node, SPCommand command) {
+//TODO: figure out how to use game level
+	if (!(command.validArg)) {
 		invalidCommand();
 	        return 0;
 	}
-	else if (command ->cmd == SP_QUIT) {
+	else if (command.cmd == SP_QUIT) {
 		return 8;
 	}
-    	else if (command ->cmd == SP_RESTART){
+    	else if (command.cmd == SP_RESTART){
 		printRestart();
 	        return 9;
    	}
-	else if (command ->cmd == SP_SUGGEST_MOVE){
-	        suggestMove(currentGame, gameLevel);
+	else if (command.cmd == SP_SUGGEST_MOVE){
+	        suggestMove(node);
         	return 0;
    	}
-    	else if(command ->cmd == SP_UNDO_MOVE){
+    	else if(command.cmd == SP_UNDO_MOVE){
 			return 10;
 	}
-	else if (command ->cmd==SP_ADD_DISC){
-		if (!checkNumRange7(command -> arg)) {
+	else if (command.cmd==SP_ADD_DISC){
+		if (!checkNumRange7(command.arg)) {
 			addDiscInvalid();
            		return 0;
         	}
-		if (!spFiarGameIsValidMove(currentGame,command.arg-1)) {
+		if (!spFiarGameIsValidMove(node -> myGame, command.arg-1)) {
 			addDiscFull(command.arg);
 		        return 0;
 		}
-		spFiarGameSetMove(currentGame,command.arg-1);
+		spFiarGameSetMove(node -> myGame, command.arg-1);
 		return command.arg;
 	}
 	return 0;
 }
 
-int userTurn(MiniMaxNode *node, int gameLevel) {
+int userTurn(MiniMaxNode *node) {
 	SPCommand command;
-	SP_FIAR_GAME_MESSAGE success;
+	char str[1024];
 	int move = 0;
-	success = spFiarGamePrintBoard(node);
-	if (!success) {
-		return 0;
-	}
+	spFiarGamePrintBoard(node -> myGame);
 	while (move == 0){
 		printNextMove();
 		fflush(stdin);
 	        fgets(str, 1024, stdin);
         	scanf("%[^\n]s", str);
 	        command = spParserPraseLine(str);
-		move = proccesComand(node -> myGame, command, gameLevel);
+		move = proccesCommand(node, command);
 	}
 	return move;
 }
@@ -174,12 +169,13 @@ int suggestMove(MiniMaxNode *node) {
 }
 
 
-bool freeMem(MiniMaxNode *node) {
+void freeMem(MiniMaxNode *node) {
 	MiniMaxDelete(node);
 }
 
 int  handleWinner(char simbol) {
 	SPCommand command;
+	char str[1024];
 	int move = 0;
 	if (simbol == 'X') {
 		printGameOverWin();
@@ -196,20 +192,20 @@ int  handleWinner(char simbol) {
                 fgets(str, 1024, stdin);
                 scanf("%[^\n]s", str);
 		command = spParserPraseLine(str);
-		move = proccesComandWin(command);
+		move = proccesWinCommand(command);
 	}
 	return move;
 }
 
-int proccesComandWin(SPCommand command){
-        if (command ->cmd == SP_QUIT) {
+int proccesWinCommand(SPCommand command){
+        if (command.cmd == SP_QUIT) {
                 return 8;
         }
-        else if (command ->cmd == SP_RESTART){
+        else if (command.cmd == SP_RESTART){
                 printRestart();
                 return 9;
         }
-        else if(command ->cmd == SP_UNDO_MOVE){
+        else if(command.cmd == SP_UNDO_MOVE){
                         return 10;
         }
         else {
@@ -218,15 +214,13 @@ int proccesComandWin(SPCommand command){
 }
 
 
-MiniMaxNode* undoMove(MiniMaxNode *node) {
-	bool success = false;
-	MiniMaxNode *miniMaxNode = NULL;
-	SP_FIAR_GAME_MESSAGE undoResult;
-
-	SPFiarGame* newGame = spFiarGameCopy(*(node -> myGame));
-	undoResult = spFiarGameUndoPrevMove(newGame);
+MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel) {
+	MiniMaxNode *miniMaxNode;
+	SPFiarGame *newGame;
+	newGame = spFiarGameCopy(node -> myGame);
+	spFiarGameUndoPrevMove(newGame);
 	miniMaxNode = nodeCreate(newGame);
-	success = createNewTreeFromNode(miniMaxNode, gameLevel);
+	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return miniMaxNode;
 }
 

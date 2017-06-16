@@ -71,4 +71,6 @@ bool spParserIsInt(const char* str);
 
 bool checkIfOnlylWhiteSpaces(const char* str);
 
+int getInt(char* argument);
+
 #endif

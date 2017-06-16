@@ -237,7 +237,7 @@ bool spFiarIsDiag(SPFiarGame* src, char player);
 *if the allocation is not succedd returns NULL
 **/
 
-//MiniMaxNode* nodeCreate(SPFiarGame *game);
+MiniMaxNode* nodeCreate(SPFiarGame *game);
 
 /** created a new node with the same parameters as the argument node.
 *@return

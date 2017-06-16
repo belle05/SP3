@@ -1,17 +1,22 @@
 #ifndef SPMAINAUX_H_
 #define SPMAINAUX_H_
+#include <stdbool.h>
+#include <stdio.h>
 #include <stddef.h>
+#include "SPFIARGame.h"
+#include "SPArrayList.h"
+#include "SPFIARParser.h"
 
 //Validity and command proccessing
 bool checkNumRange7(int num);
 int getGameDifficulty();
-int proccesComand(SPFiarGame* currentGame, SPCommand command, int gameLevel);
-int userTurn(MiniMaxNode *node, int gameLevel);
+int proccesCommand(MiniMaxNode *node, SPCommand command);
+int userTurn(MiniMaxNode *node);
 int suggestMove(MiniMaxNode *node);
-bool freeMem(MiniMaxNode *node);
-int proccesComandWin(SPCommand command);
+void freeMem(MiniMaxNode *node);
+int proccesWinCommand(SPCommand command);
 int  handleWinner(char simbol);
-MiniMaxNode* undoMove(MiniMaxNode *node);
+MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel);
 
 //General Prints
 int printDifficulty();
@@ -31,9 +36,9 @@ void printCompNewDisc(int col);
 //Error prints
 void invalidLevel();
 void invalidCommand();
-void addDiscInvalid()
+void addDiscInvalid();
 void addDiscFull(int col);
-void errorUndo()
-void errorGameOver()
+void errorUndo();
+void errorGameOver();
 
 #endif

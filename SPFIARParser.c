@@ -68,12 +68,12 @@ SPCommand spParserPraseLine(const char* str) {
 		myCommand -> arg = getInt(argument);
 	}
 	else {
-		if ((checkForCommand(command) == SP_ADD_DISC) && SPParserIsInt(argument) == false) myCommand -> cmd = SP_INVALID_LINE;
+		if ((checkForCommand(command) == SP_ADD_DISC) && spParserIsInt(argument) == false) myCommand -> cmd = SP_INVALID_LINE;
 		else myCommand -> cmd = checkForCommand(command);
 		myCommand -> validArg = false;
 		myCommand -> arg = 0;
 	}
-	return myCommand;	
+	return *myCommand;	
 }
 SP_COMMAND checkForCommand(const char* command) {
 	if (command == NULL) {
