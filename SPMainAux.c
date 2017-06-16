@@ -2,14 +2,14 @@
 
 int  printDifficulty() {
 	int difficulty;
-	char *charDifficulty[SP_MAX_LINE_LENGTH];
+	char charDifficulty[SP_MAX_LINE_LENGTH];
 	printf("Please enter the difficulty level between [1-7]:\n");
-	scanf("%s", *charDifficulty);
-	if (spParserIsInt(*charDifficulty)) {
-		difficulty = getInt(*charDifficulty);
+	scanf("%s", charDifficulty);
+	if (spParserIsInt(charDifficulty)) {
+		difficulty = getInt(charDifficulty);
 		return difficulty;
 	}
-	else if (spParserPraseLine(*charDifficulty).cmd == SP_QUIT) {
+	else if (spParserPraseLine((char *)charDifficulty).cmd == SP_QUIT) {
 		return '\0';
 	}
 	else {

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool spParserIsInt(const char* str) {
+bool spParserIsInt(char* str) {
 	int chr = 0;
 	if (str[chr] == '-')
 		chr = 1;
@@ -29,7 +29,7 @@ bool checkIfOnlylWhiteSpaces(const char* str) {
 	return true;
 }
 
-SPCommand spParserPraseLine(const char* str) {
+SPCommand spParserPraseLine(char* str) {
 	SPCommand *myCommand;
 	myCommand = (SPCommand*)malloc(sizeof(myCommand));
 	if (str == NULL) {

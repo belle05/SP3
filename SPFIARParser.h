@@ -30,7 +30,7 @@ typedef struct command_t {
  * @return
  * true if the string represents a valid integer, and false otherwise.
  */
-bool spParserIsInt(const char* str);
+bool spParserIsInt(char* str);
 
 /**
  * Parses a specified line. If the line is a command which has an integer
@@ -46,7 +46,7 @@ bool spParserIsInt(const char* str);
  *              is valid
  *   arg      - the integer argument in case validArg is set to true
  */
-SPCommand spParserPraseLine(const char* str);
+SPCommand spParserPraseLine(char* str);
 
 /**Parses the command.
 *
@@ -55,14 +55,6 @@ SPCommand spParserPraseLine(const char* str);
 * else, returns SP_INVALID_LINS as an enum
 **/
 SP_COMMAND checkForCommand(const char* command);
-
-/** Parses the int of the command if exist (as an char*). 
-* this function does not checks if its an int, she assume it.
-* return
-* the int of the number, if it is negative returns the negative number that it is
-**/
-
-bool spParserIsInt(const char* str);
 
 /** This function gets an str and checks if all of the str its white spauces.
 * @return
