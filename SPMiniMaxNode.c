@@ -5,7 +5,7 @@
 
 MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	MiniMaxNode *myNode;
-	myNode = (MiniMaxNode*)malloc(sizeof(myNode));
+	myNode = (MiniMaxNode*)malloc(sizeof(MiniMaxNode));
 	if (myNode == NULL) {
 			return NULL;
 		}
@@ -21,25 +21,25 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	return myNode;
 }
 
-MiniMaxNode* copyNode(MiniMaxNode *myNode) {
-	MiniMaxNode *newNode;
-	newNode = (MiniMaxNode*)malloc(sizeof(newNode));
-	if (newNode == NULL) {
-		return NULL;
-	}
-	SPFiarGame *copyGame;
-	copyGame = spFiarGameCopy((myNode -> myGame));
-	newNode -> myGame = copyGame;
-	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
-		newNode -> childs[i] = myNode -> childs[i];
-	}
-	newNode -> score = myNode -> score;
-	newNode -> minChildIndex = myNode -> minChildIndex;
-	newNode -> maxChildIndex = myNode -> maxChildIndex;
-	newNode -> minChildScore = myNode -> minChildScore;
-	newNode -> maxChildScore = myNode -> maxChildScore;
-	return newNode;
-}
+//MiniMaxNode* copyNode(MiniMaxNode *myNode) {
+//	MiniMaxNode *newNode;
+//	newNode = (MiniMaxNode*)malloc(sizeof(MiniMaxNode));
+//	if (newNode == NULL) {
+//		return NULL;
+//	}
+//	SPFiarGame *copyGame;
+//	copyGame = spFiarGameCopy((myNode -> myGame));
+//	newNode -> myGame = copyGame;
+//	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
+//		newNode -> childs[i] = myNode -> childs[i];
+//	}
+//	newNode -> score = myNode -> score;
+//	newNode -> minChildIndex = myNode -> minChildIndex;
+//	newNode -> maxChildIndex = myNode -> maxChildIndex;
+//	newNode -> minChildScore = myNode -> minChildScore;
+//	newNode -> maxChildScore = myNode -> maxChildScore;
+//	return newNode;
+//}
 
 void MiniMaxDelete(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
