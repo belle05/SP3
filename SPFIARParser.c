@@ -63,6 +63,15 @@ bool checkIfOnlylWhiteSpaces(const char* str) {
 SPCommand spParserPraseLine(char* str) {
 	printf("a");
 	SPCommand *myCommand;
+	int size = 0;
+	bool isNull = false;
+	while(isNull) {
+		if (str[size] != '\0') {
+			size +=1;
+		} else {
+			isNull = true;
+		}
+	}
 	myCommand = (SPCommand*)malloc(sizeof(myCommand));
 	printf("b");
 	if (str == NULL) {
@@ -73,7 +82,7 @@ SPCommand spParserPraseLine(char* str) {
 		myCommand -> cmd = SP_INVALID_LINE;
 	}
 	char newstr[1024];
-	for (unsigned int i=0; i<sizeof(newstr); i++) {
+	for (int i=0; i<size; i++) {
 		newstr[i] = '\0';
 	}
 	strcpy(newstr, str);
