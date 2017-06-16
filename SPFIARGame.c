@@ -18,7 +18,9 @@
  */
 SPFiarGame* spFiarGameCreate(int historySize){
 	SPFiarGame *game;
+	printf("before malloc");
 	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	printf("after malloc");
 	if ((historySize <= 0) || (game == NULL)) {
 		return NULL;
 	}
@@ -54,7 +56,10 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 	if (src == NULL) {
 		return NULL;
 	}
-	SPFiarGame *game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	SPFiarGame *game;
+	printf("before malloc");
+	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	printf("after malloc");
 	//Set game status to be like src
 	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
 		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {

@@ -134,8 +134,13 @@ bool createNodesForChilds(MiniMaxNode *myNode) {
 	}
 	else if (ifLeaf(myNode)){
 		for (unsigned int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
+				if (myNode -> myGame == NULL) {
+					printf("game is null");
+				}
 				SPFiarGame *copyGame;
+				printf("before copy game");
 				copyGame = spFiarGameCopy(myNode -> myGame);
+				printf("after copt game");
 				myNode -> childs[i] = nodeCreate(copyGame);
 		}
 		return true;
