@@ -61,8 +61,10 @@ bool checkIfOnlylWhiteSpaces(const char* str) {
 }
 
 SPCommand spParserPraseLine(char* str) {
+	printf("a");
 	SPCommand *myCommand;
 	myCommand = (SPCommand*)malloc(sizeof(myCommand));
+	printf("b");
 	if (str == NULL) {
 		myCommand -> validArg = false;
 		myCommand -> cmd = SP_INVALID_LINE;
@@ -79,7 +81,9 @@ SPCommand spParserPraseLine(char* str) {
 	char *argument;
  	command = strtok (newstr," \t\v\f\r");
 	argument = strtok (NULL," \t\v\f\r");
-	if (!(command) || !( argument)) myCommand -> cmd = SP_INVALID_LINE;
+	if (!(command) || !( argument)) {
+		myCommand -> cmd = SP_INVALID_LINE;
+	}
 	argument = strtok (NULL," \t\v\f\r");
 	if (strcmp( argument, "\n") == 0) {
 		argument = strtok (NULL," \t\v\f\r");
@@ -129,43 +133,22 @@ SP_COMMAND checkForCommand(const char* command) {
 }
 
 int getInt(char* argument) {
-	 //int num=0;
-	 int argumentI;
-	 //bool firstNumberAfter0 = false;
-	 //bool negative = false;
-	// for(unsigned int i=0; i<sizeof(argument); i++){
-	//	 if (i == 0 && argument[0] == '-') {
-	  //  	 negative = true;
-	//	}
-	     //else {
-		 argumentI = atoi(argument);
-//		 usleep(argumentI);
-	         //if (((int)argument[i] == 0) && firstNumberAfter0 == false) {
-	       // 	 continue;
-	        // }
-	         //else if (((int)argument[i] != 0) && firstNumberAfter0 == false) {
-	          //   firstNumberAfter0 = true;
-	           //  num+=10*num+(int)argument[i];
-	         //}else {
-	          //   num+=10*num+(int)argument[i];
-	        // }
-		//printf("argument[i] = %d\n",(int)argument[i]);
-//                  printf("numIs %d\n",argumentI);
-
-	  //   }
-	// }
-	// if (negative) {
-	//	 return num*-1;
-	 //}
-	 //else {
-	//	 return num;
+	int argumentI;
+	argumentI = atoi(argument);
 	return argumentI;
-	 //}
-
 }
 
 bool checkIfNotOnlyWhiteSpaces(const char* str) {
 	bool notOnlylWhiteSpaces = false;
+	int size=0;
+	bool isNull=false;
+	while(!isNull) {
+		if (str[size] != '\0') {
+			size+=1;
+		} else {
+			isNull = true;
+		}
+	}
         for(unsigned int i=0; i<sizeof(str); i++){
                 if (isspace(str[i]) == false) {
                         notOnlylWhiteSpaces = true;
