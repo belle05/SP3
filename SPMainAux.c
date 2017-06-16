@@ -3,16 +3,23 @@
 int  printDifficulty() {
 	int difficulty;
 	char charDifficulty[SP_MAX_LINE_LENGTH];
+	for (int i = 0; i< SP_MAX_LINE_LENGTH; i++) {
+		charDifficulty[i] = '\0';	
+	}
 	printf("Please enter the difficulty level between [1-7]:\n");
 	scanf("%s", charDifficulty);
+	//printf("cahrDifficulty is %s\n",charDifficulty);
 	if (spParserIsInt(charDifficulty)) {
+		//printf("isInt");
 		difficulty = getInt(charDifficulty);
+	//	printf("dificulty is %d",difficulty);
 		return difficulty;
 	}
 	else if (spParserPraseLine((char *)charDifficulty).cmd == SP_QUIT) {
 		return '\0';
 	}
 	else {
+		//printf("notIntNotQuit");
 		return -2;
 	}
 }
@@ -20,6 +27,7 @@ int  printDifficulty() {
 bool checkNumRange7(int num){
 	for (int i=1; i < 8; i++) {
 		if (i==num) {
+			printf("intIs %d",i);
 			return true;
 		}
 	}

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 bool spParserIsInt(char* str) {
 	int chr = 0;
@@ -98,32 +99,38 @@ SP_COMMAND checkForCommand(const char* command) {
 }
 
 int getInt(char* argument) {
-	 int num=0;
-	 bool firstNumberAfter0 = false;
-	 bool negative = false;
-	 for(unsigned int i=0; i<sizeof(argument); i++){
-	     if (i == 0 && argument[0] == '-') {
-	    	 negative = true;
-	     }
-	     else {
-	         if (((int)argument[i] == 0) && firstNumberAfter0 == false) {
-	        	 continue;
-	         }
-	         else if (((int)argument[i] != 0) && firstNumberAfter0 == false) {
-	             firstNumberAfter0 = true;
-	             num+=10*num+(int)argument[i];
-	         }
-	         else {
-	             num+=10*num+(int)argument[i];
-	         }
-	     }
-	 }
-	 if (negative) {
-		 return num*-1;
-	 }
-	 else {
-		 return num;
-	 }
+	 //int num=0;
+	 int argumentI;
+	 //bool firstNumberAfter0 = false;
+	 //bool negative = false;
+	// for(unsigned int i=0; i<sizeof(argument); i++){
+	//	 if (i == 0 && argument[0] == '-') {
+	  //  	 negative = true;
+	//	}
+	     //else {
+		 argumentI = atoi(argument);
+//		 usleep(argumentI);
+	         //if (((int)argument[i] == 0) && firstNumberAfter0 == false) {
+	       // 	 continue;
+	        // }
+	         //else if (((int)argument[i] != 0) && firstNumberAfter0 == false) {
+	          //   firstNumberAfter0 = true;
+	           //  num+=10*num+(int)argument[i];
+	         //}else {
+	          //   num+=10*num+(int)argument[i];
+	        // }
+		//printf("argument[i] = %d\n",(int)argument[i]);
+//                  printf("numIs %d\n",argumentI);
+
+	  //   }
+	// }
+	// if (negative) {
+	//	 return num*-1;
+	 //}
+	 //else {
+	//	 return num;
+	return argumentI;
+	 //}
 
 }
 
