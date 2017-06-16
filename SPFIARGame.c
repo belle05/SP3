@@ -175,23 +175,19 @@ bool spFiarGameRemoveDisc(SPFiarGame* src, int col){
  *
  */
 SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
-	if (src == NULL) {
+	if(src == NULL)
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
-	}
-	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
+	for (int r=SP_FIAR_GAME_N_ROWS-1; r>=0; r--){
 		printf("|");
-		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
-			printf(" %c", src -> gameBoard[r][c]);
+		for(int c=0; c<SP_FIAR_GAME_N_COLUMNS; c++){
+			printf(" %c", src->gameBoard[r][c]);
 		}
 		printf(" |\n");
 	}
-	printf("-----------------\n ");
-	for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
-		printf(" %d", c);
-	}
+	printf("-----------------\n");
+	printf("  1 2 3 4 5 6 7  \n");
 	return SP_FIAR_GAME_SUCCESS;
 }
-
 /**
  * Returns the current player of the specified game.
  * @param src - the source game
