@@ -158,7 +158,7 @@ bool checkIfNotOnlyWhiteSpaces(const char* str) {
 			isNull = true;
 		}
 	}
-        for(unsigned int i=0; i<sizeof(str); i++){
+        for(int i=0; i<size; i++){
                 if (isspace(str[i]) == false) {
                         notOnlylWhiteSpaces = true;
                         break;
