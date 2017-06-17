@@ -1,4 +1,5 @@
 #include "SPMainAux.h"
+#include "SPFIARParser.h"
 
 int  printDifficulty() {
 	int difficulty;
@@ -7,19 +8,22 @@ int  printDifficulty() {
 		charDifficulty[i] = '\0';	
 	}
 	printf("Please enter the difficulty level between [1-7]:\n");
-	scanf("%s", charDifficulty);
+	fflush(stdin);
+        fgets(charDifficulty, SP_MAX_LINE_LENGTH, stdin);
+	sscanf(charDifficulty, "%[^ \n]s", charDifficulty);
+	if (checkIfOnlylWhiteSpaces(charDifficulty)) {
+		printf("\nblankkkkkk\n");
+	}
+//	scanf("%s", charDifficulty);
 	//printf("cahrDifficulty is %s\n",charDifficulty);
 	if (spParserIsInt(charDifficulty)) {
-		//printf("isInt");
 		difficulty = getInt(charDifficulty);
-	//	printf("dificulty is %d",difficulty);
 		return difficulty;
 	}
-	else if (spParserPraseLine((char *)charDifficulty).cmd == SP_QUIT) {
+	else if (spParserPraseLine(charDifficulty).cmd == SP_QUIT) {
 		return '\0';
 	}
 	else {
-		//printf("notIntNotQuit");
 		return -2;
 	}
 }
@@ -27,7 +31,6 @@ int  printDifficulty() {
 bool checkNumRange7(int num){
 	for (int i=1; i < 8; i++) {
 		if (i==num) {
-//			printf("intIs %d",i);
 			return true;
 		}
 	}
@@ -123,25 +126,32 @@ void errorGameOver() {
 
 int proccesCommand(MiniMaxNode *node, SPCommand command) {
 //TODO: figure out how to use game level
+	printf("1");
 	if (!(command.validArg)) {
+		printf("2");
 		invalidCommand();
 	        return 0;
 	}
 	else if (command.cmd == SP_QUIT) {
+		printf("3");
 		return 8;
 	}
     	else if (command.cmd == SP_RESTART){
+		printf("4");
 		printRestart();
 	        return 9;
    	}
 	else if (command.cmd == SP_SUGGEST_MOVE){
+		printf("5");
 	        suggestMove(node);
         	return 0;
    	}
     	else if(command.cmd == SP_UNDO_MOVE){
-			return 10;
+		printf("6");
+		return 10;
 	}
 	else if (command.cmd==SP_ADD_DISC){
+		printf("7");
 		if (!checkNumRange7(command.arg)) {
 			addDiscInvalid();
            		return 0;
@@ -150,7 +160,7 @@ int proccesCommand(MiniMaxNode *node, SPCommand command) {
 			addDiscFull(command.arg);
 		        return 0;
 		}
-		spFiarGameSetMove(node -> myGame, command.arg-1);
+//		spFiarGameSetMove(node -> myGame, command.arg-1);
 		return command.arg;
 	}
 	return 0;
@@ -158,16 +168,29 @@ int proccesCommand(MiniMaxNode *node, SPCommand command) {
 
 int userTurn(MiniMaxNode *node) {
 	SPCommand command;
-	char str[1024];
+	char str[SP_MAX_LINE_LENGTH];
 	int move = 0;
+//	for (int i=0; i<SP_MAX_LINE_LENGTH; i++) {
+//		str[i] = '\0';
+//	}
 	spFiarGamePrintBoard(node -> myGame);
-	while (move == 0){
+	while (move == 0) {
+		printf("\nmove is %d\n", move);
 		printNextMove();
 		fflush(stdin);
-	        fgets(str, 1024, stdin);
-        	scanf("%[^\n]s", str);
-	        command = spParserPraseLine(str);
+	        fgets(str, SP_MAX_LINE_LENGTH, stdin);
+		sscanf(str, "%[^\n]s", str);
+//		scanf(" %[^\n]", str);
+//		printf("%s\n", str);
+//		if (checkIfOnlylWhiteSpaces(str)) {
+//			printf("\nonly whites!!!!");
+//		}
+//		printf("%s\n", str);
+//        	scanf("%[^\n]s", str);
+//		printf("lalala\n");
+	        command = spParserPraseLine((char *)str);
 		move = proccesCommand(node, command);
+//		printf("move2 is %d\n", move);
 	}
 	return move;
 }
@@ -198,7 +221,8 @@ int  handleWinner(char simbol) {
 		printCont();
                 fflush(stdin);
                 fgets(str, 1024, stdin);
-                scanf("%[^\n]s", str);
+		sscanf(str, "%[^ \n]s", str);
+//                scanf("%[^\n]s", str);
 		command = spParserPraseLine(str);
 		move = proccesWinCommand(command);
 	}

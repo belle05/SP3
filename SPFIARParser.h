@@ -54,14 +54,14 @@ SPCommand spParserPraseLine(char* str);
 * if the command is one of the enum above, returns the command as an enum type.
 * else, returns SP_INVALID_LINS as an enum
 **/
-SP_COMMAND checkForCommand(const char* command);
+SP_COMMAND checkForCommand(char *command);
 
 /** This function gets an str and checks if all of the str its white spauces.
 * @return
 * true if its not only white spaces, flase if it does contains only white spaces.
 **/
 
-bool checkIfOnlylWhiteSpaces(const char* str);
+bool checkIfOnlylWhiteSpaces(char *str);
 
 int getInt(char* argument);
 

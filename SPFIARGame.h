@@ -252,7 +252,7 @@ MiniMaxNode* copyNode(MiniMaxNode *myNode);
 *If the node is NULL does nothing.
 **/
 
-void MiniMaxDelete(MiniMaxNode *myNode);
+bool MiniMaxDelete(MiniMaxNode *myNode);
 
 /** Checks if the node is a leaf.
 *@return 

@@ -7,7 +7,7 @@
 
 int main() {
 	bool newGame = true;
-	char isWon = 'B';
+	char isWon = '\0';
 	int move = 0;
 	int round = 0;
 	int gameLevel = -1;
@@ -25,12 +25,12 @@ int main() {
 			createNewTreeFromNode(miniMaxNode, gameLevel);
 			newGame = false;
 			round = 0;
-			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
-		if (game -> currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-			if (isWon == 'B') {
+		if (miniMaxNode -> myGame -> currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
+			if (isWon == '\0') {
 				move = userTurn(miniMaxNode);
 			}
+			printf("\nmove is %d", move);
 			if (move == 8) {
 				freeMem(miniMaxNode);
 				break;
@@ -40,19 +40,26 @@ int main() {
 			} else if (move == 10) {
 				miniMaxNode = undoMove(miniMaxNode, gameLevel);
 				round -= 2;
-			} else if (isWon != 'B') {
-				spFiarGameSetMove(game, move);
-				miniMaxNode = moveForward(miniMaxNode, move);
-				game -> currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+			} else if (isWon == '\0') {
+				spFiarGameSetMove(game, move-1);
+				spFiarGamePrintBoard(miniMaxNode -> myGame);
+				miniMaxNode = moveForward(miniMaxNode, move-1);
+				miniMaxNode -> myGame -> currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
 			}
 		} else {
 			move = miniMaxNode -> minChildIndex; 
+			printf("\nComputer move will be %d", move);
 			spFiarGameSetMove(game, move);
+			spFiarGamePrintBoard(miniMaxNode -> myGame);
 			miniMaxNode = moveForward(miniMaxNode, move);
+			printf("node moved");
 			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
-		isWon = spFiarCheckWinner(game);
-		if (isWon != 'B') {
+		if ((move != 8) && (move != 9)) {
+			isWon = spFiarCheckWinner(miniMaxNode -> myGame);
+		}
+		printf("isWon is %c\n", isWon);
+		if (isWon != '\0') {
 			move = handleWinner(isWon);
 		}
 		round += 1;
