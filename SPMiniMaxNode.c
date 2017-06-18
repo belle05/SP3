@@ -64,7 +64,9 @@ bool MiniMaxDelete(MiniMaxNode *myNode) {
 		spFiarGameDestroy(myNode -> myGame);
 		printf("Destroyed game\n");
 	}
+	printf("before freeing myNode");
 	free(myNode);
+	printf("after freeing myNode");
 	return true;
 }
 
