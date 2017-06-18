@@ -126,6 +126,7 @@ SPCommand spParserPraseLine(char* str) {
 	SPCommand myCommand;
 	char local_str[SP_MAX_LINE_LENGTH];
 	bool isCom = true;
+	bool finishedArgs = false;
 	strcpy(local_str, str);
 	myCommand.validArg = false;
 	token = strtok(local_str, parseChars);
@@ -142,7 +143,7 @@ SPCommand spParserPraseLine(char* str) {
 	}
 
 
-	while (token != NULL) {
+	while (token != NULL && finishedArgs == false) {
 		if (strcmp(token, "") != 0) {
 			if (isCom) { 
 				myCommand.cmd = checkForCommand(token);
@@ -152,19 +153,31 @@ SPCommand spParserPraseLine(char* str) {
 					if (spParserIsInt(token)) {
 						myCommand.arg = atoi(token);
 						myCommand.validArg = true; 
+						finishedArgs = true;
 					}else{
 						myCommand.cmd = SP_INVALID_LINE;
+						finishedArgs = true;
 					}
 				} else if (myCommand.cmd == SP_INVALID_LINE) {
 					myCommand.cmd = SP_INVALID_LINE;
+					finishedArgs = true;
 				} else {
 					myCommand.arg = 0;
 					myCommand.validArg = true;
+					finishedArgs = true;
 				}
 			}
 		}
 		token = strtok(NULL, parseChars);
 	}
+	if (token != NULL && (strcmp(token, "\n") != 0)) {
+		printf("\ninvalid");
+                myCommand.arg = 0;
+                myCommand.validArg = false;
+                myCommand.cmd = SP_INVALID_LINE;
+                return myCommand;
+        }
+
 	return myCommand;
 }
 
