@@ -200,9 +200,6 @@ int suggestMove(MiniMaxNode *node) {
 }
 
 
-void freeMem(MiniMaxNode *node) {
-	MiniMaxDelete(node);
-}
 
 int  handleWinner(char simbol) {
 	SPCommand command;

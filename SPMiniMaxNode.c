@@ -54,7 +54,7 @@ bool MiniMaxDelete(MiniMaxNode *myNode) {
 		}
 		free(myNode);
 		return true;
-	}
+	}else {
 	printf("This node is a junction\n");
 	for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
 		printf("Going to free node %d out of %d\n", i, SP_FIAR_GAME_N_COLUMNS);
@@ -67,6 +67,7 @@ bool MiniMaxDelete(MiniMaxNode *myNode) {
 	printf("before freeing myNode");
 	free(myNode);
 	printf("after freeing myNode");
+	}
 	return true;
 }
 
@@ -190,7 +191,37 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
 //	printf("Deleted old node\n");
 	return myNode;
 }
+//MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
+//	MiniMaxNode *newNode;
+//	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
+//		return NULL;
+//	}
+//	if (myNode == NULL) {
+//		 return NULL;
+//	}
+//	SPFiarGame newGame = myNode -> myGame;
+//	newNode =  myNode -> childs[index];
+//	newNode -> myGame -> level = (myNode -> myGame -> level);
+//	myNode -> childs[index] = NULL;
+//	if (newNode == NULL) {
+//		 return NULL;
+//	}
+//	myNode -> childs[index] = NULL;
+//	newGame = spFiarGameCopy(myNode -> myGame);
+//	printf("CopiedGame");
+//	newNode = nodeCreate(newGame);
+//	printf("Created new node\n");
+//	printf("before deleting myNode\n");
+//	MiniMaxDelete(myNode);
+//	printf("after deleting myNode\n");
+//	createNewTreeFromNode(newNode, newNode -> myGame -> level );
+//	printf("Created new tree\n");
+//	MiniMaxDelete(myNode);
+//	printf("Deleted old node\n");
+//	return myNode;
+//}
 
+ 
 /**
 *bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
 *	if (level <0) {

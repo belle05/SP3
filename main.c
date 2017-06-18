@@ -4,6 +4,7 @@
 #include "SPMiniMaxNode.h"
 #include "SPFIARGame.h"
 #include "SPMiniMax.h"
+#include <stdlib.h>
 
 int main() {
 	bool newGame = true;
@@ -32,10 +33,11 @@ int main() {
 			}
 			printf("\nmove is %d", move);
 			if (move == 8) {
-				freeMem(miniMaxNode);
+				//free(miniMaxNode);
+				MiniMaxDelete(miniMaxNode);
 				break;
 			} else if (move == 9) {
-				freeMem(miniMaxNode);
+				MiniMaxDelete(miniMaxNode);
 				newGame = true;
 			} else if (move == 10) {
 				miniMaxNode = undoMove(miniMaxNode, gameLevel);
