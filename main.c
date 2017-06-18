@@ -49,13 +49,18 @@ int main() {
 				miniMaxNode -> myGame -> currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
 			}
 		} else {
-			move = miniMaxNode -> minChildIndex; 
-			printf("\nComputer move will be %d", move);
-			spFiarGameSetMove(game, move);
-			spFiarGamePrintBoard(miniMaxNode -> myGame);
-			miniMaxNode = moveForward(miniMaxNode, move);
-			printf("node moved");
-			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+//			move = miniMaxNode -> minChildIndex; 
+//			printf("\nComputer move will be %d", move);
+//			spFiarGameSetMove(game, move);
+//			spFiarGamePrintBoard(miniMaxNode -> myGame);
+			move = compTurn(miniMaxNode);
+			if (move == 10) {
+				printf("ERROR! COMP MOVE CANT BE MADE");
+			} else {
+				miniMaxNode = moveForward(miniMaxNode, move);
+				printf("node moved");
+				game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+			}
 		}
 		if ((move != 8) && (move != 9)) {
 			printf("checking winer from main\n");

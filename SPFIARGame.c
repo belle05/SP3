@@ -257,18 +257,14 @@ bool spFiarIsWinner(SPFiarGame* src, char player){
 * false - otherwise.
 */
 bool spFiarIsTableFull(SPFiarGame* src){
-	int takenSpots = SP_FIAR_GAME_N_COLUMNS * SP_FIAR_GAME_N_ROWS;
-	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
-		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
+	for (int r = 0; r < SP_FIAR_GAME_N_ROWS; r++) {
+		for (int c=0; c < SP_FIAR_GAME_N_COLUMNS; c++) {
 			if (src -> gameBoard[r][c] == '\0') {
-				takenSpots = takenSpots - 1;
+				return false;
 			}
 		}
 	}
-	if (takenSpots == 0) {
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool spFiarIsCol(SPFiarGame* src, char player){

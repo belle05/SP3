@@ -17,6 +17,7 @@ void freeMem(MiniMaxNode *node);
 int proccesWinCommand(SPCommand command);
 int  handleWinner(char simbol);
 MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel);
+int compTurn(MiniMaxNode *node);
 
 //General Prints
 int printDifficulty();

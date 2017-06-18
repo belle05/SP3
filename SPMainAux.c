@@ -249,3 +249,22 @@ MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel) {
 	return miniMaxNode;
 }
 
+int compTurn(MiniMaxNode *node) {
+	int moveOptions = SP_FIAR_GAME_N_COLUMNS;
+	bool moveMade = false;
+	int move;
+	while (!moveMade || moveOptions > 0) {
+		move = node -> minChildIndex;
+		if (!spFiarGameIsValidMove(node -> myGame, move)) {
+			updateMiniMaxNode(node);
+			moveOptions -= 1;
+		} else {
+			printf("\nComputer move will be %d", move);
+			spFiarGameSetMove(node -> myGame, move);
+			spFiarGamePrintBoard(node -> myGame);
+			return move;
+		}
+	}
+	return 10;
+}
+

@@ -158,11 +158,11 @@ SPCommand spParserPraseLine(char* str) {
 					if (spParserIsInt(token)) {
 						myCommand.arg = atoi(token);
 						myCommand.validArg = true; 
-					}else{
+					} else {
 						printf("valid command not valid arg\n");
 						myCommand.cmd = SP_INVALID_LINE;
 					}
-				finishedArgs = true;
+					finishedArgs = true;
 				} else  {
 					printf("found invalid command\n");
 					myCommand.cmd = SP_INVALID_LINE;
