@@ -143,32 +143,47 @@ SPCommand spParserPraseLine(char* str) {
 	}
 
 
-	while (token != NULL && finishedArgs == false) {
+	while (token != NULL || finishedArgs == false) {
+		printf("token is %s\n",token);
 		if (strcmp(token, "") != 0) {
 			if (isCom) { 
 				myCommand.cmd = checkForCommand(token);
 				isCom = false;
+				if (myCommand.cmd != SP_ADD_DISC){
+					finishedArgs = true;
+				}
 			} else {
+				//token = strtok(NULL, parseChars);
 				if (myCommand.cmd == SP_ADD_DISC){ //Flag that the command was add_disk
 					if (spParserIsInt(token)) {
 						myCommand.arg = atoi(token);
 						myCommand.validArg = true; 
-						finishedArgs = true;
 					}else{
+						printf("valid command not valid arg\n");
 						myCommand.cmd = SP_INVALID_LINE;
-						finishedArgs = true;
 					}
-				} else if (myCommand.cmd == SP_INVALID_LINE) {
+				finishedArgs = true;
+				} else  {
+					printf("found invalid command\n");
 					myCommand.cmd = SP_INVALID_LINE;
 					finishedArgs = true;
-				} else {
-					myCommand.arg = 0;
-					myCommand.validArg = true;
-					finishedArgs = true;
 				}
+			//	} else {
+			//		printf("not add disk and not invalid\n");
+			//		myCommand.arg = 0;
+			//		myCommand.validArg = true;
+			//		finishedArgs = true;
+			//	}
 			}
 		}
 		token = strtok(NULL, parseChars);
+	}
+	if  (myCommand.cmd == SP_INVALID_LINE) {
+		myCommand.cmd = SP_INVALID_LINE;
+	} else if (myCommand.cmd != SP_ADD_DISC){
+		printf("found different command from add_disc");
+		myCommand.arg = 0;
+		myCommand.validArg = true;	
 	}
 	if (token != NULL && (strcmp(token, "\n") != 0)) {
 		printf("\ninvalid");
@@ -177,7 +192,7 @@ SPCommand spParserPraseLine(char* str) {
                 myCommand.cmd = SP_INVALID_LINE;
                 return myCommand;
         }
-
+	printf("finished parser command\n");
 	return myCommand;
 }
 
@@ -191,10 +206,10 @@ SP_COMMAND checkForCommand(char *command) {
 		return SP_INVALID_LINE;
 	}
 	char *undo = "undo_move\0";
-	char *add_disk = "add_disk\0";
-	char sp_suggest[12] = "suggest_move";
-	char quit[4] = "quit";
-	char restart[7] = "restart";
+	char *add_disk = "add_disc\0";
+	char *sp_suggest = "suggest_move\0";
+	char *quit = "quit\0";
+	char *restart = "restart\0";
 //	strcpy(undo, "undo_move");
 //	strcpy(add_disk, "add_disk");
 //	strcpy(sp_suggest, "suggest_move") ;
@@ -212,6 +227,7 @@ SP_COMMAND checkForCommand(char *command) {
 	} else if (strcmp(sp_suggest, command) == 0) {
 		return SP_SUGGEST_MOVE;
 	} else if (strcmp(quit, command) == 0) {
+		printf("found quit");
 		return SP_QUIT;
 	} else if (strcmp(restart, command) == 0) {
 		return SP_RESTART;
