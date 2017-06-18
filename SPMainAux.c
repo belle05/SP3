@@ -59,17 +59,13 @@ void printNextMove() {
 
 void printGameOverWin() {
 	printf("Game over: you win\n");
-	printCont();
 }
 
 void printGameOverLose() {
 	printf("Game over: computer wins\n");
-	printCont();
 }
-
 void printGameOverTie() {
 	printf("Game over: it's a tie\n");
-	printCont();
 }
 
 void printCont() {

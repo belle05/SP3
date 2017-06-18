@@ -58,6 +58,7 @@ int main() {
 			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 		}
 		if ((move != 8) && (move != 9)) {
+			printf("checking winer from main\n");
 			isWon = spFiarCheckWinner(miniMaxNode -> myGame);
 		}
 		printf("isWon is %c\n", isWon);

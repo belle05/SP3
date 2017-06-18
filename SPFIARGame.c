@@ -272,17 +272,17 @@ bool spFiarIsTableFull(SPFiarGame* src){
 }
 
 bool spFiarIsCol(SPFiarGame* src, char player){
-	int counter=0;
+//	int counter=0;
 	for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS; c++) {
 		for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS-4; r++) {
-			if (src -> gameBoard[r][c] == player){
-				counter += 1;
-				if (counter == 4){
+			if (src -> gameBoard[r][c] == player && src -> gameBoard[r+1][c] == player && src -> gameBoard[r+2][c] == player && src -> gameBoard[r+3][c] == player){
+			//	counter += 1;
+				//if (counter == 4){
 					printf("returning a winner on player %c in IsCol\n", player);
 					return true;
-				}
-			} else {
-				counter = 0;
+		//		}
+		//	} else {
+		//		counter = 0;
 			}
 		}
 	}
@@ -291,17 +291,12 @@ bool spFiarIsCol(SPFiarGame* src, char player){
 }
 
 bool spFiarIsRow(SPFiarGame* src, char player){
-	int counter=0;
+//	int counter=0;
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
 		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS-4; c++) {
-			if (src -> gameBoard[r][c] == player){
-				counter += 1;
-				if (counter == 4){
-					printf("returning a winner for %c in IsRow\n", player);
-					return true;
-				}
-			} else {
-				counter = 0;
+			if (src -> gameBoard[r][c] == player && src -> gameBoard[r][c+1] == player && src -> gameBoard[r][c+2] == player && src -> gameBoard[r][c+3] == player){
+				printf("returning a winner for %c in IsRow\n", player);
+				return true;
 			}
 		}
 	}
