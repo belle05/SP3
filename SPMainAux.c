@@ -120,7 +120,7 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 
-int proccesCommand(MiniMaxNode *node, SPCommand command) {
+int proccesCommand(SPFiarGame *game, SPCommand command) {
 //TODO: figure out how to use game level
 	printf("1");
 	if (!(command.validArg)) {
@@ -139,7 +139,7 @@ int proccesCommand(MiniMaxNode *node, SPCommand command) {
    	}
 	else if (command.cmd == SP_SUGGEST_MOVE){
 		printf("5");
-	        suggestMove(node);
+	        //suggestMove(game); TODO: Handle suggest move
         	return 0;
    	}
     	else if(command.cmd == SP_UNDO_MOVE){
@@ -152,7 +152,7 @@ int proccesCommand(MiniMaxNode *node, SPCommand command) {
 			addDiscInvalid();
            		return 0;
         	}
-		if (!spFiarGameIsValidMove(node -> myGame, command.arg-1)) {
+		if (!spFiarGameIsValidMove(game, command.arg-1)) {
 			addDiscFull(command.arg);
 		        return 0;
 		}
@@ -162,14 +162,14 @@ int proccesCommand(MiniMaxNode *node, SPCommand command) {
 	return 0;
 }
 
-int userTurn(MiniMaxNode *node) {
+int userTurn(SPFiarGame *game) {
 	SPCommand command;
 	char str[SP_MAX_LINE_LENGTH];
 	int move = 0;
 //	for (int i=0; i<SP_MAX_LINE_LENGTH; i++) {
 //		str[i] = '\0';
 //	}
-	spFiarGamePrintBoard(node -> myGame);
+	spFiarGamePrintBoard(game);
 	while (move == 0) {
 		printf("\nmove is %d\n", move);
 		printNextMove();
@@ -185,7 +185,7 @@ int userTurn(MiniMaxNode *node) {
 //        	scanf("%[^\n]s", str);
 //		printf("lalala\n");
 	        command = spParserPraseLine((char *)str);
-		move = proccesCommand(node, command);
+		move = proccesCommand(game, command);
 //		printf("move2 is %d\n", move);
 	}
 	return move;
@@ -239,14 +239,14 @@ int proccesWinCommand(SPCommand command){
 }
 
 
-MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel) {
-	MiniMaxNode *miniMaxNode;
-	SPFiarGame *newGame;
-	newGame = spFiarGameCopy(node -> myGame);
-	spFiarGameUndoPrevMove(newGame);
-	miniMaxNode = nodeCreate(newGame);
-	createNewTreeFromNode(miniMaxNode, gameLevel);
-	return miniMaxNode;
+SPFiarGame* undoMove(SPFiarGame *game, int gameLevel) {
+//	MiniMaxNode *miniMaxNode;
+//	SPFiarGame *newGame;
+//	newGame = spFiarGameCopy(game);
+	spFiarGameUndoPrevMove(game);
+//	miniMaxNode = nodeCreate(newGame);
+//	createNewTreeFromNode(miniMaxNode, gameLevel);
+	return game;
 }
 
 int compTurn(MiniMaxNode *node) {

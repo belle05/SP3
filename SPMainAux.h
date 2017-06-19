@@ -10,13 +10,13 @@
 //Validity and command proccessing
 bool checkNumRange7(int num);
 int getGameDifficulty();
-int proccesCommand(MiniMaxNode *node, SPCommand command);
-int userTurn(MiniMaxNode *node);
+int proccesCommand(SPFiarGame *game, SPCommand command);
+int userTurn(SPFiarGame *game);
 int suggestMove(MiniMaxNode *node);
 void freeMem(MiniMaxNode *node);
 int proccesWinCommand(SPCommand command);
 int  handleWinner(char simbol);
-MiniMaxNode* undoMove(MiniMaxNode *node, int gameLevel);
+SPFiarGame* undoMove(SPFiarGame *game, int gameLevel);
 int compTurn(MiniMaxNode *node);
 
 //General Prints

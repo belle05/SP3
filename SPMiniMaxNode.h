@@ -5,7 +5,6 @@
 
 /* struct that defines a MINIMAXNODE */
 /*
-typedef struct MiniMaxNode MiniMaxNode;
 
 struct MiniMaxNode {
 	SPFiarGame *myGame;
@@ -14,8 +13,10 @@ struct MiniMaxNode {
 	int maxChildIndex;
 	int minChildScore;
 	int maxChildScore;
-	MiniMaxNode *childs[SP_FIAR_GAME_N_COLUMNS];
+	MiniMaxNode* childs[SP_FIAR_GAME_N_COLUMNS];
 };
+
+typedef struct MiniMaxNode MiniMaxNode;
 */
 /** creates an empty node.
 * sets the game to be the user argument, the indexes if min/maxChild to be -2,
@@ -122,5 +123,8 @@ void addLevel(MiniMaxNode *myNode);
 //int calcBoardCols(SPFiarGame* src);
 
 //int calcBoardDiagonals(SPFiarGame* src);
+
+int getBestMove(MiniMaxNode *myNode);
+void updateScores(MiniMaxNode *myNode);
 
 #endif

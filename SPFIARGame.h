@@ -54,17 +54,16 @@ typedef enum sp_fiar_game_message_t {
 } SP_FIAR_GAME_MESSAGE;
 
 /* struct that defines a MINIMAXNODE */
-typedef struct MiniMaxNode MiniMaxNode;
 
-struct MiniMaxNode {
-	SPFiarGame *myGame;
+typedef struct MiniMaxNode {
+	SPFiarGame* myGame;
 	int score;
 	int minChildIndex;
 	int maxChildIndex;
 	int minChildScore;
 	int maxChildScore;
-	MiniMaxNode *childs[SP_FIAR_GAME_N_COLUMNS];
-};
+	struct MiniMaxNode* childs[SP_FIAR_GAME_N_COLUMNS];
+} MiniMaxNode;
 
 
 /**
@@ -325,5 +324,7 @@ int calcBoardRows(SPFiarGame* src);
 int calcBoardCols(SPFiarGame* src);
 
 int calcBoardDiagonals(SPFiarGame* src);
+
+int calcBoardScore2(SPFiarGame* src) ;
 
 #endif

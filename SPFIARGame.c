@@ -19,7 +19,7 @@
 SPFiarGame* spFiarGameCreate(int historySize){
 	SPFiarGame *game;
 //	printf("before malloc");
-	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
+	game = calloc(1, sizeof(SPFiarGame));
 //	printf("after malloc");
 	if ((historySize <= 0) || (game == NULL)) {
 		return NULL;
@@ -57,9 +57,9 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 		return NULL;
 	}
 	SPFiarGame *game;
-	printf("before malloc\n");
-	game = (SPFiarGame *)malloc(sizeof(SPFiarGame));
-	printf("after malloc\n");
+//	printf("before malloc\n");
+	game = calloc(1, sizeof(SPFiarGame));
+//	printf("after malloc\n");
 	//Set game status to be like src
 	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
 		for (unsigned int c=0; c< SP_FIAR_GAME_N_COLUMNS; c++) {
@@ -98,19 +98,19 @@ void spFiarGameDestroy(SPFiarGame* src){
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  */
 SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col){
-	printf("\nGoing to set move in col %d\n", col);
+//	printf("\nGoing to set move in col %d\n", col);
 	if ((src == NULL) || (col < 0) || (col >= SP_FIAR_GAME_N_COLUMNS)) {
-		printf("\nSetMoveInvalid1\n");
+//		printf("\nSetMoveInvalid1\n");
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	}
 	if (!spFiarGameIsValidMove(src, col)) {
-		printf("\nSetMoveInvalid2\n");
+//		printf("\nSetMoveInvalid2\n");
 		return SP_FIAR_GAME_INVALID_MOVE;
 	}
-	printf("\ncurrent player is %c\n", src -> currentPlayer);
+//	printf("\ncurrent player is %c\n", src -> currentPlayer);
 	src -> gameBoard[src -> tops[col]][col] = src -> currentPlayer;
 	src -> tops[col] = src -> tops[col] + 1;
-	printf("tops[%d] is now %d\n", col, src -> tops[col]);
+//	printf("tops[%d] is now %d\n", col, src -> tops[col]);
 	spArrayListAddFirst(src -> history, col);
 	return SP_FIAR_GAME_SUCCESS;
 }
@@ -274,7 +274,7 @@ bool spFiarIsCol(SPFiarGame* src, char player){
 			if (src -> gameBoard[r][c] == player && src -> gameBoard[r+1][c] == player && src -> gameBoard[r+2][c] == player && src -> gameBoard[r+3][c] == player){
 			//	counter += 1;
 				//if (counter == 4){
-					printf("returning a winner on player %c in IsCol\n", player);
+//					printf("returning a winner on player %c in IsCol\n", player);
 					return true;
 		//		}
 		//	} else {
@@ -282,7 +282,7 @@ bool spFiarIsCol(SPFiarGame* src, char player){
 			}
 		}
 	}
-	printf("returning no winner for %c in IsCol\n", player);
+//	printf("returning no winner for %c in IsCol\n", player);
 	return false;
 }
 
@@ -291,12 +291,12 @@ bool spFiarIsRow(SPFiarGame* src, char player){
 	for (unsigned int r = 0; r<SP_FIAR_GAME_N_ROWS; r++) {
 		for (unsigned int c = 0; c<SP_FIAR_GAME_N_COLUMNS-4; c++) {
 			if (src -> gameBoard[r][c] == player && src -> gameBoard[r][c+1] == player && src -> gameBoard[r][c+2] == player && src -> gameBoard[r][c+3] == player){
-				printf("returning a winner for %c in IsRow\n", player);
+//				printf("returning a winner for %c in IsRow\n", player);
 				return true;
 			}
 		}
 	}
-	printf("returning no for %c winner in IsRow\n", player);
+//	printf("returning no for %c winner in IsRow\n", player);
 	return false;
 }
 
