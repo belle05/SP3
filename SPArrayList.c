@@ -8,17 +8,16 @@ SPArrayList* spArrayListCreate(int maxSize){
 	if(maxSize <= 0){
 		return NULL;
 	}
-
 	newArray = (SPArrayList*)malloc(sizeof(SPArrayList));
 	if (newArray == NULL) {
 		return NULL;
 	}
+	newArray -> maxSize = maxSize;
 	for (int i=0; i < maxSize; i++){
-                newArray -> elements[i] = '\0';
+                newArray -> elements[i] = 9;
         }
 
 	newArray -> actualSize = 0;
-	newArray -> maxSize = maxSize;
 	return newArray;
 }
 
@@ -39,7 +38,7 @@ SPArrayList* spArrayListCopy(SPArrayList* src) {
         }
         newArray -> actualSize = src -> actualSize;
         newArray -> maxSize = src -> maxSize;
-	for (int i=0; i < src -> actualSize; i++){
+	for (int i=0; i < src -> maxSize; i++){
                 newArray -> elements[i] = src -> elements[i];
         }
         return newArray;
@@ -70,7 +69,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src) {
 		return SP_ARRAY_LIST_INVALID_ARGUMENT;
 	}
 	for (int i=0; i < src -> maxSize; i++){
-                src -> elements[i] = '\0';
+                src -> elements[i] = 9;
         }
 	src -> actualSize = 0;
 	return SP_ARRAY_LIST_SUCCESS;
@@ -98,14 +97,13 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, int elem, int index){
 	if (src -> actualSize == src -> maxSize) {
 		return SP_ARRAY_LIST_FULL;
 	}
-	for (int i=src -> actualSize; i < index-1; i--){
-		if (i==index) {
-			src -> elements[i] = elem;
-		}
-		else {
-			src -> elements[i] = src -> elements[i-1];
-		}
+
+	int arrSize = src -> actualSize;
+	for (int i = arrSize ; i > index; i--) {
+		src -> elements[i] = src -> elements[i-1];
 	}
+	src -> elements[index] = elem;
+	src -> actualSize = arrSize + 1;
 	return SP_ARRAY_LIST_SUCCESS;
 }
            
@@ -149,7 +147,9 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, int elem) {
         if (src -> actualSize == src -> maxSize) {
                 return SP_ARRAY_LIST_FULL;
         }
-	src -> elements[src -> actualSize] = elem;
+
+	spArrayListAddAt(src, elem, src -> actualSize);
+//	src -> elements[src -> actualSize] = elem;
 	return SP_ARRAY_LIST_SUCCESS;
 }
 /**
@@ -174,14 +174,16 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveAt(SPArrayList* src, int index) {
         if (src -> actualSize == 0) {
                 return SP_ARRAY_LIST_EMPTY;
         }
-	for (int i = index; i<src -> actualSize; i++) {
-		if (i == (src -> actualSize)-1) {
-			src -> elements[i] = '\0';
+	int arrSize = src -> actualSize;
+	for (int i = index; i < arrSize; i++) {
+		if (i == arrSize -1) {
+			src -> elements[i] = 9;
 		}
 		else {
 			src -> elements[i] = src -> elements[i+1];
 		}
 	}
+	src -> actualSize = arrSize - 1;
 	return SP_ARRAY_LIST_SUCCESS;
 }
 

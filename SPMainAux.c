@@ -243,6 +243,7 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 //	MiniMaxNode *miniMaxNode;
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);
+	printf("got to undoMove\n");
 	spFiarGameUndoPrevMove(game);
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);

@@ -147,24 +147,39 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col){
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	bool success = false;
+	int discToRemove;
+
+	printf("got to UndoPrevMove\n");
 	if (src == NULL) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
-	} else if (src -> history -> actualSize == 0) {
+	} else if (spArrayListSize(src -> history) == 0) {
 		return SP_FIAR_GAME_NO_HISTORY;
-	}
-	success = spFiarGameRemoveDisc(src, spArrayListGetAt(src -> history, 0));
+	} //undoing Computer's last move
+	
+	printf("got to the good part of UndoPrevMove\n");
+	discToRemove = spArrayListGetAt(src -> history, 0);
+	printf("going to remove disc at col %d\n", discToRemove);
+	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
-		spArrayListRemoveAt(src -> history, 0);
+		spArrayListRemoveFirst(src -> history);
+	} //undoing user's last move
+	discToRemove = spArrayListGetAt(src -> history, 0);
+	printf("going to remove disc at col %d\n", discToRemove);
+	success = spFiarGameRemoveDisc(src, discToRemove);
+	if (success) {
+		spArrayListRemoveFirst(src -> history);
 	}
 	return SP_FIAR_GAME_SUCCESS;
 }
 
 bool spFiarGameRemoveDisc(SPFiarGame* src, int col){
-	if (src -> gameBoard[col] == 0) {
+	int colSize;
+	if (src -> tops[col] == 0) {
 		return false;
 	}
-	src -> gameBoard[src -> tops[col]][col] = '\0';
-	src -> tops[col] = src -> tops[col] - 1;
+	colSize = src -> tops[col];
+	src -> gameBoard[colSize-1][col] = '\0';
+	src -> tops[col] = colSize - 1;
 	return true;
 }
 
