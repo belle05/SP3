@@ -16,7 +16,7 @@ int suggestMove(MiniMaxNode *node);
 void freeMem(MiniMaxNode *node);
 int proccesWinCommand(SPCommand command);
 int  handleWinner(char simbol);
-SPFiarGame* undoMove(SPFiarGame *game, int gameLevel);
+SPFiarGame* undoMove(SPFiarGame *game);
 int compTurn(MiniMaxNode *node);
 
 //General Prints

@@ -128,7 +128,7 @@ SPCommand spParserPraseLine(char* str) {
 	bool isCom = true;
 	bool finishedArgs = false;
 	strcpy(local_str, str);
-	myCommand.validArg = false;
+	myCommand.validArg = true;
 	token = strtok(local_str, parseChars);
 //	printf("\nBoom");
 //	if (checkIfOnlylWhiteSpaces(str) == true) {
@@ -192,6 +192,11 @@ SPCommand spParserPraseLine(char* str) {
                 myCommand.cmd = SP_INVALID_LINE;
                 return myCommand;
         }
+	if (myCommand.validArg) {
+		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
+	} else {
+		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
+	}
 	printf("finished parser command\n");
 	return myCommand;
 }

@@ -463,8 +463,8 @@ int calcBoardScore2(SPFiarGame* src) {
 
     int total_score = 0;
     for(int j = 0; j < 8; j+=2){
-        for (unsigned int r = 0; r < SP_FIAR_GAME_N_ROWS; r++) {
-            for (unsigned int c = 0; c < SP_FIAR_GAME_N_COLUMNS; c++) {
+        for (int r = 0; r < SP_FIAR_GAME_N_ROWS; r++) {
+            for (int c = 0; c < SP_FIAR_GAME_N_COLUMNS; c++) {
                 if(r+directions[j]*3<SP_FIAR_GAME_N_ROWS && r+directions[j]*3>=0 && c+directions[j+1]*3<SP_FIAR_GAME_N_COLUMNS && c+directions[j+1]*3>=0) {
                     for (int f = 0; f < 4; f++) {
                         if (src->gameBoard[r + (directions[j]*f)][c + (directions[j+1]*f)] == SP_FIAR_GAME_PLAYER_2_SYMBOL) {

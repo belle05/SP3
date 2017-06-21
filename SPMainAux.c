@@ -239,7 +239,7 @@ int proccesWinCommand(SPCommand command){
 }
 
 
-SPFiarGame* undoMove(SPFiarGame *game, int gameLevel) {
+SPFiarGame* undoMove(SPFiarGame *game) {
 //	MiniMaxNode *miniMaxNode;
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);

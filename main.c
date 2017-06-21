@@ -39,7 +39,7 @@ int main() {
 				spFiarGameDestroy(game);
 				newGame = true;
 			} else if (move == 10) {
-				game = undoMove(game, gameLevel);
+				game = undoMove(game);
 				round -= 2;
 			} else if (isWon == '\0') {
 				spFiarGameSetMove(game, move-1);
