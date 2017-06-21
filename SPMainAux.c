@@ -91,7 +91,7 @@ void printCompNewDisc(int col) {
 }
 
 void printQuit() {
-	printf("Exiting...\n");
+	printf("Exiting...\n\n");
 }
 
 void printRestart() {
@@ -111,7 +111,7 @@ void addDiscInvalid() {
 }
 
 void addDiscFull(int col) {
-	printf("Error: column %d is full\n",col+1);
+	printf("Error: column %d is full\n",col);
 }
 
 void errorUndo() {
@@ -122,7 +122,7 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 void printExit() {
-	printf("Exiting...\n");
+	printf("Exiting...\n\n");
 }
 
 
@@ -171,14 +171,17 @@ int proccesCommand(SPFiarGame *game, SPCommand command) {
 int userTurn(SPFiarGame *game) {
 	SPCommand command;
 	char str[SP_MAX_LINE_LENGTH];
-	int move = 0;
+	int move = -1;
 //	for (int i=0; i<SP_MAX_LINE_LENGTH; i++) {
 //		str[i] = '\0';
 //	}
 	spFiarGamePrintBoard(game);
-	while (move == 0) {
+	while (move <= 0) {
 //		printf("\nmove is %d\n", move);
-		printNextMove();
+		if (move == -1) {
+			printNextMove();
+			move = 0;
+		}
 		fflush(stdin);
 	        fgets(str, SP_MAX_LINE_LENGTH, stdin);
 		sscanf(str, "%[^\n]s", str);

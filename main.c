@@ -50,8 +50,7 @@ int main() {
 				game = undoMove(game);
 				if(game == NULL) {
 					spFiarGameDestroy(game);
-					printExit();
-					printf("\n"); //TODO: check if okay!
+					printQuit();
 					exit(0);
 				}
 				round -= 2;
