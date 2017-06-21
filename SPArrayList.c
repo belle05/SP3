@@ -10,6 +10,7 @@ SPArrayList* spArrayListCreate(int maxSize){
 	}
 	newArray = (SPArrayList*)malloc(sizeof(SPArrayList));
 	if (newArray == NULL) {
+		printf("Error: spArrayListCreate has failed\n");
 		return NULL;
 	}
 	newArray -> maxSize = maxSize;

@@ -223,14 +223,18 @@ int  handleWinner(char simbol) {
 	else if (simbol == '-') {
 		printGameOverTie();
 	}			
-	while (move !=8 || move!=9 || move !=10 ) {
+	while (move !=8 && move!=9 && move !=10 ) {
 		printCont();
-                fflush(stdin);
-                fgets(str, 1024, stdin);
-		sscanf(str, "%[^ \n]s", str);
+		fflush(stdin);
+                fgets(str, SP_MAX_LINE_LENGTH, stdin);
+                sscanf(str, "%[^\n]s", str);
 //                scanf("%[^\n]s", str);
 		command = spParserPraseLine(str);
 		move = proccesWinCommand(command);
+//		printf ("move is %d",move);
+		if (move !=8 && move!=9 && move !=10) {
+			printf("Error: the game is over\n");
+		}
 	}
 	return move;
 }
@@ -257,7 +261,9 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);
 //	printf("got to undoMove\n");
-	spFiarGameUndoPrevMove(game);
+	if (!spFiarGameUndoPrevMove(game)== SP_FIAR_GAME_SUCCESS) {
+		errorUndo();
+	}
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return game;

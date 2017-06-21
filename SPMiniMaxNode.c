@@ -7,6 +7,7 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	MiniMaxNode *myNode;
 	myNode = calloc(1, sizeof(MiniMaxNode));
 	if (myNode == NULL) {
+			printf("Error: nodeCreate has failed\n");
 			return NULL;
 		}
 	myNode -> myGame = game;
@@ -195,8 +196,14 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 	//	if (success) {
 		if (spFiarGameIsValidMove(myNode -> myGame, i)) {
 			newGame = spFiarGameCopy(myNode -> myGame);
+			if (newGame == NULL) {
+				return false;
+			}
 			spFiarGameSetMove(newGame, i);
 			myNode -> childs[i] = nodeCreate(newGame);
+			if (myNode -> childs[i] == NULL) {
+				return false;
+			}
             if(newGame->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL){
                 newGame->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
             }else {
@@ -209,7 +216,7 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 //	updateMiniMaxNode(myNode);
 //	printf("updated minimax node at level %d\n", level);
 	//return success;
-	return 1;
+	return true;
 }
 
 //bool createNodesForChilds(MiniMaxNode *myNode) {

@@ -22,6 +22,7 @@ SPFiarGame* spFiarGameCreate(int historySize){
 	game = calloc(1, sizeof(SPFiarGame));
 //	printf("after malloc");
 	if ((historySize <= 0) || (game == NULL)) {
+		printf("Error: spFiarGameCreate has failed\n");
 		return NULL;
 	}
 
@@ -59,6 +60,10 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src){
 	SPFiarGame *game;
 //	printf("before malloc\n");
 	game = calloc(1, sizeof(SPFiarGame));
+	if (game == NULL) {
+		printf("Error: spFiarGameCopy has failed\n");
+		return NULL;
+	}
 //	printf("after malloc\n");
 	//Set game status to be like src
 	for (unsigned int r=0; r< SP_FIAR_GAME_N_ROWS; r++){
@@ -149,22 +154,22 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	bool success = false;
 	int discToRemove;
 
-	printf("got to UndoPrevMove\n");
+	//printf("got to UndoPrevMove\n");
 	if (src == NULL) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	} else if (spArrayListSize(src -> history) == 0) {
 		return SP_FIAR_GAME_NO_HISTORY;
 	} //undoing Computer's last move
 	
-	printf("got to the good part of UndoPrevMove\n");
+	//printf("got to the good part of UndoPrevMove\n");
 	discToRemove = spArrayListGetAt(src -> history, 0);
-	printf("going to remove disc at col %d\n", discToRemove);
+	//printf("going to remove disc at col %d\n", discToRemove);
 	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
 		spArrayListRemoveFirst(src -> history);
 	} //undoing user's last move
 	discToRemove = spArrayListGetAt(src -> history, 0);
-	printf("going to remove disc at col %d\n", discToRemove);
+	//printf("going to remove disc at col %d\n", discToRemove);
 	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
 		spArrayListRemoveFirst(src -> history);
