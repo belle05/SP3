@@ -257,13 +257,12 @@ int proccesWinCommand(SPCommand command){
 
 
 SPFiarGame* undoMove(SPFiarGame *game) {
-//	MiniMaxNode *miniMaxNode;
-//	SPFiarGame *newGame;
-//	newGame = spFiarGameCopy(game);
-//	printf("got to undoMove\n");
 	SP_FIAR_GAME_MESSAGE undoResult = spFiarGameUndoPrevMove(game);
 	if (!(undoResult == SP_FIAR_GAME_SUCCESS)) {
 		errorUndo();
+		if (undoResult == SP_FIAR_GAME_NO_HISTORY) {
+			return NULL;
+		}
 	}
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);

@@ -48,6 +48,12 @@ int main() {
 				newGame = true;
 			} else if (move == 10) {
 				game = undoMove(game);
+				if(game == NULL) {
+					spFiarGameDestroy(game);
+					printExit();
+					printf("\n"); //TODO: check if okay!
+					exit(0);
+				}
 				round -= 2;
 			} else if (isWon == '\0') {
 				spFiarGameSetMove(game, move-1);

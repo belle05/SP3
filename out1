@@ -92,13 +92,6 @@ Remove disc: remove user's disc at column 4
 -----------------
   1 2 3 4 5 6 7  
 Please make the next move:
-|               |
-|               |
-|               |
-|               |
-|               |
-|               |
------------------
-  1 2 3 4 5 6 7  
-Please make the next move:
+Error: cannot undo previous move!
 Exiting...
+
