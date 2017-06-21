@@ -261,11 +261,10 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);
 //	printf("got to undoMove\n");
-
-//	} //undo
-	if (!spFiarGameUndoPrevMove(game)== SP_FIAR_GAME_SUCCESS) {
+	SP_FIAR_GAME_MESSAGE undoResult = spFiarGameUndoPrevMove(game);
+	if (!(undoResult == SP_FIAR_GAME_SUCCESS)) {
 		errorUndo();
-	}	
+	}
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return game;
