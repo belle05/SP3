@@ -1,5 +1,6 @@
 #include "SPMainAux.h"
 #include "SPFIARParser.h"
+#include "SPMiniMax.h"
 
 int  printDifficulty() {
 	int difficulty;
@@ -12,7 +13,7 @@ int  printDifficulty() {
         fgets(charDifficulty, SP_MAX_LINE_LENGTH, stdin);
 	sscanf(charDifficulty, "%[^ \n]s", charDifficulty);
 	if (checkIfOnlylWhiteSpaces(charDifficulty)) {
-		printf("\nblankkkkkk\n");
+//		printf("\nblankkkkkk\n");
 	}
 //	scanf("%s", charDifficulty);
 	//printf("cahrDifficulty is %s\n",charDifficulty);
@@ -21,6 +22,7 @@ int  printDifficulty() {
 		return difficulty;
 	}
 	else if (spParserPraseLine(charDifficulty).cmd == SP_QUIT) {
+//		printf("found the command quit in printDifficulty\n");
 		return '\0';
 	}
 	else {
@@ -38,15 +40,15 @@ bool checkNumRange7(int num){
 }
 
 int getGameDifficulty() {
-	int gameLevel = '\0';
-	while (gameLevel == '\0') {
+	int gameLevel = -1;
+	while (gameLevel == -1) {
 		gameLevel = printDifficulty();
 		if (gameLevel == '\0') {
 			return -1;
 		}
 		if (!checkNumRange7(gameLevel)){
 			invalidLevel();
-			gameLevel = '\0';
+			gameLevel = -1;
 		}
 	}
 	return gameLevel;
@@ -119,35 +121,39 @@ void errorUndo() {
 void errorGameOver() {
 	printf("Error: the game is over\n");
 }
+void printExit() {
+	printf("Exiting…\n");
+}
+
 
 int proccesCommand(SPFiarGame *game, SPCommand command) {
 //TODO: figure out how to use game level
-	printf("1");
+//	printf("1");
 	if (!(command.validArg)) {
-		printf("2");
+//		printf("2");
 		invalidCommand();
 	        return 0;
 	}
 	else if (command.cmd == SP_QUIT) {
-		printf("3");
+//		printf("3");
 		return 8;
 	}
     	else if (command.cmd == SP_RESTART){
-		printf("4");
+//		printf("4");
 		printRestart();
 	        return 9;
    	}
 	else if (command.cmd == SP_SUGGEST_MOVE){
-		printf("5");
-	        //suggestMove(game); TODO: Handle suggest move
+//		printf("5");
+	        suggestMove(game);
         	return 0;
    	}
     	else if(command.cmd == SP_UNDO_MOVE){
-		printf("6");
+//		printf("6");
 		return 10;
 	}
 	else if (command.cmd==SP_ADD_DISC){
-		printf("7");
+//		printf("7");
 		if (!checkNumRange7(command.arg)) {
 			addDiscInvalid();
            		return 0;
@@ -171,7 +177,7 @@ int userTurn(SPFiarGame *game) {
 //	}
 	spFiarGamePrintBoard(game);
 	while (move == 0) {
-		printf("\nmove is %d\n", move);
+//		printf("\nmove is %d\n", move);
 		printNextMove();
 		fflush(stdin);
 	        fgets(str, SP_MAX_LINE_LENGTH, stdin);
@@ -191,8 +197,15 @@ int userTurn(SPFiarGame *game) {
 	return move;
 }
 
-int suggestMove(MiniMaxNode *node) {
-	return node -> maxChildIndex;
+void suggestMove(SPFiarGame *currentGame) {
+	int move;
+	//if (currentGame == NULL) {
+//		printf("game is null");
+	//}
+	//printf("current level %d\n", currentGame->level);
+	move = spMinimaxSuggestMove(currentGame, currentGame->level);
+	//printf("move from suggested move is %d\n",move);
+	printSuggestMove(move);
 }
 
 
@@ -243,13 +256,13 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 //	MiniMaxNode *miniMaxNode;
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);
-	printf("got to undoMove\n");
+//	printf("got to undoMove\n");
 	spFiarGameUndoPrevMove(game);
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return game;
 }
-
+/**
 int compTurn(MiniMaxNode *node) {
 	int moveOptions = SP_FIAR_GAME_N_COLUMNS;
 	bool moveMade = false;
@@ -260,7 +273,7 @@ int compTurn(MiniMaxNode *node) {
 			updateMiniMaxNode(node);
 			moveOptions -= 1;
 		} else {
-			printf("\nComputer move will be %d", move);
+//			printf("\nComputer move will be %d", move);
 			spFiarGameSetMove(node -> myGame, move);
 			spFiarGamePrintBoard(node -> myGame);
 			return move;
@@ -269,3 +282,4 @@ int compTurn(MiniMaxNode *node) {
 	return 10;
 }
 
+**/

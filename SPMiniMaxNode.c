@@ -28,7 +28,7 @@ int getBestMove(MiniMaxNode *myNode){
         int max = -200000;
         int index = -1;
         for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
-            printf("%d\n",myNode -> childs[i]->score);
+ //           printf("%d\n",myNode -> childs[i]->score);
             if(myNode -> childs[i] != NULL && myNode -> childs[i]->score > max){
                 max = myNode -> childs[i]->score;
                 index = i;
@@ -39,7 +39,7 @@ int getBestMove(MiniMaxNode *myNode){
         int min = 200000;
         int index = -1;
         for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
-            printf("%d\n",myNode -> childs[i]->score);
+//            printf("%d\n",myNode -> childs[i]->score);
             if(myNode -> childs[i] != NULL && myNode -> childs[i]->score < min){
                 min = myNode -> childs[i]->score;
                 index = i;
@@ -248,7 +248,7 @@ MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
 //	newNode = nodeCreate(newGame);
 //	printf("Created new node\n");
 	createNewTreeFromNode(myNode, myNode -> myGame -> level);
-	printf("Created new tree\n");
+//	printf("Created new tree\n");
 //	MiniMaxDelete(myNode);
 //	printf("Deleted old node\n");
 	return myNode;

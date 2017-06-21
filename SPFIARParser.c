@@ -135,7 +135,7 @@ SPCommand spParserPraseLine(char* str) {
 //		printf("\nClap");
 //	}
 	if ((str == NULL)) { //|| (checkIfOnlylWhiteSpaces(str) == true)) {
-		printf("\ninvalid");
+//		printf("\ninvalid");
 		myCommand.arg = 0;
 		myCommand.validArg = false;
 		myCommand.cmd = SP_INVALID_LINE;
@@ -144,7 +144,7 @@ SPCommand spParserPraseLine(char* str) {
 
 
 	while (token != NULL || finishedArgs == false) {
-		printf("token is %s\n",token);
+//		printf("token is %s\n",token);
 		if (strcmp(token, "") != 0) {
 			if (isCom) { 
 				myCommand.cmd = checkForCommand(token);
@@ -159,13 +159,14 @@ SPCommand spParserPraseLine(char* str) {
 						myCommand.arg = atoi(token);
 						myCommand.validArg = true; 
 					} else {
-						printf("valid command not valid arg\n");
+//						printf("valid command not valid arg\n");
 						myCommand.cmd = SP_INVALID_LINE;
 					}
 					finishedArgs = true;
 				} else  {
-					printf("found invalid command\n");
+//					printf("found invalid command\n");
 					myCommand.cmd = SP_INVALID_LINE;
+					myCommand.validArg = false;
 					finishedArgs = true;
 				}
 			//	} else {
@@ -180,24 +181,25 @@ SPCommand spParserPraseLine(char* str) {
 	}
 	if  (myCommand.cmd == SP_INVALID_LINE) {
 		myCommand.cmd = SP_INVALID_LINE;
+		myCommand.validArg = false;
 	} else if (myCommand.cmd != SP_ADD_DISC){
-		printf("found different command from add_disc");
+//		printf("found different command from add_disc");
 		myCommand.arg = 0;
 		myCommand.validArg = true;	
 	}
 	if (token != NULL && (strcmp(token, "\n") != 0)) {
-		printf("\ninvalid");
-                myCommand.arg = 0;
-                myCommand.validArg = false;
-                myCommand.cmd = SP_INVALID_LINE;
-                return myCommand;
+//		printf("\ninvalid");
+		myCommand.arg = 0;
+		myCommand.validArg = false;
+        myCommand.cmd = SP_INVALID_LINE;
+        return myCommand;
         }
 	if (myCommand.validArg) {
-		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
+//		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
 	} else {
-		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
+//		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
 	}
-	printf("finished parser command\n");
+//	printf("finished parser command\n");
 	return myCommand;
 }
 
@@ -206,7 +208,7 @@ SPCommand spParserPraseLine(char* str) {
 
 
 SP_COMMAND checkForCommand(char *command) {
-	printf("\ncommand is %s\n", command);
+//	printf("\ncommand is %s\n", command);
 	if (command == NULL) {
 		return SP_INVALID_LINE;
 	}
@@ -232,7 +234,7 @@ SP_COMMAND checkForCommand(char *command) {
 	} else if (strcmp(sp_suggest, command) == 0) {
 		return SP_SUGGEST_MOVE;
 	} else if (strcmp(quit, command) == 0) {
-		printf("found quit");
+//		printf("found quit");
 		return SP_QUIT;
 	} else if (strcmp(restart, command) == 0) {
 		return SP_RESTART;

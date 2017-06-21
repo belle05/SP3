@@ -18,10 +18,11 @@ int main() {
 		if (newGame) {
 			gameLevel = getGameDifficulty();
 			if (gameLevel == -1) {
-				break;
+				printExit();
+				exit(0);
 			}
 			game = spFiarGameCreate(SP_ARRAY_MAX_HISTORY);
-
+			game->level = gameLevel;
 			newGame = false;
 			round = 0;
 		}
@@ -29,12 +30,15 @@ int main() {
 			if (isWon == '\0') {
 				move = userTurn(game);
 			}
-			printf("\nmove is %d", move);
+//			printf("\nmove is %d", move);
 			if (move == 8) {
 				//free(miniMaxNode);
 //				MiniMaxDelete(miniMaxNode);
+//				printf("before destroing game");
 				spFiarGameDestroy(game);
-				break;
+//				printf("after destroing game");
+				printExit();
+				exit(0);
 			} else if (move == 9) {
 				spFiarGameDestroy(game);
 				newGame = true;
@@ -66,12 +70,12 @@ int main() {
 //			}
 		}
 		if ((move != 8) && (move != 9)) {
-			printf("checking winer from main\n");
+//			printf("checking winer from main\n");
 			isWon = spFiarCheckWinner(game);
 		}
-		printf("isWon is %c\n", isWon);
+//		printf("isWon is %c\n", isWon);
 		if (isWon != '\0') {
-			printf("found winner score: %d\n",calcBoardScore2(game));
+//			printf("found winner score: %d\n",calcBoardScore2(game));
 			move = handleWinner(isWon);
 		}
 		round += 1;

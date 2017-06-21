@@ -12,8 +12,8 @@ bool checkNumRange7(int num);
 int getGameDifficulty();
 int proccesCommand(SPFiarGame *game, SPCommand command);
 int userTurn(SPFiarGame *game);
-int suggestMove(MiniMaxNode *node);
-void freeMem(MiniMaxNode *node);
+void suggestMove(SPFiarGame *currentGame);
+//void freeMem(MiniMaxNode *node);
 int proccesWinCommand(SPCommand command);
 int  handleWinner(char simbol);
 SPFiarGame* undoMove(SPFiarGame *game);
@@ -22,6 +22,7 @@ int compTurn(MiniMaxNode *node);
 //General Prints
 int printDifficulty();
 void printNextMove();
+void printExit();
 void printGameOverWin();
 void printGameOverLose();
 void printGameOverTie();

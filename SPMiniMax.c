@@ -26,7 +26,7 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame,
     miniMaxNode = nodeCreate(spFiarGameCopy(currentGame));
     createNewTreeFromNode(miniMaxNode, maxDepth);
     int move = getBestMove(miniMaxNode);
-    printf("move=%d\n", move);
+//    printf("move=%d\n", move);
     MiniMaxDelete(miniMaxNode);
     //printf("move = %d\n",move);
     return move;
