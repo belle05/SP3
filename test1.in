@@ -1,0 +1,12 @@
+1
+add_disc 4
+add_disc 4
+add_disc 4
+undo_move
+add_disc 4
+undo_move
+undo_move
+undo_move
+undo_move
+quit
+

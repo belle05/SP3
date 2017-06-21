@@ -1,0 +1,104 @@
+Please enter the difficulty level between [1-7]:
+|               |
+|               |
+|               |
+|               |
+|               |
+|               |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Computer move: add disc to column 4
+|               |
+|               |
+|               |
+|               |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Computer move: add disc to column 4
+|               |
+|               |
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Computer move: add disc to column 4
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Remove disc: remove computer's disc at column 4
+Remove disc: remove user's disc at column 4
+|               |
+|               |
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Computer move: add disc to column 4
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Remove disc: remove computer's disc at column 4
+Remove disc: remove user's disc at column 4
+|               |
+|               |
+|       O       |
+|       X       |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Remove disc: remove computer's disc at column 4
+Remove disc: remove user's disc at column 4
+|               |
+|               |
+|               |
+|               |
+|       O       |
+|       X       |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Remove disc: remove computer's disc at column 4
+Remove disc: remove user's disc at column 4
+|               |
+|               |
+|               |
+|               |
+|               |
+|               |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+|               |
+|               |
+|               |
+|               |
+|               |
+|               |
+-----------------
+  1 2 3 4 5 6 7  
+Please make the next move:
+Exiting...

@@ -166,12 +166,14 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	//printf("going to remove disc at col %d\n", discToRemove);
 	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
+		printf("Remove disc: remove computer's disc at column %d\n",discToRemove+1);
 		spArrayListRemoveFirst(src -> history);
 	} //undoing user's last move
 	discToRemove = spArrayListGetAt(src -> history, 0);
 	//printf("going to remove disc at col %d\n", discToRemove);
 	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
+		printf("Remove disc: remove user's disc at column %d\n",discToRemove+1);
 		spArrayListRemoveFirst(src -> history);
 	}
 	return SP_FIAR_GAME_SUCCESS;
@@ -205,7 +207,12 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
 	for (int r=SP_FIAR_GAME_N_ROWS-1; r>=0; r--){
 		printf("|");
 		for(int c=0; c<SP_FIAR_GAME_N_COLUMNS; c++){
-			printf(" %c", src->gameBoard[r][c]);
+			if (src -> gameBoard[r][c] == '\0') {
+				printf("  ");
+			}
+			else {
+				printf(" %c", src->gameBoard[r][c]);
+			}
 		}
 		printf(" |\n");
 	}

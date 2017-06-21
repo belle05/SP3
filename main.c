@@ -22,6 +22,10 @@ int main() {
 				exit(0);
 			}
 			game = spFiarGameCreate(SP_ARRAY_MAX_HISTORY);
+			if (game == NULL) {
+				printExit();
+                                exit(0);
+			}
 			game->level = gameLevel;
 			newGame = false;
 			round = 0;
@@ -47,7 +51,7 @@ int main() {
 				round -= 2;
 			} else if (isWon == '\0') {
 				spFiarGameSetMove(game, move-1);
-				spFiarGamePrintBoard(game);
+				//spFiarGamePrintBoard(game);
 //				miniMaxNode = moveForward(miniMaxNode, move-1);
 				game -> currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
 			}
@@ -58,6 +62,11 @@ int main() {
 //			spFiarGamePrintBoard(miniMaxNode -> myGame);
 //			move = compTurn(miniMaxNode);
 			move = spMinimaxSuggestMove(game, gameLevel);
+			printCompNewDisc(move);
+			if (move == 3000) {
+				printExit();
+                                exit(0);
+                        }
 			spFiarGameSetMove(game, move);
 			game -> currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
 

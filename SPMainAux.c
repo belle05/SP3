@@ -122,7 +122,7 @@ void errorGameOver() {
 	printf("Error: the game is over\n");
 }
 void printExit() {
-	printf("Exiting…\n");
+	printf("Exiting...\n");
 }
 
 
@@ -261,9 +261,11 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 //	SPFiarGame *newGame;
 //	newGame = spFiarGameCopy(game);
 //	printf("got to undoMove\n");
+
+//	} //undo
 	if (!spFiarGameUndoPrevMove(game)== SP_FIAR_GAME_SUCCESS) {
 		errorUndo();
-	}
+	}	
 //	miniMaxNode = nodeCreate(newGame);
 //	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return game;

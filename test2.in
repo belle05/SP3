@@ -1,0 +1,14 @@
+17
+1
+add_disc 4
+add_disc 4
+undo_move
+adD_disc 4
+add_disc 17
+suggest_move
+add_disc 4
+add_disc 4
+add_disc 4
+restart_game
+quit
+
