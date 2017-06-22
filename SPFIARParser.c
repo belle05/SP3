@@ -60,66 +60,6 @@ bool checkIfOnlylWhiteSpaces(char* str) {
 	return true;
 }
 
-/*
-SPCommand spParserPraseLine(char* str) {
-	printf("a");
-	SPCommand myCommand;
-	int size = 0;
-	bool isNull = false;
-	while(!isNull) {
-		if (str[size] != '\0') {
-			size +=1;
-		} else {
-			isNull = true;
-		}
-	}
-	char newstr[size];
-//	myCommand = (SPCommand *)malloc(sizeof(SPCommand));
-	printf("b");
-	if ((str == NULL) || (checkIfOnlylWhiteSpaces(str) == true)) {
-		myCommand.arg = 0;
-		myCommand.validArg = false;
-		myCommand.cmd = SP_INVALID_LINE;
-		return myCommand;
-	}
-	for (int i=0; i<size; i++) {
-		newstr[i] = '\0';
-	}
-	strcpy(newstr, str);
-	char *command;
-	char *argument;
- 	command = strtok (newstr," \t\v\f\r");
-	argument = strtok (NULL," \t\v\f\r");
-	if (!(command) || !( argument)) {
-		myCommand.cmd = SP_INVALID_LINE;
-	}
-	argument = strtok (NULL," \t\v\f\r");
-	if (strcmp( argument, "\n") == 0) {
-		argument = strtok (NULL," \t\v\f\r");
-		if (argument) myCommand.cmd = SP_INVALID_LINE;
-	}
-	else if (strcmp( argument, "\n") != 0 && argument != NULL) {
-		myCommand.cmd = SP_INVALID_LINE;
-	}
-	if ((checkForCommand(command) == SP_ADD_DISC) && spParserIsInt(argument) ) {
-		myCommand.cmd = SP_ADD_DISC;
-		myCommand.validArg = true;
-		myCommand.arg = getInt(argument);
-	}
-	else {
-		if ((checkForCommand(command) == SP_ADD_DISC) && spParserIsInt(argument) == false) myCommand.cmd = SP_INVALID_LINE;
-		else myCommand.cmd = checkForCommand(command);
-		myCommand.validArg = false;
-		myCommand.arg = 0;
-	}
-	return myCommand;	
-}
-
-*/
-
-
-
-
 SPCommand spParserPraseLine(char* str) {
 	char *token = NULL;
 	char *parseChars = " \t\r\n";;
@@ -130,52 +70,35 @@ SPCommand spParserPraseLine(char* str) {
 	strcpy(local_str, str);
 	myCommand.validArg = true;
 	token = strtok(local_str, parseChars);
-//	printf("\nBoom");
-//	if (checkIfOnlylWhiteSpaces(str) == true) {
-//		printf("\nClap");
-//	}
 	if ((str == NULL)) { //|| (checkIfOnlylWhiteSpaces(str) == true)) {
-//		printf("\ninvalid");
 		myCommand.arg = 0;
 		myCommand.validArg = false;
 		myCommand.cmd = SP_INVALID_LINE;
 		return myCommand;
 	}
 
-
 	while (token != NULL || finishedArgs == false) {
-//		printf("token is %s\n",token);
 		if (strcmp(token, "") != 0) {
 			if (isCom) { 
 				myCommand.cmd = checkForCommand(token);
 				if (myCommand.cmd != SP_ADD_DISC){
-					//printf("in if not add_disc, my command is %d\n",myCommand.cmd);
 					myCommand.validArg = true;
 					finishedArgs = true;
 				}
 			} else {
-				//token = strtok(NULL, parseChars);
 				if (myCommand.cmd == SP_ADD_DISC){ //Flag that the command was add_disk
 					if (spParserIsInt(token)) {
 						myCommand.arg = atoi(token);
 						myCommand.validArg = true; 
 					} else {
-//						printf("valid command not valid arg\n");
 						myCommand.cmd = SP_INVALID_LINE;
 					}
 					finishedArgs = true;
 				} else  {
-//					printf("found invalid command\n");
 					myCommand.cmd = SP_INVALID_LINE;
 					myCommand.validArg = false;
 					finishedArgs = true;
 				}
-			//	} else {
-			//		printf("not add disk and not invalid\n");
-			//		myCommand.arg = 0;
-			//		myCommand.validArg = true;
-			//		finishedArgs = true;
-			//	}
 			}
 			isCom = false;
 		}
@@ -185,23 +108,15 @@ SPCommand spParserPraseLine(char* str) {
 		myCommand.cmd = SP_INVALID_LINE;
 		myCommand.validArg = false;
 	} else if (myCommand.cmd != SP_ADD_DISC){
-//		printf("found different command from add_disc");
 		myCommand.arg = 0;
 		myCommand.validArg = true;	
 	}
 	if (token != NULL && (strcmp(token, "\n") != 0)) {
-//		printf("\ninvalid");
 		myCommand.arg = 0;
 		myCommand.validArg = false;
 	        myCommand.cmd = SP_INVALID_LINE;
         	return myCommand;
         }
-	if (myCommand.validArg) {
-	//	printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
-	} else {
-	//	printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
-	}
-	//printf("finished parser command\n");
 	return myCommand;
 }
 
@@ -210,7 +125,6 @@ SPCommand spParserPraseLine(char* str) {
 
 
 SP_COMMAND checkForCommand(char *command) {
-//	printf("\ncommand is %s\n", command);
 	if (command == NULL) {
 		return SP_INVALID_LINE;
 	}
@@ -220,16 +134,6 @@ SP_COMMAND checkForCommand(char *command) {
 	char *quit = "quit\0";
 	char *restart = "restart_game\0";
 	char *restart2 = "restart\0";
-//	strcpy(undo, "undo_move");
-//	strcpy(add_disk, "add_disk");
-//	strcpy(sp_suggest, "suggest_move") ;
-//	strcpy(quit,"quit");
-//	strcpy(restart,"restart");
-//	int a, b, c;
-//	a = strcmp(undo, command);
-//	b = strcmp(add_disk, command);
-//	c = strcmp(sp_suggest, command);
-//	printf("\na=%d, b=%d, c=%d\n", a, b, c);
 	if (strcmp(undo, command) == 0) {
 		return SP_UNDO_MOVE;
 	} else if (strcmp(add_disk, command) == 0) {
@@ -237,7 +141,6 @@ SP_COMMAND checkForCommand(char *command) {
 	} else if (strcmp(sp_suggest, command) == 0) {
 		return SP_SUGGEST_MOVE;
 	} else if (strcmp(quit, command) == 0) {
-//		printf("found quit");
 		return SP_QUIT;
 	} else if ((strcmp(restart, command) == 0) || (strcmp(restart2, command) == 0)) {
 		return SP_RESTART;
@@ -271,6 +174,4 @@ bool checkIfNotOnlyWhiteSpaces(const char* str) {
         }
 	return notOnlylWhiteSpaces;
 }
-
-
 

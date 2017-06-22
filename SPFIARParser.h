@@ -62,7 +62,11 @@ SP_COMMAND checkForCommand(char *command);
 **/
 
 bool checkIfOnlylWhiteSpaces(char *str);
-
+/**
+ * It assume that the cahr is a valid int and parses the int
+ * @param argument (char that is int)
+ * @return the int value of the string
+ */
 int getInt(char* argument);
 
 #endif

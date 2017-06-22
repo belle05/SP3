@@ -31,7 +31,7 @@
 #define SP_FIAR_GAME_EMPTY_ENTRY ' '
 
 static const int scores[] = {-5,-2,-1,0,1,2,5};
-
+/**struct for a game object**/
 typedef struct sp_fiar_game_t {
 	char gameBoard[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
 	int tops[SP_FIAR_GAME_N_COLUMNS];
@@ -138,7 +138,12 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col);
  *                                 board is removed and the current player is changed
  */
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
-
+/**
+ * removing disc from a column
+ * @param game = src
+ * @param number of column = col
+ * @return true is succeed false if top of column == 0
+ */
 
 bool spFiarGameRemoveDisc(SPFiarGame* src, int col);
 /**
@@ -299,32 +304,60 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level);
 **/
 
 MiniMaxNode* moveForward(MiniMaxNode *myNode, int index);
-
-/**This function take the chosen node and returning the newNode with a new tree.
-*@return:
-*if the node is NULL returns NULL, if index out of range returns NULL, if the chosen child is NULL returns NULL.
-**
-
-void addLevel(MiniMaxNode *myNode);
-
-** This function recursivly updates all nodes in the tree according to the level of the tree.
-*@return
-*false, if the level <0
-*true, otherwise.
-**
-
-*bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level);
-**/
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the total score of the given board.
+ */
 int calcBoardScore(SPFiarGame* src);
-
+/**
+ * Given a score, this function returns the actual
+ * value to add according to a weight vector: {−5, −2, −1,1,2,5}
+ *
+ * @param score - the calculated score of a foursome.
+ * @return
+ * The matching value according to the weigh vector.
+ */
 int singleScore(int score);
-
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by lines.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the lines score of the given board.
+ */
 int calcBoardRows(SPFiarGame* src);
-
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by columns.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the columns score of the given board.
+ */
 int calcBoardCols(SPFiarGame* src);
 
+/**
+ * Given a game state, this function gives a score tag according to the
+ * disks of each player by diagonals.
+ *
+ * @param src - The current game state
+ * @param player1 - player 1's symbol
+ * @param player2 - player 2's symbol
+ * @return
+ * The function returns the columns score of the given board.
+ */
 int calcBoardDiagonals(SPFiarGame* src);
 
-int calcBoardScore2(SPFiarGame* src) ;
 
 #endif

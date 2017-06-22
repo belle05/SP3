@@ -14,7 +14,7 @@ MiniMaxNode* nodeCreate(SPFiarGame *game) {
 	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
 		myNode -> childs[i] = NULL;
 	}
-	myNode -> score = calcBoardScore2(game);
+	myNode -> score = calcBoardScore(game);
 	myNode -> minChildIndex = -2;
 	myNode -> maxChildIndex = -2;
 	myNode -> minChildScore = 200000;
@@ -29,7 +29,6 @@ int getBestMove(MiniMaxNode *myNode){
         int max = -200000;
         int index = -1;
         for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
- //           printf("%d\n",myNode -> childs[i]->score);
             if(myNode -> childs[i] != NULL && myNode -> childs[i]->score > max){
                 max = myNode -> childs[i]->score;
                 index = i;
@@ -40,7 +39,6 @@ int getBestMove(MiniMaxNode *myNode){
         int min = 200000;
         int index = -1;
         for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
-//            printf("%d\n",myNode -> childs[i]->score);
             if(myNode -> childs[i] != NULL && myNode -> childs[i]->score < min){
                 min = myNode -> childs[i]->score;
                 index = i;
@@ -57,7 +55,6 @@ void updateScores(MiniMaxNode *myNode){
     for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
         updateScores(myNode->childs[i]);
     }
-
     if(myNode->myGame->currentPlayer == SP_FIAR_GAME_PLAYER_2_SYMBOL){
         int max = -200000;
         for(int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
@@ -81,40 +78,10 @@ void updateScores(MiniMaxNode *myNode){
     }
 }
 
-//MiniMaxNode* copyNode(MiniMaxNode *myNode) {
-//	MiniMaxNode *newNode;
-//	newNode = (MiniMaxNode*)malloc(sizeof(MiniMaxNode));
-//	if (newNode == NULL) {
-//		return NULL;
-//	}
-//	SPFiarGame *copyGame;
-//	copyGame = spFiarGameCopy((myNode -> myGame));
-//	newNode -> myGame = copyGame;
-//	for (unsigned i=0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
-//		newNode -> childs[i] = myNode -> childs[i];
-//	}
-//	newNode -> score = myNode -> score;
-//	newNode -> minChildIndex = myNode -> minChildIndex;
-//	newNode -> maxChildIndex = myNode -> maxChildIndex;
-//	newNode -> minChildScore = myNode -> minChildScore;
-//	newNode -> maxChildScore = myNode -> maxChildScore;
-//	return newNode;
-//}
-
 bool MiniMaxDelete(MiniMaxNode *myNode) {
 	if (myNode == NULL) {
 		return false;
 	}
-//	if (ifLeaf(myNode)) {
-//		printf("This node is a leaf\n");
-//		if (myNode -> myGame != NULL) {
-//			spFiarGameDestroy(myNode -> myGame);
-//			printf("GameDestroyed..\n");
-//		}
-//		free(myNode);
-//		return true;
-//	}else {
-
     for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
         if (myNode->childs[i] != NULL){
         MiniMaxDelete(myNode->childs[i]);
@@ -124,7 +91,6 @@ bool MiniMaxDelete(MiniMaxNode *myNode) {
         spFiarGameDestroy(myNode -> myGame);
 	}
 	free(myNode);
-//	}
 	return true;
 }
 
@@ -161,23 +127,15 @@ bool updateMiniMaxNode(MiniMaxNode *myNode) {
 			myNode -> maxChildScore = myNode -> childs[i] -> minChildScore;
 			myNode -> maxChildIndex = i;
 		}
-//		if (((myNode -> childs[i]) -> score == (myNode -> maxChildScore)) && (i < (myNode -> maxChildIndex))) {
-//			myNode -> maxChildIndex = i;
-//		}
 		if ((myNode -> childs[i] -> maxChildScore) < (myNode -> minChildScore)) {
 			myNode -> minChildScore = myNode -> childs[i] -> maxChildScore;
 			myNode -> minChildIndex = i;
 		}
-//		if (((myNode -> childs[i]) -> score == (myNode -> minChildScore)) && (i < (myNode -> minChildIndex))) {
-//			myNode -> minChildIndex = i;
-//		}
 	}
 	return true;
 }
 
 bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
-//	bool success = false;
-
 	if (level <0) {
 		return false;
 	}
@@ -187,150 +145,42 @@ bool createNewTreeFromNode(MiniMaxNode *myNode, int level) {
 	if (myNode == NULL) {
 		 return false;
 	}
-	//if (ifLeaf(myNode)) {
-//		createNodesForChilds(myNode);
-	//}
-    if(spFiarCheckWinner(myNode->myGame)==0){
-	SPFiarGame *newGame;
-	for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-	//	if (success) {
-		if (spFiarGameIsValidMove(myNode -> myGame, i)) {
-			newGame = spFiarGameCopy(myNode -> myGame);
-			if (newGame == NULL) {
-				return false;
+    if(spFiarCheckWinner(myNode->myGame)==0) {
+		SPFiarGame *newGame;
+		for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
+			if (spFiarGameIsValidMove(myNode->myGame, i)) {
+				newGame = spFiarGameCopy(myNode->myGame);
+				if (newGame == NULL) {
+					return false;
+				}
+				spFiarGameSetMove(newGame, i);
+				myNode->childs[i] = nodeCreate(newGame);
+				if (myNode->childs[i] == NULL) {
+					return false;
+				}
+				if (newGame->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
+					newGame->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+				} else {
+					newGame->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+				}
+				createNewTreeFromNode(myNode->childs[i], level - 1);
 			}
-			spFiarGameSetMove(newGame, i);
-			myNode -> childs[i] = nodeCreate(newGame);
-			if (myNode -> childs[i] == NULL) {
-				return false;
-			}
-            if(newGame->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL){
-                newGame->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
-            }else {
-                newGame->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
-            }
-            createNewTreeFromNode(myNode -> childs[i], level-1);
 		}
-	//	}
-	}}
-//	updateMiniMaxNode(myNode);
-//	printf("updated minimax node at level %d\n", level);
-	//return success;
+	}
 	return true;
 }
 
-//bool createNodesForChilds(MiniMaxNode *myNode) {
-//	if (myNode == NULL) {
-//		return false;
-//	}
-//	//if (ifLeaf(myNode)){
-//	for (unsigned int i = 0; i<SP_FIAR_GAME_N_COLUMNS;i++) {
-//			if (myNode -> myGame == NULL) {
-//				printf("game is null");
-//			}
-//			myNode -> childs[i] = nodeCreate(myNode -> myGame);
-//	}
-//	return true;
-//	//}
-//	//else {
-//	//	return false;
-//	//}
-//}
 MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
-//	SPFiarGame *newGame;
-//	MiniMaxNode *newNode;
 	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
 		return NULL;
 	}
 	if (myNode == NULL) {
 		 return NULL;
 	}
-//	newNode =  myNode -> childs[index];
-//	if (newNode == NULL) {
-//		 return NULL;
-//	}
-//	myNode -> childs[index] = NULL;
-//	newGame = spFiarGameCopy(myNode -> myGame);
-//	printf("CopiedGame");
-//	newNode = nodeCreate(newGame);
-//	printf("Created new node\n");
 	createNewTreeFromNode(myNode, myNode -> myGame -> level);
-//	printf("Created new tree\n");
-//	MiniMaxDelete(myNode);
-//	printf("Deleted old node\n");
 	return myNode;
 }
-//MiniMaxNode* moveForward(MiniMaxNode *myNode, int index) {
-//	MiniMaxNode *newNode;
-//	if (index < 0 || index >= SP_FIAR_GAME_N_COLUMNS) {
-//		return NULL;
-//	}
-//	if (myNode == NULL) {
-//		 return NULL;
-//	}
-//	SPFiarGame newGame = myNode -> myGame;
-//	newNode =  myNode -> childs[index];
-//	newNode -> myGame -> level = (myNode -> myGame -> level);
-//	myNode -> childs[index] = NULL;
-//	if (newNode == NULL) {
-//		 return NULL;
-//	}
-//	myNode -> childs[index] = NULL;
-//	newGame = spFiarGameCopy(myNode -> myGame);
-//	printf("CopiedGame");
-//	newNode = nodeCreate(newGame);
-//	printf("Created new node\n");
-//	printf("before deleting myNode\n");
-//	MiniMaxDelete(myNode);
-//	printf("after deleting myNode\n");
-//	createNewTreeFromNode(newNode, newNode -> myGame -> level );
-//	printf("Created new tree\n");
-//	MiniMaxDelete(myNode);
-//	printf("Deleted old node\n");
-//	return myNode;
-//}
 
- 
-/**
-*bool updateMiniMaxRecursivlly(MiniMaxNode *myNode, int level) {
-*	if (level <0) {
-*		return false;
-*	}
-*	else if (level == 0) {
-*		return true;
-*	}
-*	else if (isLeaf(myNode)) {
-*		for (unsigned i = 0; i<=level; i++) {
-*			updateMiniMaxRecursivlly(myNode -> childs[i], level-1);
-*		}
-*		updateMiniMaxNode(myNode);
-*		return true;
-*		}
-*}
-*/
-
-/**
- * Given a game state, this function gives a score tag according to the
- * disks of each player.
- *
- * @param src - The current game state
- * @param player1 - player 1's symbol
- * @param player2 - player 2's symbol
- * @return
- * The function returns the total score of the given board.
- */
-int calcBoardScore(SPFiarGame* src){
-	return calcBoardRows(src) + calcBoardCols(src) + calcBoardDiagonals(src);
-}
-
-/**
- * Given a score, this function returns the actual
- * value to add according to a weight vector: {−5, −2, −1,1,2,5}
- *
- * @param score - the calculated score of a foursome.
- * @return
- * The matching value according to the weigh vector.
- */
 int singleScore(int score){
     if(score == -4){
         return 30000;
@@ -339,38 +189,8 @@ int singleScore(int score){
         return -30000;
     }
 	return scores[score+3];
-/** If the static cont won't work:
-	//If score is 0 return 0
-	if (score == 0) {
-		return 0;
-	}
-
-	int pos;
-	int sign = 1;
-	if (score > 0) {
-		pos = score;
-	} else {
-		pos = score * (-1);
-		sign = -1;
-	}
-
-	if (pos < 3) {
-		return sign*pos;
-	} else {
-		return sign*5;
-**/
 }
 
-/**
- * Given a game state, this function gives a score tag according to the
- * disks of each player by lines.
- *
- * @param src - The current game state
- * @param player1 - player 1's symbol
- * @param player2 - player 2's symbol
- * @return
- * The function returns the lines score of the given board.
- */
 int calcBoardRows(SPFiarGame* src){
 	int row_score=0;
 	int total_score = 0;
@@ -390,16 +210,6 @@ int calcBoardRows(SPFiarGame* src){
 	return total_score;
 }
 
-/**
- * Given a game state, this function gives a score tag according to the
- * disks of each player by columns.
- *
- * @param src - The current game state
- * @param player1 - player 1's symbol
- * @param player2 - player 2's symbol
- * @return
- * The function returns the columns score of the given board.
- */
 int calcBoardCols(SPFiarGame* src){
 	int col_score=0;
 	int total_score=0;
@@ -420,16 +230,6 @@ int calcBoardCols(SPFiarGame* src){
 
 }
 
-/**
- * Given a game state, this function gives a score tag according to the
- * disks of each player by diagonals.
- *
- * @param src - The current game state
- * @param player1 - player 1's symbol
- * @param player2 - player 2's symbol
- * @return
- * The function returns the columns score of the given board.
- */
 int calcBoardDiagonals(SPFiarGame* src){
 	int diag_score=0;
 	int total_score=0;
@@ -464,7 +264,7 @@ int calcBoardDiagonals(SPFiarGame* src){
 
 }
 
-int calcBoardScore2(SPFiarGame* src) {
+int calcBoardScore(SPFiarGame* src) {
     int directions[] = {1,0,0,1,1,1,-1,1};
     int score = 0;
 

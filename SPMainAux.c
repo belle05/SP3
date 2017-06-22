@@ -13,16 +13,12 @@ int  printDifficulty() {
         fgets(charDifficulty, SP_MAX_LINE_LENGTH, stdin);
 	sscanf(charDifficulty, "%[^ \n]s", charDifficulty);
 	if (checkIfOnlylWhiteSpaces(charDifficulty)) {
-//		printf("\nblankkkkkk\n");
 	}
-//	scanf("%s", charDifficulty);
-	//printf("cahrDifficulty is %s\n",charDifficulty);
 	if (spParserIsInt(charDifficulty)) {
 		difficulty = getInt(charDifficulty);
 		return difficulty;
 	}
 	else if (spParserPraseLine(charDifficulty).cmd == SP_QUIT) {
-//		printf("found the command quit in printDifficulty\n");
 		return '\0';
 	}
 	else {
@@ -127,33 +123,25 @@ void printExit() {
 
 
 int proccesCommand(SPFiarGame *game, SPCommand command) {
-//TODO: figure out how to use game level
-//	printf("1");
 	if (!(command.validArg)) {
-	//	printf("not valid arg");
 		invalidCommand();
 	        return 0;
 	}
 	else if (command.cmd == SP_QUIT) {
-//		printf("3");
 		return 8;
 	}
     	else if (command.cmd == SP_RESTART){
-//		printf("4");
 		printRestart();
 	        return 9;
    	}
 	else if (command.cmd == SP_SUGGEST_MOVE){
-//		printf("5");
 	        suggestMove(game);
         	return 0;
    	}
     	else if(command.cmd == SP_UNDO_MOVE){
-//		printf("6");
 		return 10;
 	}
 	else if (command.cmd==SP_ADD_DISC){
-//		printf("7");
 		if (!checkNumRange7(command.arg)) {
 			addDiscInvalid();
            		return 0;
@@ -162,7 +150,6 @@ int proccesCommand(SPFiarGame *game, SPCommand command) {
 			addDiscFull(command.arg);
 		        return 0;
 		}
-//		spFiarGameSetMove(node -> myGame, command.arg-1);
 		return command.arg;
 	}
 	return 0;
@@ -172,12 +159,8 @@ int userTurn(SPFiarGame *game) {
 	SPCommand command;
 	char str[SP_MAX_LINE_LENGTH];
 	int move = -1;
-//	for (int i=0; i<SP_MAX_LINE_LENGTH; i++) {
-//		str[i] = '\0';
-//	}
 	spFiarGamePrintBoard(game);
 	while (move <= 0) {
-//		printf("\nmove is %d\n", move);
 		if (move == -1) {
 			printNextMove();
 			move = 0;
@@ -185,29 +168,15 @@ int userTurn(SPFiarGame *game) {
 		fflush(stdin);
 	        fgets(str, SP_MAX_LINE_LENGTH, stdin);
 		sscanf(str, "%[^\n]s", str);
-//		scanf(" %[^\n]", str);
-//		printf("%s\n", str);
-//		if (checkIfOnlylWhiteSpaces(str)) {
-//			printf("\nonly whites!!!!");
-//		}
-//		printf("%s\n", str);
-//        	scanf("%[^\n]s", str);
-//		printf("lalala\n");
 	        command = spParserPraseLine((char *)str);
 		move = proccesCommand(game, command);
-	//	printf("move2 is %d\n", move);
 	}
 	return move;
 }
 
 void suggestMove(SPFiarGame *currentGame) {
 	int move;
-	//if (currentGame == NULL) {
-//		printf("game is null");
-	//}
-	//printf("current level %d\n", currentGame->level);
 	move = spMinimaxSuggestMove(currentGame, currentGame->level);
-	//printf("move from suggested move is %d\n",move);
 	printSuggestMove(move);
 }
 
@@ -231,10 +200,8 @@ int  handleWinner(char simbol) {
 		fflush(stdin);
                 fgets(str, SP_MAX_LINE_LENGTH, stdin);
                 sscanf(str, "%[^\n]s", str);
-//                scanf("%[^\n]s", str);
 		command = spParserPraseLine(str);
 		move = proccesWinCommand(command);
-//		printf ("move is %d",move);
 		if (move !=8 && move!=9 && move !=10) {
 			printf("Error: the game is over\n");
 		}
@@ -267,28 +234,5 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 			return NULL;
 		}
 	}
-//	miniMaxNode = nodeCreate(newGame);
-//	createNewTreeFromNode(miniMaxNode, gameLevel);
 	return game;
 }
-/**
-int compTurn(MiniMaxNode *node) {
-	int moveOptions = SP_FIAR_GAME_N_COLUMNS;
-	bool moveMade = false;
-	int move;
-	while (!moveMade || moveOptions > 0) {
-		move = node -> minChildIndex;
-		if (!spFiarGameIsValidMove(node -> myGame, move)) {
-			updateMiniMaxNode(node);
-			moveOptions -= 1;
-		} else {
-//			printf("\nComputer move will be %d", move);
-			spFiarGameSetMove(node -> myGame, move);
-			spFiarGamePrintBoard(node -> myGame);
-			return move;
-		}
-	}
-	return 10;
-}
-
-**/
