@@ -175,6 +175,9 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	if (success) {
 		printf("Remove disc: remove user's disc at column %d\n",discToRemove+1);
 		spArrayListRemoveFirst(src -> history);
+	//	printf("after removing\n");
+	//	printf("before returning success\n");
+		return SP_FIAR_GAME_SUCCESS;
 	}
 	return SP_FIAR_GAME_SUCCESS;
 }

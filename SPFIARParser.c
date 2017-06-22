@@ -148,8 +148,9 @@ SPCommand spParserPraseLine(char* str) {
 		if (strcmp(token, "") != 0) {
 			if (isCom) { 
 				myCommand.cmd = checkForCommand(token);
-				isCom = false;
 				if (myCommand.cmd != SP_ADD_DISC){
+					//printf("in if not add_disc, my command is %d\n",myCommand.cmd);
+					myCommand.validArg = true;
 					finishedArgs = true;
 				}
 			} else {
@@ -176,6 +177,7 @@ SPCommand spParserPraseLine(char* str) {
 			//		finishedArgs = true;
 			//	}
 			}
+			isCom = false;
 		}
 		token = strtok(NULL, parseChars);
 	}
@@ -191,15 +193,15 @@ SPCommand spParserPraseLine(char* str) {
 //		printf("\ninvalid");
 		myCommand.arg = 0;
 		myCommand.validArg = false;
-        myCommand.cmd = SP_INVALID_LINE;
-        return myCommand;
+	        myCommand.cmd = SP_INVALID_LINE;
+        	return myCommand;
         }
 	if (myCommand.validArg) {
-//		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
+	//	printf("myCommand.cmd is %d, myCommand.arg is %d and valid is true\n", myCommand.cmd, myCommand.arg);
 	} else {
-//		printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
+	//	printf("myCommand.cmd is %d, myCommand.arg is %d and valid is false\n", myCommand.cmd, myCommand.arg);
 	}
-//	printf("finished parser command\n");
+	//printf("finished parser command\n");
 	return myCommand;
 }
 
@@ -216,7 +218,8 @@ SP_COMMAND checkForCommand(char *command) {
 	char *add_disk = "add_disc\0";
 	char *sp_suggest = "suggest_move\0";
 	char *quit = "quit\0";
-	char *restart = "restart\0";
+	char *restart = "restart_game\0";
+	char *restart2 = "restart\0";
 //	strcpy(undo, "undo_move");
 //	strcpy(add_disk, "add_disk");
 //	strcpy(sp_suggest, "suggest_move") ;
@@ -236,7 +239,7 @@ SP_COMMAND checkForCommand(char *command) {
 	} else if (strcmp(quit, command) == 0) {
 //		printf("found quit");
 		return SP_QUIT;
-	} else if (strcmp(restart, command) == 0) {
+	} else if ((strcmp(restart, command) == 0) || (strcmp(restart2, command) == 0)) {
 		return SP_RESTART;
 	} else {
 		return SP_INVALID_LINE;

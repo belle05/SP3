@@ -130,7 +130,7 @@ int proccesCommand(SPFiarGame *game, SPCommand command) {
 //TODO: figure out how to use game level
 //	printf("1");
 	if (!(command.validArg)) {
-//		printf("2");
+	//	printf("not valid arg");
 		invalidCommand();
 	        return 0;
 	}
@@ -195,7 +195,7 @@ int userTurn(SPFiarGame *game) {
 //		printf("lalala\n");
 	        command = spParserPraseLine((char *)str);
 		move = proccesCommand(game, command);
-//		printf("move2 is %d\n", move);
+	//	printf("move2 is %d\n", move);
 	}
 	return move;
 }

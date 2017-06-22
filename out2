@@ -65,6 +65,7 @@ Computer move: add disc to column 4
   1 2 3 4 5 6 7  
 Please make the next move:
 Error: column 4 is full
-Error: invalid command
+Game restarted!
+Please enter the difficulty level between [1-7]:
 Exiting...
 
