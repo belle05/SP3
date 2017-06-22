@@ -84,6 +84,7 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col){
 SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	bool success = false;
 	int discToRemove;
+	bool userTurn = spArrayListSize(src -> history) % 2;
 	if (src == NULL) {
 		return SP_FIAR_GAME_INVALID_ARGUMENT;
 	} else if (spArrayListSize(src -> history) == 0) {
@@ -92,17 +93,22 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
 	discToRemove = spArrayListGetAt(src -> history, 0);
 	success = spFiarGameRemoveDisc(src, discToRemove);
 	if (success) {
-		printf("Remove disc: remove computer's disc at column %d\n",discToRemove+1);
-		spArrayListRemoveFirst(src -> history);
-	} //undoing user's last move
-	discToRemove = spArrayListGetAt(src -> history, 0);
-	success = spFiarGameRemoveDisc(src, discToRemove);
-	if (success) {
-		printf("Remove disc: remove user's disc at column %d\n",discToRemove+1);
+		if (userTurn) {
+			printf("Remove disc: remove user's disc at column %d\n",discToRemove+1);
+		} else {
+			printf("Remove disc: remove computer's disc at column %d\n",discToRemove+1);
+		}
 		spArrayListRemoveFirst(src -> history);
 		return SP_FIAR_GAME_SUCCESS;
-	}
-	return SP_FIAR_GAME_SUCCESS;
+	} //undoing user's last move
+//	discToRemove = spArrayListGetAt(src -> history, 0);
+//	success = spFiarGameRemoveDisc(src, discToRemove);
+//	if (success) {
+//		printf("Remove disc: remove user's disc at column %d\n",discToRemove+1);
+//		spArrayListRemoveFirst(src -> history);
+//		return SP_FIAR_GAME_SUCCESS;
+//	}
+	return SP_FIAR_GAME_INVALID_ARGUMENT;
 }
 
 bool spFiarGameRemoveDisc(SPFiarGame* src, int col){

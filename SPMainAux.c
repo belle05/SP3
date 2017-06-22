@@ -234,5 +234,12 @@ SPFiarGame* undoMove(SPFiarGame *game) {
 			return NULL;
 		}
 	}
+	undoResult = spFiarGameUndoPrevMove(game);
+	if (!(undoResult == SP_FIAR_GAME_SUCCESS)) {
+		errorUndo();
+		if (undoResult == SP_FIAR_GAME_NO_HISTORY) {
+			return NULL;
+		}
+	}
 	return game;
 }
