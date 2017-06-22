@@ -2,7 +2,7 @@ CC = gcc
 OBJS = SPMiniMaxNode.o SPMiniMax.o SPFIARGame.o SPArrayList.o SPFIARParser.o SPMainAux.o main.o
 EXEC = SPFIAR
 GAME_TEST_OBJS = SPArrayList.o SPFIARGame.o SPFIARGameUnitTest.o
-ARRAY_LIST_TEST_OBJS = SPArrayListUnitTestTest.o SPArrayList.o
+ARRAY_LIST_TEST_OBJS = SPArrayListUnitTest.o SPArrayList.o
 PARSER_TEST_OBJS = SPFIARParser.o SPFIARParserUnitTest.o
 MINMAXNode_TEST_OBJ = SPMiniMaxNode.o SPMiniMaxNodeUnitTest.o SPFIARGame.o SPArrayList.o
 MINMAX_TEST_OBJ = SPMiniMaxNode.o SPMiniMax.o SPMiniMaxUnitTest.o SPFIARGame.o SPArrayList.o
@@ -18,10 +18,10 @@ SPFIARGameUnitTest: $(GAME_TEST_OBJS)
 	$(CC) $(GAME_TEST_OBJS) -o $@
 SPArrayListUnitTest: $(ARRAY_LIST_TEST_OBJS)
 	$(CC) $(ARRAY_LIST_TEST_OBJS) -o $@
-SPFIARParser: $(PARSER_TEST_OBJS)
+SPFIARParserUnitTest: $(PARSER_TEST_OBJS)
 	$(CC) $(PARSER_TEST_OBJS) -o $@
 SPMiniMaxUnitTest: $(MINMAX_TEST_OBJ)
-	$(CC) $(MINMAXNode_TEST_OBJ) -o $@
+	$(CC) $(MINMAX_TEST_OBJ) -o $@
 SPMiniMaxNodeUnitTest: $(MINMAXNode_TEST_OBJ)
 	$(CC) $(MINMAXNode_TEST_OBJ) -o $@
 SPMainAuxUnitTest: $(MAINAUX_TEST_OBJS)
@@ -32,9 +32,9 @@ SPArrayListUnitTest.o: SPArrayListUnitTest.c SPArrayList.h unit_test_util.h
 	$(CC) $(COMP_FLAG) -c $*.c
 SPFIARParserUnitTest.o: SPFIARParserUnitTest.c SPFIARParser.h unit_test_util.h
 	$(CC) $(COMP_FLAG) -c $*.c
-SPMiniMaxUnitTest.o: SPMiniMaxUnitTest.c SPMiniMax.h SPFIARGame.h SPMiniMaxNode.h unit_test_util
+SPMiniMaxUnitTest.o: SPMiniMaxUnitTest.c SPMiniMax.h SPFIARGame.h SPMiniMaxNode.h unit_test_util.h
 	$(CC) $(COMP_FLAG) -c $*.c
-SPMiniMaxNodeUnitTest.o: SPMiniMaxNodeUnitTest.c SPMiniMaxNode.h unit_test_util SPFIARGame.h
+SPMiniMaxNodeUnitTest.o: SPMiniMaxNodeUnitTest.c SPMiniMaxNode.h unit_test_util.h SPFIARGame.h
 	$(CC) $(COMP_FLAG) -c $*.c
 SPArrayList.o: SPArrayList.h SPArrayList.c
 	$(CC) $(COMP_FLAG) -c $*.c
